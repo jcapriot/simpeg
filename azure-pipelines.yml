@@ -22,11 +22,11 @@ jobs:
 
   - bash: |
       source activate test
-      pip install requirements_dev
+      pip install -r requirements_dev
       python setup.py install
     displayName: pip requirements
 
   - bash: |
       source activate test
-      nosetest -s -v tests/utils
+      nosetests -s -v tests/utils
     displayName: testing utilities
