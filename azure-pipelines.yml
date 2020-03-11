@@ -30,3 +30,10 @@ jobs:
       source activate test
       nosetests -s -v tests/utils
     displayName: testing utilities
+
+  - task: test2
+    displayName: unittesting
+    inputs:
+      command: 'custom'
+      custom: 'nosetests'
+      arguments: '-s -v tests/utils'
