@@ -3,6 +3,8 @@
 SimPEG Meshes
 *************
 
+.. _discretize docs: http://discretize.simpeg.xyz
+
 The Mesh objects in SimPEG provide a numerical grid on which to solve
 differential equations. Each mesh type has a similar API to make switching
 between different meshes relatively simple.
@@ -10,21 +12,16 @@ between different meshes relatively simple.
 Overview of Meshes Available
 ============================
 
-The following meshes are available for use:
-
-.. toctree::
-   :maxdepth: 2
-
-   api_MeshCode
+Please see the `discretize docs`_
 
 Each mesh code follows the guiding principles that are present in this
 tutorial, but the details, advantages and disadvantages differ between
 the implementations.
 
-.. plot::
 
-    from SimPEG import Examples
-    Examples.Mesh_Basic_Types.run()
+.. image:: /content/examples/02-mesh/images/sphx_glr_plot_basic_types_001.png
+    :target: /content/examples/02-mesh/plot_basic_types.html
+    :align: center
 
 
 Variable Locations and Terminology
@@ -32,7 +29,7 @@ Variable Locations and Terminology
 
 We will go over the basics of using a TensorMesh, but these skills are transferable
 to the other meshes available in SimPEG. All of the mesh generation code is located
-in the Mesh package in SimPEG (i.e. SimPEG.Mesh).
+in the Mesh package in SimPEG (i.e. discretize).
 
 
 To create a TensorMesh we need to create mesh tensors, the widths of
@@ -43,7 +40,8 @@ of the TensorMesh.
 .. plot::
     :include-source:
 
-    from SimPEG import Mesh, np
+    from SimPEG import Mesh
+    import numpy as np
     import matplotlib.pyplot as plt
     hx = np.r_[3,2,1,1,1,1,2,3]
     hy = np.r_[3,1,1,3]
@@ -65,7 +63,8 @@ plotted above as red circles. Other terminology for this mesh are:
 .. plot::
     :include-source:
 
-    from SimPEG import Mesh, np
+    from SimPEG import Mesh
+    import numpy as np
     import matplotlib.pyplot as plt
     hx = np.r_[3,2,1,1,1,1,2,3]
     hy = np.r_[3,1,1,3]
@@ -90,6 +89,7 @@ and live on the edges(!) of the cell.
 .. plot::
     :include-source:
 
+    from __future__ import print_function
     from SimPEG import Mesh
     Mesh.TensorMesh([1,1,1]).plotGrid(faces=True, edges=True, centers=True, showIt=True)
 
@@ -102,7 +102,7 @@ SimPEG makes this pretty easy:
 
 ::
 
-    In [1]: print M
+    In [1]: print(M)
             ---- 2-D TensorMesh ----
              x0: 0.00
              y0: 0.00
@@ -116,11 +116,11 @@ SimPEG makes this pretty easy:
       ....:          'numCells_yDir': M.nCy,
       ....:          'numCells_vector': M.vnC}
 
-    In [3]: print 'This mesh has %(numCells)d cells, which is %(numCells_xDir)d*%(numCells_yDir)d!!' % count
+    In [3]: print('This mesh has %(numCells)d cells, which is %(numCells_xDir)d*%(numCells_yDir)d!!' % count)
 
             This mesh has 32 cells, which is 8*4!!
 
-    In [4]: print count
+    In [4]: print(count)
 
             {
              'numCells_vector': array([8, 4]),
@@ -188,6 +188,4 @@ other types of meshes in this SimPEG framework.
 The API
 =======
 
-.. autoclass:: SimPEG.Mesh.BaseMesh.BaseMesh
-    :members:
-    :undoc-members:
+See the `discretize docs`_

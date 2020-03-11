@@ -190,12 +190,13 @@ Which is nice and easy to invert if necessary, however, in the fully anisotropic
 
 .. plot::
 
-    from SimPEG import Mesh, np
+    import numpy as np
+    from SimPEG import Mesh
     mesh = Mesh.TensorMesh([10,50,3])
     m1 = np.random.rand(mesh.nC)
     m2 = np.random.rand(mesh.nC,3)
     m3 = np.random.rand(mesh.nC,6)
-    M = range(3)
+    M = list(range(3))
     M[0] = mesh.getFaceInnerProduct(m1)
     M[1] = mesh.getFaceInnerProduct(m2)
     M[2] = mesh.getFaceInnerProduct(m3)
@@ -296,6 +297,5 @@ and returned.
 The API
 -------
 
-.. autoclass:: SimPEG.Mesh.InnerProducts.InnerProducts
-    :members:
-    :undoc-members:
+See the `discretize docs <http://discretize.simpeg.xyz/>`_
+

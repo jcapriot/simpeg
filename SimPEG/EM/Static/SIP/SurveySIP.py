@@ -1,16 +1,25 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
+import numpy as np
 import SimPEG
 from SimPEG.EM.Base import BaseEMSurvey
-from SimPEG import np, sp, Survey, Utils
-from SimPEG.Utils import Zero, Identity
-from SimPEG.EM.Static.SIP.SrcSIP import BaseSrc
-from SimPEG.EM.Static.SIP.RxSIP import BaseRx
+from SimPEG import Utils
+from . import RxSIP as Rx
+from . import SrcSIP as Src
+from SimPEG.EM.Static import DC
 import uuid
 
 
 class Survey(BaseEMSurvey):
-    rxPair  = BaseRx
-    srcPair = BaseSrc
+    rxPair = Rx.BaseRx
+    srcPair = Src.BaseSrc
     times = None
+    _pred = None
+    n_pulse = 2
+    T = 8.
 
     def __init__(self, srcList, **kwargs):
         self.srcList = srcList
@@ -24,6 +33,10 @@ class Survey(BaseEMSurvey):
                 time_rx.append(rx.times)
         self.times = np.unique(np.hstack(time_rx))
 
+    @property
+    def n_locations(self):
+        return int(self.nD/self.times.size)
+
     def dpred(self, m, f=None):
         """
             Predicted data.
@@ -31,7 +44,10 @@ class Survey(BaseEMSurvey):
             .. math::
                 d_\\text{pred} = Pf(m)
         """
-        return self.prob.forward(m, f=f)
+        if f is None:
+            f = self.prob.fields(m)
+        return self._pred
+        # return self.prob.forward(m, f=f)
 
 
 class Data(SimPEG.Survey.Data):
@@ -69,7 +85,7 @@ class Data(SimPEG.Survey.Data):
         src, rx, t = self._ensureCorrectKey(key)
         assert rx is not None, 'set data using [Src, Rx]'
         assert isinstance(value, np.ndarray), 'value must by ndarray'
-        assert value.size == rx.nD, "value must have the same number of data as the source."
+        assert value.size == rx.nD, ("value must have the same number of data as the source.")
         self._dataDict[src][rx][t] = Utils.mkvc(value)
 
     def __getitem__(self, key):
@@ -79,7 +95,9 @@ class Data(SimPEG.Survey.Data):
                 raise Exception('Data for receiver has not yet been set.')
             return self._dataDict[src][rx][t]
 
-        return np.concatenate([self[src,rx, t] for rx in src.rxList])
+        return np.concatenate(
+            [self[src, rx, t] for rx in src.rxList]
+        )
 
     def tovec(self):
         val = []
@@ -89,14 +107,52 @@ class Data(SimPEG.Survey.Data):
                     val.append(self[src, rx, t])
         return np.concatenate(val)
 
-
     def fromvec(self, v):
         v = Utils.mkvc(v)
-        assert v.size == self.survey.nD, 'v must have the correct number of data.'
+        assert v.size == self.survey.nD, (
+            'v must have the correct number of data.'
+        )
         indBot, indTop = 0, 0
-        for src in self.survey.srcList:
-            for rx in src.rxList:
-                for t in rx.times:
+
+        for t in self.survey.times:
+            for src in self.survey.srcList:
+                for rx in src.rxList:
                     indTop += rx.nRx
                     self[src, rx, t] = v[indBot:indTop]
                     indBot += rx.nRx
+
+
+def from_dc_to_sip_survey(survey_dc, times):
+    """
+    Generate sip survey from dc survey
+    """
+    srcList = survey_dc.srcList
+
+    srcList_sip = []
+    for src in srcList:
+        rxList_sip = []
+        for rx in src.rxList:
+            if isinstance(rx, DC.Rx.Pole_ky) or isinstance(rx, DC.Rx.Pole):
+                rx_sip = Rx.Pole(rx.locs, times=times)
+            elif isinstance(rx, DC.Rx.Dipole_ky) or isinstance(rx, DC.Rx.Dipole):
+                rx_sip = Rx.Dipole(rx.locs[0], rx.locs[1], times=times)
+            else:
+                print (rx)
+                raise NotImplementedError()
+            rxList_sip.append(rx_sip)
+
+        if isinstance(src, DC.Src.Pole):
+            src_sip = Src.Pole(
+                rxList_sip, src.loc
+            )
+        elif isinstance(src, DC.Src.Dipole):
+            src_sip = Src.Dipole(
+                rxList_sip, src.loc[0], src.loc[1]
+            )
+        else:
+            raise NotImplementedError()
+        srcList_sip.append(src_sip)
+
+    survey_sip = Survey(srcList_sip)
+
+    return survey_sip

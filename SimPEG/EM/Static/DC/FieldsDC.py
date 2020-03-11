@@ -1,3 +1,8 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import SimPEG
 from SimPEG.Utils import Identity, Zero
 import numpy as np
@@ -9,11 +14,14 @@ class FieldsDC(SimPEG.Problem.Fields):
     dtype = float
 
     def _phiDeriv(self, src, du_dm_v, v, adjoint=False):
-        if (getattr(self, '_phiDeriv_u', None) is None or
-            getattr(self, '_phiDeriv_m', None) is None):
-            raise NotImplementedError ('Getting phiDerivs from {0!s} is not '
-                                       'implemented'.format(
-                                        self.knownFields.keys()[0]))
+        if (
+            getattr(self, '_phiDeriv_u', None) is None or
+            getattr(self, '_phiDeriv_m', None) is None
+        ):
+            raise NotImplementedError(
+                'Getting phiDerivs from {0!s} is not '
+                'implemented'.format(self.knownFields.keys()[0])
+            )
 
         if adjoint:
             return (self._phiDeriv_u(src, v, adjoint=adjoint),
@@ -23,11 +31,14 @@ class FieldsDC(SimPEG.Problem.Fields):
                          self._phiDeriv_m(src, v, adjoint), dtype=float))
 
     def _eDeriv(self, src, du_dm_v, v, adjoint=False):
-        if (getattr(self, '_eDeriv_u', None) is None or
-            getattr(self, '_eDeriv_m', None) is None):
-            raise NotImplementedError ('Getting eDerivs from {0!s} is not '
-                                       'implemented'.format(
-                                        self.knownFields.keys()[0]))
+        if (
+            getattr(self, '_eDeriv_u', None) is None or
+            getattr(self, '_eDeriv_m', None) is None
+        ):
+            raise NotImplementedError(
+                'Getting eDerivs from {0!s} is not '
+                'implemented'.format(self.knownFields.keys()[0])
+            )
 
         if adjoint:
             return (self._eDeriv_u(src, v, adjoint),
@@ -36,11 +47,14 @@ class FieldsDC(SimPEG.Problem.Fields):
                          self._eDeriv_m(src, v, adjoint), dtype=float))
 
     def _jDeriv(self, src, du_dm_v, v, adjoint=False):
-        if (getattr(self, '_jDeriv_u', None) is None or
-            getattr(self, '_jDeriv_m', None) is None):
-            raise NotImplementedError ('Getting jDerivs from {0!s} is not '
-                                       'implemented'.format(
-                                        self.knownFields.keys()[0]))
+        if (
+            getattr(self, '_jDeriv_u', None) is None or
+            getattr(self, '_jDeriv_m', None) is None
+        ):
+            raise NotImplementedError(
+                'Getting jDerivs from {0!s} is not '
+                'implemented'.format(self.knownFields.keys()[0])
+            )
 
         if adjoint:
             return (self._jDeriv_u(src, v, adjoint),
@@ -52,21 +66,40 @@ class FieldsDC(SimPEG.Problem.Fields):
 class Fields_CC(FieldsDC):
     knownFields = {'phiSolution': 'CC'}
     aliasFields = {
-                    'phi': ['phiSolution', 'CC', '_phi'],
-                    'j' : ['phiSolution', 'F', '_j'],
-                    'e' : ['phiSolution', 'F', '_e'],
-                    'charge' : ['phiSolution', 'CC', '_charge'],
-                  }
-                  # primary - secondary
-                  # CC variables
+        'phi': ['phiSolution', 'CC', '_phi'],
+        'j': ['phiSolution', 'F', '_j'],
+        'e': ['phiSolution', 'F', '_e'],
+        'charge': ['phiSolution', 'CC', '_charge'],
+        'charge_density': ['phiSolution', 'CC', '_charge_density'],
+    }
+    # primary - secondary
+    # CC variables
 
     def __init__(self, mesh, survey, **kwargs):
         FieldsDC.__init__(self, mesh, survey, **kwargs)
-        mesh.setCellGradBC("neumann")
-        cellGrad = mesh.cellGrad
+
+        if getattr(self.survey.prob, 'bc_type', None) == 'Dirichlet':
+            self.cellGrad = -mesh.faceDiv.T
+        elif getattr(self.survey.prob, 'bc_type', None) == 'Neumann':
+            if self.mesh._meshType == "TREE":
+                raise NotImplementedError()
+            mesh.setCellGradBC("neumann")
+            self.cellGrad = mesh.cellGrad
+        else:
+            mesh.setCellGradBC("neumann")
+            self.cellGrad = mesh.cellGrad
 
     def startup(self):
-        self.prob = self.survey.prob
+        # self.prob = self.survey.prob
+        self._MfRhoI = self.survey.prob.MfRhoI
+        self._MfRhoIDeriv = self.survey.prob.MfRhoIDeriv
+        self._MfRho = self.survey.prob.MfRho
+        self._aveF2CCV = self.survey.prob.mesh.aveF2CCV
+        self._nC = self.survey.prob.mesh.nC
+        self._Grad = self.survey.prob.Grad
+        self._MfI = self.survey.prob.MfI
+        self._Vol = self.survey.prob.Vol
+        self._faceDiv = self.survey.prob.mesh.faceDiv
 
     def _GLoc(self, fieldType):
         if fieldType == 'phi':
@@ -88,37 +121,72 @@ class Fields_CC(FieldsDC):
     def _j(self, phiSolution, srcList):
         """
             .. math::
+
                 \mathbf{j} = \mathbf{M}^{f \ -1}_{\rho} \mathbf{G} \phi
         """
-        return self.prob.MfRhoI*self.prob.Grad*phiSolution
+        return self._MfRhoI*self._Grad*phiSolution
+
+    def _jDeriv_u(self, src, v, adjoint=False):
+        if adjoint:
+            return self._Grad.T * (self._MfRhoI.T * v)
+        return self._MfRhoI * (self._Grad * v)
+
+    def _jDeriv_m(self, src, v, adjoint=False):
+        if adjoint:
+            return self._Grad.T * self._MfRhoIDeriv(v, adjoint=True)
+        return self._MfRhoIDeriv(self._Grad * v)
 
     def _e(self, phiSolution, srcList):
         """
-            In HJ formulation e is not well-defined!!
             .. math::
-                \vec{e} = -\nabla \phi
+
+                \vec{e} = \rho \vec{j}
         """
-        return -self.mesh.cellGrad*phiSolution
+        # return self._MfI * self._MfRho * self._j(phiSolution, srcList)
+        return self._MfI * self._Grad * phiSolution
+        # prob._MfI * cart_mesh.faceDiv.T * p
+
+    def _eDeriv_u(self, src, v, adjoint=False):
+        if adjoint:
+            return self._Grad.T * (self._MfI.T * v)
+        return self._MfI * (self._Grad * v)
+
+    def _eDeriv_m(self, src, v, adjoint=False):
+        return Zero()
 
     def _charge(self, phiSolution, srcList):
         """
             .. math::
+
                 \int \nabla \codt \vec{e} =  \int \frac{\rho_v }{\epsillon_0}
         """
-        return epsilon_0*self.prob.Vol*(self.mesh.faceDiv*self._e(phiSolution,
-                                                                  srcList))
+        return epsilon_0*self._Vol*(
+            self._faceDiv*self._e(phiSolution, srcList)
+        )
+
+    def _charge_density(self, phiSolution, srcList):
+        """
+            .. math::
+
+                \frac{1}{V}\int \nabla \codt \vec{e} =
+                \frac{1}{V}\int \frac{\rho_v }{\epsillon_0}
+        """
+        return epsilon_0*(
+            self._faceDiv*self._e(phiSolution, srcList)
+        )
 
 
 class Fields_N(FieldsDC):
     knownFields = {'phiSolution': 'N'}
     aliasFields = {
-                    'phi': ['phiSolution', 'N', '_phi'],
-                    'j' : ['phiSolution', 'E', '_j'],
-                    'e' : ['phiSolution', 'E', '_e'],
-                    'charge' : ['phiSolution', 'N', '_charge'],
-                  }
-                  # primary - secondary
-                  # N variables
+        'phi': ['phiSolution', 'N', '_phi'],
+        'j': ['phiSolution', 'E', '_j'],
+        'e': ['phiSolution', 'E', '_e'],
+        'charge_density': ['phiSolution', 'N', '_charge_density'],
+        'charge': ['phiSolution', 'N', '_charge'],
+    }
+    # primary - secondary
+    # N variables
 
     def __init__(self, mesh, survey, **kwargs):
         FieldsDC.__init__(self, mesh, survey, **kwargs)
@@ -149,7 +217,7 @@ class Fields_N(FieldsDC):
             .. math::
                 \mathbf{j} = - \mathbf{M}^{e}_{\sigma} \mathbf{G} \phi
         """
-        return self.prob.MeSigma * self._e(phiSolution, srcList)
+        return self.prob.MeI * self.prob.MeSigma * self._e(phiSolution, srcList)
 
     def _e(self, phiSolution, srcList):
         """
@@ -164,6 +232,11 @@ class Fields_N(FieldsDC):
             .. math::
                 \int \nabla \codt \vec{e} =  \int \frac{\rho_v }{\epsillon_0}
         """
-        return - epsilon_0*(self.mesh.nodalGrad.T *
-                            self.mesh.getEdgeInnerProduct() *
-                            self._e(phiSolution, srcList))
+        return -epsilon_0*(
+            self.mesh.nodalGrad.T *
+            self.mesh.getEdgeInnerProduct() *
+            self._e(phiSolution, srcList)
+        )
+
+    def _charge_density(self, phiSolution, srcList):
+        return self._charge(phiSolution, srcList) / self.mesh.vol

@@ -5,6 +5,14 @@ Utils
     :members:
     :undoc-members:
 
+Version
+=======
+
+.. automodule:: SimPEG.Utils.printinfo
+    :members:
+    :undoc-members:
+
+
 Matrix Utilities
 ================
 
@@ -44,7 +52,7 @@ Model Builder Utilities
 Interpolation Utilities
 =======================
 
-.. automodule:: SimPEG.Utils.interputils
+.. automodule:: discretize.utils.interputils
     :members:
     :undoc-members:
 

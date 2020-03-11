@@ -1,19 +1,28 @@
+from __future__ import print_function
 import numpy as np
 import scipy.ndimage as ndi
 import scipy.sparse as sp
-from matutils import mkvc
+from .matutils import mkvc
+from scipy.spatial import Delaunay
+
+import sys
+if sys.version_info < (3,):
+    num_types = [int, long, float]
+else:
+    num_types = [int, float]
+
 
 def addBlock(gridCC, modelCC, p0, p1, blockProp):
     """
         Add a block to an exsisting cell centered model, modelCC
 
-        :param numpy.array gridCC: mesh.gridCC is the cell centered grid
-        :param numpy.array modelCC: cell centered model
-        :param numpy.array p0: bottom, southwest corner of block
-        :param numpy.array p1: top, northeast corner of block
+        :param numpy.ndarray gridCC: mesh.gridCC is the cell centered grid
+        :param numpy.ndarray modelCC: cell centered model
+        :param numpy.ndarray p0: bottom, southwest corner of block
+        :param numpy.ndarray p1: top, northeast corner of block
         :blockProp float blockProp: property to assign to the model
 
-        :return numpy.array, modelBlock: model with block
+        :return numpy.ndarray, modelBlock: model with block
     """
     ind = getIndicesBlock(p0, p1, gridCC)
     modelBlock = modelCC.copy()
@@ -21,7 +30,7 @@ def addBlock(gridCC, modelCC, p0, p1, blockProp):
     return modelBlock
 
 
-def getIndicesBlock(p0,p1,ccMesh):
+def getIndicesBlock(p0, p1, ccMesh):
     """
         Creates a vector containing the block indices in the cell centers mesh.
         Returns a tuple
@@ -49,7 +58,7 @@ def getIndicesBlock(p0,p1,ccMesh):
         p0[ii], p1[ii] = np.min([p0[ii], p1[ii]]), np.max([p0[ii], p1[ii]])
 
     if dimMesh == 1:
-       # Define the reference points
+        # Define the reference points
         x1 = p0[0]
         x2 = p1[0]
 
@@ -57,7 +66,7 @@ def getIndicesBlock(p0,p1,ccMesh):
         ind  = np.where(indX)
 
     elif dimMesh == 2:
-       # Define the reference points
+        # Define the reference points
         x1 = p0[0]
         y1 = p0[1]
 
@@ -88,7 +97,8 @@ def getIndicesBlock(p0,p1,ccMesh):
     # Return a tuple
     return ind
 
-def defineBlock(ccMesh,p0,p1,vals=None):
+
+def defineBlock(ccMesh, p0, p1, vals=None):
     """
         Build a block with the conductivity specified by condVal.  Returns an array.
         vals[0]  conductivity of the block
@@ -102,6 +112,7 @@ def defineBlock(ccMesh,p0,p1,vals=None):
     sigma[ind] = vals[0]
 
     return mkvc(sigma)
+
 
 def defineElipse(ccMesh, center=None, anisotropy=None, slope=10., theta=0.):
     if center is None:
@@ -124,7 +135,8 @@ def defineElipse(ccMesh, center=None, anisotropy=None, slope=10., theta=0.):
     D = np.sqrt(np.sum(G**2,axis=1))
     return -np.arctan((D-1)*slope)*(2./np.pi)/2.+0.5
 
-def getIndicesSphere(center,radius,ccMesh):
+
+def getIndicesSphere(center, radius, ccMesh):
     """
         Creates a vector containing the sphere indices in the cell centers mesh.
         Returns a tuple
@@ -162,7 +174,8 @@ def getIndicesSphere(center,radius,ccMesh):
     # Return a tuple
     return ind
 
-def defineTwoLayers(ccMesh,depth,vals=None):
+
+def defineTwoLayers(ccMesh, depth, vals=None):
     """
     Define a two layered model.  Depth of the first layer must be specified.
     CondVals vector with the conductivity values of the layers.  Eg:
@@ -201,7 +214,8 @@ def defineTwoLayers(ccMesh,depth,vals=None):
 
     return mkvc(sigma)
 
-def scalarConductivity(ccMesh,pFunction):
+
+def scalarConductivity(ccMesh, pFunction):
     """
     Define the distribution conductivity in the mesh according to the
     analytical expression given in pFunction
@@ -211,19 +225,19 @@ def scalarConductivity(ccMesh,pFunction):
     if dim>1: CC.append(ccMesh[:,1])
     if dim>2: CC.append(ccMesh[:,2])
 
-
     sigma = pFunction(*CC)
 
     return mkvc(sigma)
+
 
 def layeredModel(ccMesh, layerTops, layerValues):
     """
         Define a layered model from layerTops (z-positive up)
 
-        :param numpy.array ccMesh: cell-centered mesh
-        :param numpy.array layerTops: z-locations of the tops of each layer
-        :param numpy.array layerValue: values of the property to assign for each layer (starting at the top)
-        :rtype: numpy.array
+        :param numpy.ndarray ccMesh: cell-centered mesh
+        :param numpy.ndarray layerTops: z-locations of the tops of each layer
+        :param numpy.ndarray layerValue: values of the property to assign for each layer (starting at the top)
+        :rtype: numpy.ndarray
         :return: M, layered model on the mesh
     """
 
@@ -259,7 +273,6 @@ def layeredModel(ccMesh, layerTops, layerValues):
     return model
 
 
-
 def randomModel(shape, seed=None, anisotropy=None, its=100, bounds=None):
     """
         Create a random model by convolving a kernel with a
@@ -289,9 +302,9 @@ def randomModel(shape, seed=None, anisotropy=None, its=100, bounds=None):
 
     if seed is None:
         seed = np.random.randint(1e3)
-        print 'Using a seed of: ', seed
+        print('Using a seed of: ', seed)
 
-    if type(shape) in [int, long, float]:
+    if type(shape) in num_types:
         shape = (shape,) # make it a tuple for consistency
 
     np.random.seed(seed)
@@ -317,82 +330,38 @@ def randomModel(shape, seed=None, anisotropy=None, its=100, bounds=None):
     mi = (mi - mi.min())/(mi.max()-mi.min()) # scaled between 0 and 1
     mi = mi*(bounds[1]-bounds[0])+bounds[0]
 
-
     return mi
 
+def PolygonInd(mesh, pts):
+    """
+        Finde a volxel indices included in mpolygon (2D) or polyhedra (3D)
+        uniformly distributed model.
+
+        :param tuple shape: shape of the model.
+        :param int seed: pick which model to produce, prints the seed if you don't choose.
+        :param numpy.ndarray anisotropy: this is the (3 x n) blurring kernel that is used.
+        :param int its: number of smoothing iterations
+        :param list bounds: bounds on the model, len(list) == 2
+        :rtype: numpy.ndarray
+        :return: M, the model
 
 
-if __name__ == '__main__':
+        .. plot::
 
-    from SimPEG.Mesh import TensorMesh
-    from matplotlib import pyplot as plt
+            import matplotlib.pyplot as plt
+            import SimPEG.Utils.ModelBuilder as MB
+            plt.colorbar(plt.imshow(MB.randomModel((50,50),bounds=[-4,0])))
+            plt.title('A very cool, yet completely random model.')
+            plt.show()
 
-    # Define the mesh
 
-    testDim = 2
-    h1 = 0.3*np.ones(7)
-    h1[0] = 0.5
-    h1[-1] = 0.6
-    h2 = .5 * np.ones(4)
-    h3 = .4 * np.ones(6)
-    x0 = np.zeros(3)
-
-    if testDim == 1:
-        h = [h1]
-        x0 = x0[0]
-    elif testDim == 2:
-        h = [h1, h2]
-        x0 = x0[0:2]
-    else:
-        h = [h1, h2, h3]
-
-    M = TensorMesh(h, x0)
-
-    ccMesh = M.gridCC
-
-    # ------------------- Test conductivities! --------------------------
-    print('Testing 1 block conductivity')
-
-    p0 = np.array([0.5,0.5,0.5])[:testDim]
-    p1 = np.array([1.0,1.0,1.0])[:testDim]
-    vals = np.array([100,1e-6])
-
-    sigma = defineBlockConductivity(ccMesh,p0,p1,vals)
-
-    # Plot sigma model
-    print sigma.shape
-    M.plotImage(sigma)
-    print 'Done with block! :)'
-    plt.show()
-
-    # -----------------------------------------
-    print('Testing the two layered model')
-    vals = np.array([100,1e-5]);
-    depth    = 1.0;
-
-    sigma = defineTwoLayeredConductivity(ccMesh,depth,vals)
-
-    M.plotImage(sigma)
-    print sigma
-    print 'layer model!'
-    plt.show()
-
-    # -----------------------------------------
-    print('Testing scalar conductivity')
-
-    if testDim == 1:
-        pFunction = lambda x: np.exp(x)
-    elif testDim == 2:
-        pFunction = lambda x,y: np.exp(x+y)
-    elif testDim == 3:
-        pFunction = lambda x,y,z: np.exp(x+y+z)
-
-    sigma = scalarConductivity(ccMesh,pFunction)
-
-    # Plot sigma model
-    M.plotImage(sigma)
-    print sigma
-    print 'Scalar conductivity defined!'
-    plt.show()
-
-    # -----------------------------------------
+    """
+    if mesh.dim == 1:
+        assert "Only works for a mesh greater than 1-dimension"
+    elif mesh.dim == 2:
+        assert ~(pts.shape[1] != 2), "Please input (*,2) array"
+    elif mesh.dim == 3:
+        assert ~(pts.shape[1] != 3), "Please input (*,3) array"
+    hull = Delaunay(pts)
+    inds = hull.find_simplex(mesh.gridCC)>=0
+    return inds

@@ -1,7 +1,13 @@
-import Utils
+from __future__ import print_function
+
 import numpy as np
 import scipy.sparse as sp
 import uuid
+import gc
+
+from . import Utils
+from . import Props
+
 
 class BaseRx(object):
     """SimPEG Receiver Object"""
@@ -16,7 +22,7 @@ class BaseRx(object):
 
     def __init__(self, locs, rxType, **kwargs):
         self.uid = str(uuid.uuid4())
-        self.locs = locs
+        self.locs = np.atleast_2d(locs)
         self.rxType = rxType
         self._Ps = {}
         Utils.setKwargs(self, **kwargs)
@@ -29,7 +35,9 @@ class BaseRx(object):
     def rxType(self, value):
         known = self.knownRxTypes
         if known is not None:
-            assert value in known, "rxType must be in ['{0!s}']".format(("', '".join(known)))
+            assert value in known, (
+                "rxType must be in ['{0!s}']".format(("', '".join(known)))
+            )
         self._rxType = value
 
     @property
@@ -102,7 +110,8 @@ class BaseTimeRx(BaseRx):
 
             .. note::
 
-                Projection matrices are stored as a dictionary (mesh, timeMesh) if storeProjections is True
+                Projection matrices are stored as a dictionary (mesh, timeMesh)
+                if storeProjections is True
         """
         if (mesh, timeMesh) in self._Ps:
             return self._Ps[(mesh, timeMesh)]
@@ -117,7 +126,7 @@ class BaseTimeRx(BaseRx):
         return P
 
 
-class BaseSrc(object):
+class BaseSrc(Props.BaseSimPEG):
     """SimPEG Source Object"""
 
     loc    = None #: Location [x,y,z]
@@ -128,7 +137,9 @@ class BaseSrc(object):
     def __init__(self, rxList, **kwargs):
         assert type(rxList) is list, 'rxList must be a list'
         for rx in rxList:
-            assert isinstance(rx, self.rxPair), 'rxList must be a {0!s}'.format(self.rxPair.__name__)
+            assert isinstance(rx, self.rxPair), (
+                'rxList must be a {0!s}'.format(self.rxPair.__name__)
+            )
         assert len(set(rxList)) == len(rxList), 'The rxList must be unique'
         self.uid = str(uuid.uuid4())
         self.rxList = rxList
@@ -146,8 +157,8 @@ class BaseSrc(object):
         return np.array([rx.nD for rx in self.rxList])
 
 
-class Data(object):
-    """Fancy data storage by Src and Rx"""
+class BaseData(object):
+    """Fancy data storage by Survey's Src and Rx"""
 
     def __init__(self, survey, v=None):
         self.uid = str(uuid.uuid4())
@@ -178,7 +189,9 @@ class Data(object):
         src, rx = self._ensureCorrectKey(key)
         assert rx is not None, 'set data using [Src, Rx]'
         assert isinstance(value, np.ndarray), 'value must by ndarray'
-        assert value.size == rx.nD, "value must have the same number of data as the source."
+        assert value.size == rx.nD, (
+            "value must have the same number of data as the source."
+        )
         self._dataDict[src][rx] = Utils.mkvc(value)
 
     def __getitem__(self, key):
@@ -195,7 +208,9 @@ class Data(object):
 
     def fromvec(self, v):
         v = Utils.mkvc(v)
-        assert v.size == self.survey.nD, 'v must have the correct number of data.'
+        assert v.size == self.survey.nD, (
+            'v must have the correct number of data.'
+        )
         indBot, indTop = 0, 0
         for src in self.survey.srcList:
             for rx in src.rxList:
@@ -204,10 +219,68 @@ class Data(object):
                 indBot += rx.nD
 
 
+class Data(BaseData):
+    """
+    Storage of data, standard_deviation and floor storage
+    with fancy [Src,Rx] indexing.
+
+    **Requried**
+    :param Survey survey: The survey descriping the layout of the data
+
+    **Optional**
+    :param ndarray dobs: The data vector matching the src and rx in survey
+    :param ndarray standard_deviation: The standard deviation vector matching the src and rx in survey
+    :param ndarray floor: The floor vector for the data matching the src and rx in survey
+
+    """
+
+    def __init__(self, survey, dobs=None, standard_deviation=None, floor=None):
+        # Initiate the base problem
+        BaseData.__init__(self, survey, dobs)
+
+        # Set the uncertainty parameters
+        # Note: Maybe set these
+        self.standard_deviation = StandardDeviation(
+            self.survey, standard_deviation)
+        self.floor = Floor(self.survey, floor)
+
+    def calculate_uncertainty(self):
+        """
+        Return the uncertainty base on
+        standard_devation * np.abs(data) + floor
+
+        """
+        return (
+            self.standard_deviation.tovec() * np.abs(self.tovec()) +
+            self.floor.tovec())
+
+
+class StandardDeviation(BaseData):
+    """
+    Storage of standard deviation estimates of data
+    With fancy [Src,Rx] indexing.
+
+    """
+
+    def __init__(self, survey, standard_deviation=None):
+        # Initiate the base problem
+        BaseData.__init__(self, survey, standard_deviation)
+
+
+class Floor(BaseData):
+    """
+    Storage of floor estimates of data
+    With fancy [Src,Rx] indexing.
+
+    """
+
+    def __init__(self, survey, floor=None):
+        # Initiate the base problem
+        BaseData.__init__(self, survey, floor)
+
+
 class BaseSurvey(object):
     """Survey holds the observed data, and the standard deviations."""
-
-    __metaclass__ = Utils.SimPEGMetaClass
 
     std = None       #: Estimated Standard Deviations
     eps = None       #: Estimated Noise Floor
@@ -230,21 +303,35 @@ class BaseSurvey(object):
     @srcList.setter
     def srcList(self, value):
         assert type(value) is list, 'srcList must be a list'
-        assert np.all([isinstance(src, self.srcPair) for src in value]), 'All sources must be instances of {0!s}'.format(self.srcPair.__name__)
+        assert np.all([isinstance(src, self.srcPair) for src in value]), (
+            'All sources must be instances of {0!s}'.format(
+                self.srcPair.__name__
+            )
+        )
         assert len(set(value)) == len(value), 'The srcList must be unique'
         self._srcList = value
         self._sourceOrder = dict()
-        [self._sourceOrder.setdefault(src.uid, ii) for ii, src in enumerate(self._srcList)]
+        [
+            self._sourceOrder.setdefault(src.uid, ii) for ii, src in
+            enumerate(self._srcList)
+        ]
 
     def getSourceIndex(self, sources):
         if type(sources) is not list:
             sources = [sources]
         for src in sources:
-            if getattr(src,'uid',None) is None:
-                raise KeyError('Source does not have a uid: {0!s}'.format(str(src)))
-        inds = map(lambda src: self._sourceOrder.get(src.uid, None), sources)
+            if getattr(src, 'uid', None) is None:
+                raise KeyError(
+                    'Source does not have a uid: {0!s}'.format(str(src))
+                )
+        inds = list(map(
+            lambda src: self._sourceOrder.get(src.uid, None), sources
+        ))
         if None in inds:
-            raise KeyError('Some of the sources specified are not in this survey. {0!s}'.format(str(inds)))
+            raise KeyError(
+                'Some of the sources specified are not in this survey. '
+                '{0!s}'.format(str(inds))
+            )
         return inds
 
     @property
@@ -261,14 +348,29 @@ class BaseSurvey(object):
         """Mesh of the paired problem."""
         if self.ispaired:
             return self.prob.mesh
-        raise Exception('Pair survey to a problem to access the problems mesh.')
+        raise Exception(
+            'Pair survey to a problem to access the problems mesh.'
+        )
 
     def pair(self, p):
         """Bind a problem to this survey instance using pointers"""
-        assert hasattr(p, 'surveyPair'), "Problem must have an attribute 'surveyPair'."
-        assert isinstance(self, p.surveyPair), "Problem requires survey object must be an instance of a {0!s} class.".format((p.surveyPair.__name__))
+        assert hasattr(p, 'surveyPair'), (
+            "Problem must have an attribute 'surveyPair'."
+        )
+        assert isinstance(self, p.surveyPair), (
+            "Problem requires survey object must be an instance of a {0!s} "
+            "class.".format((p.surveyPair.__name__))
+        )
         if p.ispaired:
-            raise Exception("The problem object is already paired to a survey. Use prob.unpair()")
+            raise Exception(
+                "The problem object is already paired to a survey. "
+                "Use prob.unpair()"
+            )
+        elif self.ispaired:
+            raise Exception(
+                "The survey object is already paired to a problem. "
+                "Use survey.unpair()"
+            )
         self._prob = p
         p._survey = self
 
@@ -279,7 +381,8 @@ class BaseSurvey(object):
         self._prob = None
 
     @property
-    def ispaired(self): return self.prob is not None
+    def ispaired(self):
+        return self.prob is not None
 
     @property
     def nD(self):
@@ -298,7 +401,7 @@ class BaseSurvey(object):
 
     @Utils.count
     @Utils.requires('prob')
-    def dpred(self, m, f=None):
+    def dpred(self, m=None, f=None):
         """dpred(m, f=None)
 
             Create the projected data from a model.
@@ -311,7 +414,8 @@ class BaseSurvey(object):
 
             Where P is a projection of the fields onto the data space.
         """
-        if f is None: f = self.prob.fields(m)
+        if f is None:
+            f = self.prob.fields(m)
         return Utils.mkvc(self.eval(f))
 
     @Utils.count
@@ -342,9 +446,9 @@ class BaseSurvey(object):
     def residual(self, m, f=None):
         """residual(m, f=None)
 
-            :param numpy.array m: geophysical model
-            :param numpy.array f: fields
-            :rtype: numpy.array
+            :param numpy.ndarray m: geophysical model
+            :param numpy.ndarray f: fields
+            :rtype: numpy.ndarray
             :return: data residual
 
             The data residual:
@@ -361,24 +465,44 @@ class BaseSurvey(object):
         "Check if the data is synthetic."
         return self.mtrue is not None
 
-    def makeSyntheticData(self, m, std=0.05, f=None, force=False):
+    def makeSyntheticData(self, m, std=None, f=None, force=False):
         """
             Make synthetic data given a model, and a standard deviation.
 
-            :param numpy.array m: geophysical model
-            :param numpy.array std: standard deviation
-            :param numpy.array u: fields for the given model (if pre-calculated)
+            :param numpy.ndarray m: geophysical model
+            :param numpy.ndarray std: standard deviation
+            :param numpy.ndarray u: fields for the given model (if pre-calculated)
             :param bool force: force overwriting of dobs
 
         """
         if getattr(self, 'dobs', None) is not None and not force:
-            raise Exception('Survey already has dobs. You can use force=True to override this exception.')
+            raise Exception(
+                'Survey already has dobs. You can use force=True to override '
+                'this exception.'
+            )
         self.mtrue = m
         self.dtrue = self.dpred(m, f=f)
-        noise = std*abs(self.dtrue)*np.random.randn(*self.dtrue.shape)
+
+        if std is None and self.std is None:
+            stddev = 0.05
+            print(
+                    'SimPEG.Survey assigned default std '
+                    'of 5%'
+                )
+        elif std is None:
+            stddev = self.std
+        else:
+            stddev = std
+            print(
+                    'SimPEG.Survey assigned new std '
+                    'of {:.2f}%'.format(100.*stddev)
+                )
+
+        noise = stddev*abs(self.dtrue)*np.random.randn(*self.dtrue.shape)
         self.dobs = self.dtrue+noise
-        self.std = self.dobs*0 + std
+        self.std = self.dobs*0 + stddev
         return self.dobs
+
 
 class LinearSurvey(BaseSurvey):
     def eval(self, f):

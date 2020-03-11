@@ -1,6 +1,6 @@
 import unittest
-from SimPEG import Mesh, Utils, np, PF
-import matplotlib.pyplot as plt
+from SimPEG import Mesh, Utils, PF
+import numpy as np
 
 
 class MagFwdProblemTests(unittest.TestCase):
@@ -19,7 +19,7 @@ class MagFwdProblemTests(unittest.TestCase):
         sph_ind = PF.MagAnalytics.spheremodel(M, 0., 0., 0., 100)
         chi[sph_ind] = chiblk
         model = PF.BaseMag.BaseMagMap(M)
-        prob = PF.Magnetics.Problem3D_DiffSecondary(M, mapping=model)
+        prob = PF.Magnetics.Problem3D_DiffSecondary(M, muMap=model)
         self.prob = prob
         self.M = M
         self.chi = chi
@@ -32,7 +32,7 @@ class MagFwdProblemTests(unittest.TestCase):
         Dec = 45.
         Btot = 51000
 
-        b0 = PF.MagAnalytics.IDTtoxyz(Inc, Dec, Btot)
+        b0 = PF.MagAnalytics.IDTtoxyz(-Inc, Dec, Btot)
         survey.setBackgroundField(Inc, Dec, Btot)
         xr = np.linspace(-300, 300, 41)
         yr = np.linspace(-300, 300, 41)

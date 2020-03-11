@@ -1,50 +1,97 @@
-import Utils
-import Survey
-import Models
+from __future__ import print_function
+
+from discretize.base import BaseMesh
+from discretize import TensorMesh
+
+from . import Utils
+from . import Survey
+from . import Models
 import numpy as np
-import scipy.sparse as sp
-import Maps
-import Mesh
-from Fields import Fields, TimeFields
+from . import Maps
+from .Fields import Fields, TimeFields
+from . import Props
+import properties
+
 
 Solver = Utils.SolverUtils.Solver
 
-class BaseProblem(object):
+
+class BaseProblem(Props.HasModel):
+    """Problem is the base class for all geophysical forward problems
+    in SimPEG.
     """
-        Problem is the base class for all geophysical forward problems in SimPEG.
-    """
 
-    __metaclass__ = Utils.SimPEGMetaClass
+    #: A SimPEG.Utils.Counter object
+    counter = None
 
-    counter = None   #: A SimPEG.Utils.Counter object
+    #: A SimPEG.Survey Class
+    surveyPair = Survey.BaseSurvey
 
-    surveyPair = Survey.BaseSurvey   #: A SimPEG.Survey Class
-    mapPair    = Maps.IdentityMap    #: A SimPEG.Map Class
+    #: A SimPEG.Map Class
+    mapPair = Maps.IdentityMap
 
-    Solver = Solver   #: A SimPEG Solver class.
-    solverOpts = {}   #: Sovler options as a kwarg dict
+    #: A SimPEG Solver class.
+    Solver = Solver
 
-    mesh    = None    #: A SimPEG.Mesh instance.
+    #: Solver options as a kwarg dict
+    solverOpts = {}
 
-    PropMap = None    #: A SimPEG PropertyMap class.
+    #: A discretize instance.
+    mesh = None
+
+    def __init__(self, mesh, **kwargs):
+
+        # raise exception if user tries to set "mapping"
+        if 'mapping' in kwargs:
+            raise Exception(
+                'Depreciated (in 0.4.0): use one of {}'.format(
+                    [p for p in self._props.keys() if 'Map' in p]
+                )
+            )
+
+        super(BaseProblem, self).__init__(**kwargs)
+        assert isinstance(mesh, BaseMesh), (
+            "mesh must be a discretize object."
+        )
+        self.mesh = mesh
 
     @property
     def mapping(self):
-        "A SimPEG.Map instance or a property map is PropMap is not None"
-        return getattr(self, '_mapping', None)
-    @mapping.setter
-    def mapping(self, val):
-        if self.PropMap is None:
-            val._assertMatchesPair(self.mapPair)
-            self._mapping = val
-        else:
-            self._mapping = self.PropMap(val)
+        """Setting an unnamed mapping has been depreciated in
+        v0.4.0. Please see the release notes for more details.
+        """
+        raise Exception(
+            'Depreciated (in 0.4.0): use one of {}'.format(
+                [p for p in self._props.keys() if 'Map' in p]
+            )
+        )
 
-    def __init__(self, mesh, mapping=None, **kwargs):
-        Utils.setKwargs(self, **kwargs)
-        assert isinstance(mesh, Mesh.BaseMesh), "mesh must be a SimPEG.Mesh object."
-        self.mesh = mesh
-        self.mapping = mapping or Maps.IdentityMap(mesh)
+    @mapping.setter
+    def mapping(self, value):
+        raise Exception(
+            'Depreciated (in 0.4.0): use one of {}'.format(
+                [p for p in self._props.keys() if 'Map' in p]
+            )
+        )
+
+    @property
+    def curModel(self):
+        """
+        Setting the curModel is depreciated.
+
+        Use `SimPEG.Problem.model` instead.
+        """
+        raise AttributeError(
+            'curModel is depreciated (in 0.4.0). Use '
+            '`SimPEG.Problem.model` instead'
+            )
+
+    @curModel.setter
+    def curModel(self, value):
+        raise AttributeError(
+            'curModel is depreciated (in 0.4.0). Use '
+            '`SimPEG.Problem.model` instead'
+            )
 
     @property
     def survey(self):
@@ -55,38 +102,53 @@ class BaseProblem(object):
 
     def pair(self, d):
         """Bind a survey to this problem instance using pointers."""
-        assert isinstance(d, self.surveyPair), "Data object must be an instance of a {0!s} class.".format((self.surveyPair.__name__))
+        assert isinstance(d, self.surveyPair), (
+            "Data object must be an instance of a {0!s} class.".format(
+                self.surveyPair.__name__
+            )
+        )
         if d.ispaired:
-            raise Exception("The survey object is already paired to a problem. Use survey.unpair()")
+            raise Exception(
+                "The survey object is already paired to a problem. "
+                "Use survey.unpair()"
+            )
         self._survey = d
         d._prob = self
 
     def unpair(self):
         """Unbind a survey from this problem instance."""
-        if not self.ispaired: return
+        if not self.ispaired:
+            return
         self.survey._prob = None
         self._survey = None
 
+    #: List of strings, e.g. ['_MeSigma', '_MeSigmaI']
+    deleteTheseOnModelUpdate = []
 
-    deleteTheseOnModelUpdate = [] # List of strings, e.g. ['_MeSigma', '_MeSigmaI']
+    #: List of matrix names to have their factors cleared on a model update
+    clean_on_model_update = []
 
-    @property
-    def curModel(self):
-        """
-            Sets the current model, and removes dependent mass matrices.
-        """
-        return getattr(self, '_curModel', None)
-    @curModel.setter
-    def curModel(self, value):
-        if value is self.curModel:
-            return # it is the same!
-        if self.PropMap is not None:
-            self._curModel = self.mapping(value)
-        else:
-            self._curModel = Models.Model(value, self.mapping)
+    @properties.observer('model')
+    def _on_model_update(self, change):
+        if change['previous'] is change['value']:
+            return
+        if (
+            isinstance(change['previous'], np.ndarray) and
+            isinstance(change['value'], np.ndarray) and
+            np.allclose(change['previous'], change['value'])
+        ):
+            return
+
         for prop in self.deleteTheseOnModelUpdate:
             if hasattr(self, prop):
                 delattr(self, prop)
+
+        # matrix factors to clear
+        for mat in self.clean_on_model_update:
+            if getattr(self, mat, None) is not None:
+                getattr(self, mat).clean()  # clean factors
+                setattr(self, mat, None)  # set to none
+
 
     @property
     def ispaired(self):
@@ -97,13 +159,13 @@ class BaseProblem(object):
     def Jvec(self, m, v, f=None):
         """Jvec(m, v, f=None)
 
-            Effect of J(m) on a vector v.
+        Effect of J(m) on a vector v.
 
-            :param numpy.array m: model
-            :param numpy.array v: vector to multiply
-            :param Fields f: fields
-            :rtype: numpy.array
-            :return: Jv
+        :param numpy.ndarray m: model
+        :param numpy.ndarray v: vector to multiply
+        :param Fields f: fields
+        :rtype: numpy.ndarray
+        :return: Jv
         """
         raise NotImplementedError('J is not yet implemented.')
 
@@ -111,28 +173,27 @@ class BaseProblem(object):
     def Jtvec(self, m, v, f=None):
         """Jtvec(m, v, f=None)
 
-            Effect of transpose of J(m) on a vector v.
+        Effect of transpose of J(m) on a vector v.
 
-            :param numpy.array m: model
-            :param numpy.array v: vector to multiply
-            :param Fields f: fields
-            :rtype: numpy.array
-            :return: JTv
+        :param numpy.ndarray m: model
+        :param numpy.ndarray v: vector to multiply
+        :param Fields f: fields
+        :rtype: numpy.ndarray
+        :return: JTv
         """
         raise NotImplementedError('Jt is not yet implemented.')
-
 
     @Utils.timeIt
     def Jvec_approx(self, m, v, f=None):
         """Jvec_approx(m, v, f=None)
 
-            Approximate effect of J(m) on a vector v
+        Approximate effect of J(m) on a vector v
 
-            :param numpy.array m: model
-            :param numpy.array v: vector to multiply
-            :param Fields f: fields
-            :rtype: numpy.array
-            :return: approxJv
+        :param numpy.ndarray m: model
+        :param numpy.ndarray v: vector to multiply
+        :param Fields f: fields
+        :rtype: numpy.ndarray
+        :return: approxJv
         """
         return self.Jvec(m, v, f)
 
@@ -140,24 +201,22 @@ class BaseProblem(object):
     def Jtvec_approx(self, m, v, f=None):
         """Jtvec_approx(m, v, f=None)
 
-            Approximate effect of transpose of J(m) on a vector v.
+        Approximate effect of transpose of J(m) on a vector v.
 
-            :param numpy.array m: model
-            :param numpy.array v: vector to multiply
-            :param Fields f: fields
-            :rtype: numpy.array
-            :return: JTv
+        :param numpy.ndarray m: model
+        :param numpy.ndarray v: vector to multiply
+        :param Fields f: fields
+        :rtype: numpy.ndarray
+        :return: JTv
         """
         return self.Jtvec(m, v, f)
 
     def fields(self, m):
-        """
-            The field given the model.
+        """The field given the model.
 
-            :param numpy.array m: model
-            :rtype: numpy.array
-            :return: u, the fields
-
+        :param numpy.ndarray m: model
+        :rtype: numpy.ndarray
+        :return: u, the fields
         """
         raise NotImplementedError('fields is not yet implemented.')
 
@@ -198,9 +257,10 @@ class BaseTimeProblem(BaseProblem):
     @property
     def t0(self):
         return getattr(self, '_t0', 0.0)
+
     @t0.setter
     def t0(self, value):
-        assert Utils.isScalar(value), 't0 must be a scalar'
+        assert np.isscalar(value), 't0 must be a scalar'
         del self.timeMesh
         self._t0 = float(value)
 
@@ -212,27 +272,55 @@ class BaseTimeProblem(BaseProblem):
     @property
     def timeMesh(self):
         if getattr(self, '_timeMesh', None) is None:
-            self._timeMesh = Mesh.TensorMesh([self.timeSteps], x0=[self.t0])
+            self._timeMesh = TensorMesh([self.timeSteps], x0=[self.t0])
         return self._timeMesh
+
     @timeMesh.deleter
     def timeMesh(self):
         if hasattr(self, '_timeMesh'):
             del self._timeMesh
 
+
 class LinearProblem(BaseProblem):
 
-    surveyPair = Survey.LinearSurvey
+    # model, modelMap, modelDeriv = Props.Invertible(
+    #     "Generic model parameters",
+    #     default=1.
+    # )
 
-    def __init__(self, mesh, G, **kwargs):
+    G = None
+
+    def __init__(self, mesh, **kwargs):
         BaseProblem.__init__(self, mesh, **kwargs)
-        self.G = G
+        self.modelMap = kwargs.pop('modelMap', Maps.IdentityMap(mesh))
+
+    @property
+    def modelMap(self):
+        "A SimPEG.Map instance."
+        return getattr(self, '_modelMap', None)
+
+
+    @modelMap.setter
+    def modelMap(self, val):
+        val._assertMatchesPair(self.mapPair)
+        self._modelMap = val
 
     def fields(self, m):
-        return self.G.dot(m)
+        return self.G.dot(self.modelMap * m)
+
+    def getJ(self, m, f=None):
+        """
+            Sensitivity matrix
+        """
+
+        if self.modelMap is not None:
+            dmudm = self.modelMap.deriv(m)
+            return self.G*dmudm
+        else:
+            return self.G
 
     def Jvec(self, m, v, f=None):
-        return self.G.dot(v)
+        return self.G.dot(self.modelMap.deriv(m) * v)
 
     def Jtvec(self, m, v, f=None):
-        return self.G.T.dot(v)
-
+        return self.modelMap.deriv(m).T*self.G.T.dot(v)

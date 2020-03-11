@@ -1,5 +1,6 @@
-from TDEM import hzAnalyticDipoleT
-from FDEM import hzAnalyticDipoleF
-from FDEMcasing import *
-from DC import DCAnalyticHalf, DCAnalyticSphere
-from FDEMDipolarfields import *
+from .TDEM import hzAnalyticDipoleT, hzAnalyticCentLoopT
+from .FDEM import hzAnalyticDipoleF
+from .FDEMcasing import *
+from .DC import *
+from .FDEMDipolarfields import *
+from .NSEM import MT_LayeredEarth

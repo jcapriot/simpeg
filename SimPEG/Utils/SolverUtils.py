@@ -1,5 +1,7 @@
-import numpy as np, scipy.sparse as sp
-from matutils import mkvc
+from __future__ import print_function
+import numpy as np
+from scipy.sparse import linalg
+from .matutils import mkvc
 import warnings
 
 def _checkAccuracy(A, b, X, accuracyTol):
@@ -9,7 +11,7 @@ def _checkAccuracy(A, b, X, accuracyTol):
         nrm /= nrm_b
     if nrm > accuracyTol:
         msg = '### SolverWarning ###: Accuracy on solve is above tolerance: {0:e} > {1:e}'.format(nrm, accuracyTol)
-        print msg
+        print(msg)
         warnings.warn(msg, RuntimeWarning)
 
 
@@ -19,6 +21,7 @@ def SolverWrapD(fun, factorize=True, checkAccuracy=True, accuracyTol=1e-6, name=
 
     ::
 
+        import scipy.sparse as sp
         Solver   = SolverUtils.SolverWrapD(sp.linalg.spsolve, factorize=False)
         SolverLU = SolverUtils.SolverWrapD(sp.linalg.splu, factorize=True)
 
@@ -28,9 +31,9 @@ def SolverWrapD(fun, factorize=True, checkAccuracy=True, accuracyTol=1e-6, name=
         self.A = A.tocsc()
 
         self.checkAccuracy = kwargs.get("checkAccuracy", checkAccuracy)
-        if kwargs.has_key("checkAccuracy"): del kwargs["checkAccuracy"]
+        if "checkAccuracy" in kwargs: del kwargs["checkAccuracy"]
         self.accuracyTol = kwargs.get("accuracyTol", accuracyTol)
-        if kwargs.has_key("accuracyTol"): del kwargs["accuracyTol"]
+        if "accuracyTol" in kwargs: del kwargs["accuracyTol"]
 
         self.kwargs = kwargs
 
@@ -82,6 +85,7 @@ def SolverWrapI(fun, checkAccuracy=True, accuracyTol=1e-5, name=None):
 
     ::
 
+        import scipy.sparse as sp
         SolverCG = SolverUtils.SolverWrapI(sp.linalg.cg)
 
     """
@@ -90,9 +94,9 @@ def SolverWrapI(fun, checkAccuracy=True, accuracyTol=1e-5, name=None):
         self.A = A
 
         self.checkAccuracy = kwargs.get("checkAccuracy", checkAccuracy)
-        if kwargs.has_key("checkAccuracy"): del kwargs["checkAccuracy"]
+        if "checkAccuracy" in kwargs: del kwargs["checkAccuracy"]
         self.accuracyTol = kwargs.get("accuracyTol", accuracyTol)
-        if kwargs.has_key("accuracyTol"): del kwargs["accuracyTol"]
+        if "accuracyTol" in kwargs: del kwargs["accuracyTol"]
 
         self.kwargs = kwargs
 
@@ -131,11 +135,10 @@ def SolverWrapI(fun, checkAccuracy=True, accuracyTol=1e-5, name=None):
     return type(name if name is not None else fun.__name__, (object,), {"__init__": __init__, "clean": clean, "__mul__": __mul__})
 
 
-from scipy.sparse import linalg
 Solver   = SolverWrapD(linalg.spsolve, factorize=False, name="Solver")
 SolverLU = SolverWrapD(linalg.splu, factorize=True, name="SolverLU")
 SolverCG = SolverWrapI(linalg.cg, name="SolverCG")
-
+SolverBiCG = SolverWrapI(linalg.bicgstab, name="SolverBiCG")
 
 class SolverDiag(object):
     """docstring for SolverDiag"""
