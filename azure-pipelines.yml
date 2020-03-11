@@ -22,7 +22,7 @@ jobs:
 
   - bash: |
       source activate test
-      pip install -r requirements_dev
+      pip install -r requirements_dev.txt
       python setup.py install
     displayName: pip requirements
 
