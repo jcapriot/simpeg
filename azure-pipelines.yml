@@ -22,7 +22,5 @@ jobs:
       python setup.py install
     displayName: Install requirements and build
 
-  - bash:
-      source activate test
-      nosetests -s -v tests/utils tests/em/static/
+  - bash: nosetests -s -v tests/utils tests/em/static/
     displayName: testing utilities and static
