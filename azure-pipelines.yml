@@ -18,15 +18,11 @@ jobs:
   - bash: |
       source activate test
       conda install --yes --quiet --name test python=$PYTHON_VERSION numpy scipy matplotlib cython ipython h5py
-    displayName: Install Anaconda packages
-
-  - bash: |
-      source activate test
       pip install -r requirements_dev.txt
       python setup.py install
-    displayName: pip requirements
+    displayName: Install requirements and build
 
-  - bash: |
+  - bash:
       source activate test
-      nosetests -s -v tests/utils test/em/static/
-    displayName: testing utilities
+      nosetests -s -v tests/utils tests/em/static/
+    displayName: testing utilities and static
