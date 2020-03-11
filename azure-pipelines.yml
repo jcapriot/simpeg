@@ -1,0 +1,32 @@
+jobs:
+- job:
+  displayName: ubuntu-16.04
+  pool:
+    vmImage: 'ubuntu-16.04'
+  strategy:
+    matrix:
+      Python36:
+        python.version: '3.6'
+
+  steps:
+  - bash: echo "##vso[task.prependpath]$CONDA/bin"
+    displayName: Add conda to PATH
+
+  - bash: conda create --yes --quiet --name test
+    displayName: Create Anaconda environment
+
+  - bash: |
+      source activate test
+      conda install --yes --quiet --name test python=$PYTHON_VERSION numpy scipy matplotlib cython ipython h5py
+    displayName: Install Anaconda packages
+
+  - bash: |
+      source activate test
+      pip install requirements_dev
+      python setup.py install
+    displayName: pip requirements
+
+  - bash: |
+      source activate test
+      nosetest -s -v tests/utils
+    displayName: testing utilities
