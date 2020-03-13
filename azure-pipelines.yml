@@ -24,5 +24,6 @@ jobs:
 
   - bash: |
       source activate test
+      export KMP_WARNINGS=0
       nosetests -s -v tests/utils tests/em/static/
     displayName: testing utilities and static
