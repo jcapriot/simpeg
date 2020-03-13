@@ -1,39 +1,36 @@
 jobs:
 - job: build
-  displayName: ubuntu-16.04
+  displayName: Linux
   pool:
     vmImage: 'ubuntu-16.04'
   strategy:
     matrix:
       Python36:
         python.version: '3.6'
+      Python36:
+        python.version: '3.7'
+    matrix:
+      set_env_to_one:
+        TEST_DIR: 'tests/flow'
+      set_env_to_one:
+        TEST_DIR: 'tests/em/static tests/seis tests/base tests/utils'
 
   steps:
-  - bash: echo "##vso[task.prependpath]$CONDA/bin"
+  - script: echo "##vso[task.prependpath]$CONDA/bin"
     displayName: Add conda to PATH
 
-  - bash: conda create --yes --quiet --name test
+  - script: conda create --yes --quiet --name test
     displayName: Create Anaconda environment
 
-  - bash: |
+  - script: |
       source activate test
       conda install --yes --quiet --name test python=$PYTHON_VERSION numpy scipy matplotlib cython ipython h5py
       pip install -r requirements_dev.txt
       python setup.py install
     displayName: Install requirements and build
-- job: Test1
-  dependsOn: build
-  steps:
+
   - script: |
       source activate test
       export KMP_WARNINGS=0
-      nosetests tests/em/static tests/seis tests/base tests/utils
-    displayName: Static, Seismic, base, and utilities
-- job: Test2
-  dependsOn: build
-  steps:
-  - script: |
-      source activate test
-      export KMP_WARNINGS=0
-      nosetests tests/flow
-    displayName: Flow
+      nosetests $TEST_DIR
+    displayName: $(TEST_DIR)
