@@ -1,5 +1,5 @@
 jobs:
-- job:
+- job: build
   displayName: ubuntu-16.04
   pool:
     vmImage: 'ubuntu-16.04'
@@ -7,10 +7,6 @@ jobs:
     matrix:
       Python36:
         python.version: '3.6'
-      Python37:
-        python.version: '3.7'
-      Python38:
-        python.version: '3.8'
 
   steps:
   - bash: echo "##vso[task.prependpath]$CONDA/bin"
@@ -25,9 +21,19 @@ jobs:
       pip install -r requirements_dev.txt
       python setup.py install
     displayName: Install requirements and build
-
-  - bash: |
+- job: Test1
+  dependsOn: build
+  steps:
+  - script: |
       source activate test
       export KMP_WARNINGS=0
-      nosetests -s -v tests/utils tests/em/static/
-    displayName: testing utilities and static
+      nosetests tests/em/static tests/seis tests/base tests/utils
+    displayName: Static, Seismic, base, and utilities
+- job: Test2
+  dependsOn: build
+  steps:
+  - script: |
+      source activate test
+      export KMP_WARNINGS=0
+      nosetests tests/flow
+    displayName: Flow
