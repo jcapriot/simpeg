@@ -2,9 +2,6 @@ parameters:
   os : ['ubuntu-16.04']
   py_vers: ['3.6','3.7']
   test: ['tests/flow', 'tests/em/static tests/seis tests/base tests/utils']
-
-variables:
-  YARN_CACHE_FOLDER: $CONDA/env
   
 stages:
   - ${{ each os in parameters.os }}:
