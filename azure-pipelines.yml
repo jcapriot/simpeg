@@ -1,3 +1,6 @@
-trigger: "*"
+trigger:
+  branches:
+    include:
+    - '*' 
 jobs:
   - template: ci/matrix.yml
