@@ -1,7 +1,7 @@
 parameters:
   os : ['ubuntu-16.04']
   py_vers: ['3.6','3.7']
-  test: ['tests/flow','tests/em/static tests/seis tests/base tests/utils']
+  test: ['tests/flow tests/em/static','tests/seis tests/base tests/utils tests/em/vrm', 'tests/em/fdem', 'tests/em/tdem', 'tests/em/nsem', 'tests/pf', 'tests/dask']
 
 jobs:
   - ${{ each os in parameters.os }}:
@@ -21,6 +21,9 @@ jobs:
               source activate test
               conda install --yes --quiet --name test python=${{ py_vers }} numpy scipy matplotlib cython ipython h5py
               conda install --yes -c conda-forge discretize pymatsolver properties vectormath geoana empymod pandas
+              if ${{ test }} = 'tests/dask'; then
+                  conda install --yes -c conda-forge dask zarr fsspec
+              fi;
               pip install -r requirements_dev.txt
               python setup.py install
             displayName: Install requirements and build
