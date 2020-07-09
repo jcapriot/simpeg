@@ -1,47 +1,30 @@
 parameters:
   os : ['ubuntu-16.04']
   py_vers: ['3.6','3.7']
-  test: ['tests/flow', 'tests/em/static tests/seis tests/base tests/utils']
-  
-stages:
+  test: ['tests/flow','tests/em/static tests/seis tests/base tests/utils']
+
+jobs:
   - ${{ each os in parameters.os }}:
-    -${{ each py_vers in parameters.py_verse }}:
-      -stage: Build${{ os }}_${{ py_verse }}
-       jobs:
-         -job:
-          displayName: ${{ os }}_${{ py_vers }} Build
+    - ${{ each py_vers in parameters.py_vers }}:
+      - ${{ each test in parameters.test }}:
+        - job: 
+          displayName: ${{ os }}_${{ py_vers }}_${{ test }}
           steps:
-          - bash: echo "##vso[task.prependpath]$CONDA/bin"
+          
+          - script: echo "##vso[task.prependpath]$CONDA/bin"
             displayName: Add conda to PATH
             
-          - bash: conda create --yes --quiet --name test
+          - script: conda create --yes --quiet --name test
             displayName: Create Anaconda environment
 
-          - bash: |
+          - script: |
               source activate test
               conda install --yes --quiet --name test python=${{ py_vers }} numpy scipy matplotlib cython ipython h5py
               pip install -r requirements_dev.txt
               python setup.py install
             displayName: Install requirements and build
-  
-          - bash: |
+          - script: |
               source activate test
-              python 
-            displayName: Test Imports
-
-       -stage: Testing${{ os }}_${{ py_verse }}
-        dependsOn: Build${{ os }}_${{ py_verse }}
-        jobs:
-          - ${{ each test in parameters.test }}:
-            - job:
-              displayName: '${{ os }}_${{ py_vers }}${{ test }}'
-              steps:
-              
-              - bash: echo "##vso[task.prependpath]$CONDA/bin"
-                displayName: Add conda to PATH
-                
-              - bash: |
-                  source activate test
-                  export KMP_WARNINGS=0
-                  nosetests ${{ test }}
-                displayName: 'Running Tests'
+              export KMP_WARNINGS=0
+              nosetests ${{ test }}
+            displayName: 'Testing ${{ test }}'
