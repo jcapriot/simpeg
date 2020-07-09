@@ -20,9 +20,11 @@ jobs:
           - script: |
               source activate test
               conda install --yes --quiet --name test python=${{ py_vers }} numpy scipy matplotlib cython ipython h5py
+              conda install --yes -c conda-forge discretize pymatsolver properties vectormath geoana empymod pandas
               pip install -r requirements_dev.txt
               python setup.py install
             displayName: Install requirements and build
+
           - script: |
               source activate test
               export KMP_WARNINGS=0
