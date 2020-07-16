@@ -714,7 +714,6 @@ class IO(properties.HasProperties):
         """
             Plot 2D pseudo-section for DC-IP data
         """
-        matplotlib.rcParams["font.size"] = 12
 
         if ax is None:
             fig = plt.figure(figsize=(10, 5))

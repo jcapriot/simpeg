@@ -331,6 +331,7 @@ def plot_pseudosection(
     pcolorOpts=None,
     data_location=None,
     y_values="n-spacing",
+    reverse_profile="false",
 ):
     """
         Read list of 2D tx-rx location and plot a pseudo-section of apparent
@@ -397,13 +398,23 @@ def plot_pseudosection(
         dobs = data.dobs
 
     midx, midz = source_receiver_midpoints(data.survey)
-    if midx.shape[1] == 2:
+    in_3d = midx.shape[1] == 2
+    if in_3d:
         min_x, min_y = np.min(midx, axis=0)
         max_x, max_y = np.max(midx, axis=0)
-        if max_x - min_x > max_y - min_y:
-            midx = midx[:, 0]
+        range_x = max_x - min_x
+        range_y = max_y - min_y
+        if range_x >= range_y:
+            A = np.c_[midx[:, 0], np.ones_like(midx[:, 0])]
+            m, c = np.linalg.lstsq(A, midx[:, 1])
+            vec = np.array([1, m])
         else:
-            midx = midx[:, 1]
+            A = np.c_[midx[:, 1], np.ones_like(midx[:, 1])]
+            m, c = np.linalg.lstsq(A, midx[:, 0])
+            vec = np.array([m, 1])
+        vec = m
+        midx = midx.dot(vec)
+        midx -= midx.min()
     else:
         midx = midx[:, 0]
 
