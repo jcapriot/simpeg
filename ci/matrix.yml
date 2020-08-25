@@ -1,5 +1,5 @@
 parameters:
-  os : ['ubuntu-16.04']
+  os : ['ubuntu-latest']
   py_vers: ['3.7']
   test: ['tests/em',
          'tests/docs tests/base tests/flow tests/seis tests/utils',
