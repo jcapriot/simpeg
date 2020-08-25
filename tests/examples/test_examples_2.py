@@ -24,8 +24,9 @@ def create_runner(script_path):
         spec.loader.exec_module(mod)
         try:
             mod.run()  # some files are defined in a run command
-        except:
-            pass
+        except AttributeError as err:
+            if "has no attribute 'run'" not in str(err):
+                raise err
 
     return test_script
 
