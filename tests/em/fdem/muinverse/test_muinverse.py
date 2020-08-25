@@ -165,7 +165,7 @@ class MuTests(unittest.TestCase):
         def fun(x):
             return (self.prob.dpred(x), lambda x: self.prob.Jvec(self.m0, x))
 
-        return tests.checkDerivative(fun, self.m0, num=2, plotIt=False, eps=EPS)
+        return tests.checkDerivative(fun, self.m0, num=3, plotIt=False, eps=EPS)
 
     def JtvecTest(
         self, prbtype="ElectricField", sigmaInInversion=False, invertMui=False
