@@ -42,3 +42,4 @@ for dir in dirs_to_test:
         test_method = create_runner(script)
         test_method.__name__ = "test_" + script_name
         setattr(Doc_Test, test_method.__name__, test_method)
+    test_method = None  # Necessary to stop nosetest from running it at the end
