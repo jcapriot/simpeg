@@ -258,11 +258,10 @@ def plotBFieldResults(
             range_y=zlim,
             sample_grid=np.r_[np.diff(xlim) / 100.0, np.diff(zlim) / 100.0],
             mirror=True,
-            pcolor_opts={"norm": LogNorm()},
+            pcolor_opts={"norm": LogNorm(), "clim": clim},
         )[0],
         ax=ax,
     )
-    cb.set_clim(clim)
     ax.set_title("{}".format(view), fontsize=13)
     ax.set_xlim(xlim)
     ax.set_ylim(zlim)

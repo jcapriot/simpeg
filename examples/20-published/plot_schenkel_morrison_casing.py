@@ -151,12 +151,11 @@ def run(plotIt=True):
         # plot models
         fig, ax = plt.subplots(1, 1, figsize=(4, 4))
 
-        f = plt.colorbar(mesh.plotImage(np.log10(sigCasing), ax=ax)[0], ax=ax)
+        plt.colorbar(mesh.plotImage(np.log10(sigCasing), ax=ax, clim=clim)[0], ax=ax)
         ax.grid(which="both")
         ax.set_title("Log_10 (Sigma)")
         ax.set_xlim(xlim)
         ax.set_ylim(zlim)
-        f.set_clim(clim_sig)
 
     # -------------- Sources --------------------
     # Define Custom Current Sources
