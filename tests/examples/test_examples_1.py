@@ -11,10 +11,9 @@ matplotlib.use("Agg")
 dirname, filename = os.path.split(os.path.abspath(__file__))
 example_dir = dirname.split(os.path.sep)[:-2] + ["examples"]
 dirs_to_test = ["01-maps", "02-gravity", "03-magnetics"]
-print(example_dir, dirs_to_test)
 
 
-class Doc_Test(unittest.TestCase):
+class ExampleTest(unittest.TestCase):
     pass
 
 
@@ -41,5 +40,5 @@ for dir in dirs_to_test:
         script_name = "_".join(script.split(os.path.sep)[-2:])
         test_method = create_runner(script)
         test_method.__name__ = "test_" + script_name
-        setattr(Doc_Test, test_method.__name__, test_method)
+        setattr(ExampleTest, test_method.__name__, test_method)
     test_method = None  # Necessary to stop nosetest from running it at the end
