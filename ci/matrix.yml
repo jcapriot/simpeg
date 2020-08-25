@@ -1,7 +1,17 @@
 parameters:
   os : ['ubuntu-16.04']
   py_vers: ['3.6','3.7']
-  test: ['tests', 'tests/docs']
+  test: ['tests/em',
+         'tests/docs',
+         'tests/base',
+         'tests/flow',
+         'tests/examples/test_examples_1.py',
+         'tests/examples/test_examples_2.py',
+         'tests/examples/test_examples_3.py',
+         'tests/examples/test_tutorials_1.py',
+         'tests/examples/test_tutorials_2.py',
+         'tests/examples/test_tutorials_3.py',
+         ]
 
 jobs:
   - ${{ each os in parameters.os }}:
@@ -29,5 +39,5 @@ jobs:
           - script: |
               source activate test
               export KMP_WARNINGS=0
-              nosetests ${{ test }}
+              nosetests ${{ test }} -s -v
             displayName: 'Testing ${{ test }}'
