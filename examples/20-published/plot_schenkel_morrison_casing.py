@@ -151,7 +151,9 @@ def run(plotIt=True):
         # plot models
         fig, ax = plt.subplots(1, 1, figsize=(4, 4))
 
-        plt.colorbar(mesh.plotImage(np.log10(sigCasing), ax=ax, clim=clim)[0], ax=ax)
+        plt.colorbar(
+            mesh.plotImage(np.log10(sigCasing), ax=ax, clim=clim_sig)[0], ax=ax
+        )
         ax.grid(which="both")
         ax.set_title("Log_10 (Sigma)")
         ax.set_xlim(xlim)
