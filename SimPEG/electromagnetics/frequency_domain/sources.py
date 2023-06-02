@@ -13,6 +13,7 @@ from ...utils import (
     validate_ndarray_with_shape,
     validate_direction,
     validate_integer,
+    merge_parent_params,
 )
 from ...utils.code_utils import deprecate_property
 
@@ -21,6 +22,7 @@ from ..utils import segmented_line_current_source_term, line_through_faces
 from ..base import BaseEMSrc
 
 
+@merge_parent_params
 class BaseFDEMSrc(BaseEMSrc):
     """Base FDEM source class
 

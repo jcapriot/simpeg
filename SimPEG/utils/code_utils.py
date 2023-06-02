@@ -3,6 +3,7 @@ import types
 import numpy as np
 from functools import wraps
 import warnings
+from numpydoc.docscrape import NumpyDocString
 
 from discretize.utils import as_array_n_by_dim  # noqa: F401
 
@@ -1226,6 +1227,42 @@ def validate_active_indices(property_name, index_arr, n_cells):
     if index_arr.shape != (n_cells,):
         raise ValueError(f"Input 'active_cells' must have shape {(n_cells,)}")
     return index_arr
+
+
+def merge_parent_params(exclude=None):
+    """Merge the parameters section of a parent class into a child class.
+
+    This decorator searches the class method resolution order to merge
+    parameter descriptions from parent classes into the child class.
+    If a parameter is already described in a child class, the description in
+    the child class takes precedence.
+
+    Parameters
+    ----------
+    exclude : None or list of str, optional
+        A list of parameter descriptions to exclude from parent classes
+
+    Returns
+    -------
+    decorator
+    """
+
+    def decorator(cls):
+        child_doc = NumpyDocString(cls.__doc__)
+        params = child_doc["Parameters"]
+        names = [param.name for param in params]
+
+        for parent_cls in cls.mro()[1:]:
+            parent_doc = NumpyDocString(parent_cls.__doc__)
+            inh_params = parent_doc["Parameters"]
+            for param in inh_params:
+                if param.name not in names:
+                    if exclude is None or param.name not in exclude:
+                        params.append(param)
+        cls.__doc__ = str(child_doc)
+        return cls
+
+    return decorator
 
 
 ###############################################################

@@ -50,17 +50,16 @@ class BaseEMSimulation(BaseElectricalPDESimulation, BaseMagneticPDESimulation):
 ###############################################################################
 
 
+@merge_parent_params
 class BaseEMSrc(BaseSrc):
     """Base class for a electromagnetic sources
 
     Parameters
     ----------
-    location : (n_dim) numpy.ndarray
-        Location of the source
     receiver_list : list of SimPEG.survey.BaseRx objects
         Sets the receivers associated with the source
-    uid : uuid.UUID
-        A universally unique identifier
+    location : (n_dim) numpy.ndarray
+        Location of the source
     integrate : bool
         If ``True``, we integrate the source term
     """

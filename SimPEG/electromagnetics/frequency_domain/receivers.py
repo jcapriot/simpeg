@@ -1,9 +1,15 @@
 from ... import survey
-from ...utils import validate_string, validate_type, validate_direction
+from ...utils import (
+    validate_string,
+    validate_type,
+    validate_direction,
+    merge_parent_params,
+)
 import warnings
 from discretize.utils import Zero
 
 
+@merge_parent_params
 class BaseRx(survey.BaseRx):
     """Base FDEM receivers class.
 
@@ -265,6 +271,7 @@ class BaseRx(survey.BaseRx):
             return self.locations.shape[0]
 
 
+@merge_parent_params(exclude=["data_type", "use_source_receiver_offset"])
 class PointElectricField(BaseRx):
     """Measure FDEM electric field at a point.
 
@@ -283,6 +290,7 @@ class PointElectricField(BaseRx):
         super().__init__(locations, orientation, component, **kwargs)
 
 
+@merge_parent_params(exclude=["data_type", "use_source_receiver_offset"])
 class PointMagneticFluxDensity(BaseRx):
     """Measure FDEM total field magnetic flux density at a point.
 
@@ -301,6 +309,7 @@ class PointMagneticFluxDensity(BaseRx):
         super().__init__(locations, orientation, component, **kwargs)
 
 
+@merge_parent_params(exclude=["data_type", "use_source_receiver_offset"])
 class PointMagneticFluxDensitySecondary(BaseRx):
     """Measure FDEM secondary magnetic flux density at a point.
 
@@ -319,6 +328,7 @@ class PointMagneticFluxDensitySecondary(BaseRx):
         super().__init__(locations, orientation, component, **kwargs)
 
 
+@merge_parent_params
 class PointMagneticField(BaseRx):
     """Measure FDEM total magnetic field at a point.
 
@@ -331,12 +341,6 @@ class PointMagneticField(BaseRx):
     component : {'real', 'imag', 'both', 'complex'}
         Component of the receiver; i.e. 'real' or 'imag'. The options 'both' and
         'complex' are only available for the 1D layered simulations.
-    data_type : {'field', 'ppm'}
-        Data type observed by the receiver, either field, or ppm secondary
-        of the total field.
-    use_source_receiver_offset : bool, optional
-        Whether to interpret the receiver locations as defining the source and receiver
-        offset.
 
     Notes
     -----
@@ -349,6 +353,7 @@ class PointMagneticField(BaseRx):
         super().__init__(locations, orientation, component, **kwargs)
 
 
+@merge_parent_params
 class PointMagneticFieldSecondary(BaseRx):
     """
     Magnetic flux FDEM receiver
@@ -361,12 +366,6 @@ class PointMagneticFieldSecondary(BaseRx):
     component : {'real', 'imag', 'both', 'complex'}
         Component of the receiver; i.e. 'real' or 'imag'. The options 'both' and
         'complex' are only available for the 1D layered simulations.
-    data_type : {'field', 'ppm'}
-        Data type observed by the receiver, either field, or ppm secondary
-        of the total field.
-    use_source_receiver_offset : bool, optional
-        Whether to interpret the receiver locations as defining the source and receiver
-        offset.
 
     Notes
     -----
@@ -381,6 +380,7 @@ class PointMagneticFieldSecondary(BaseRx):
         )
 
 
+@merge_parent_params(exclude=["data_type", "use_source_receiver_offset"])
 class PointCurrentDensity(BaseRx):
     """Measure FDEM current density at a point.
 

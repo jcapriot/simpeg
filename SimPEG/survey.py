@@ -10,6 +10,7 @@ from .utils.code_utils import (
     validate_ndarray_with_shape,
     validate_list_of_types,
     validate_type,
+    merge_parent_params,
 )
 
 
@@ -175,6 +176,7 @@ class BaseRx:
         )
 
 
+@merge_parent_params
 class BaseTimeRx(BaseRx):
     """Base SimPEG receiver class for time-domain simulations
 

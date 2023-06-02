@@ -184,6 +184,7 @@ Many of the functions here are used internally to SimPEG and have minimal docume
   validate_callable
   validate_direction
   validate_active_indices
+  merge_parent_params
 
 """
 from discretize.utils.interpolation_utils import interpolation_matrix
@@ -217,6 +218,7 @@ from .code_utils import (
     validate_callable,
     validate_direction,
     validate_active_indices,
+    merge_parent_params,
 )
 
 from .mat_utils import (
