@@ -1,7 +1,6 @@
 #!/bin/bash
 set -eu # Increase bash strictness
 
-export REVIEWDOG_GITHUB_API_TOKEN="${GITHUB_TOKEN}"
 export REVIEWDOG_VERSION=v0.15.0
 
 echo "Installing reviewdog..."

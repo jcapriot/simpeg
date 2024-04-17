@@ -1,8 +1,5 @@
 name : Reviewdog PR Annotations
 on: [pull_request_target]
-permissions:
-  contents: read
-  pull-requests: write
 
 jobs:
   flake8:
@@ -30,7 +27,9 @@ jobs:
         run: .github/workflows/scripts/reviewdog_flake8.sh
         env:
           WORKDIR: 'pr_source'
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CI_PULL_REQUST: ${{ github.event.pull_request.number }}
+          CI_COMMIT: ${{ github.event.pull_request.head.sha }}
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   black:
     name: Black check
