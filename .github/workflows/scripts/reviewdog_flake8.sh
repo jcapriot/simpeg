@@ -18,7 +18,7 @@ ${flake8_exe} . 2>&1 | /tmp/reviewdog -f="flake8" \
     -name="flake8" \
     -reporter="github-pr-review" \
     -fail-on-error="false" \
-    -level="error"
+    -level="error" \
     -tee || exit_val="$?"
 
 echo "Clean up reviewdog..."
