@@ -33,15 +33,25 @@ jobs:
     name: Black check
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source repository
+      - name: Checkout target repository source
         uses: actions/checkout@v4
+
       - name: Setup Python env
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install dependencies to run the black checks
+
+      - name: Install dependencies to run the flake8 checks
         run: pip install -r requirements_style.txt
-      - uses: reviewdog/action-black@v3
+
+      - name: checkout pull request source
+        uses: actions/checkout@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          reporter: github-pr-review
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: 'pr_source'
+
+      - name: black review
+        run: .github/workflows/scripts/reviewdog_black.sh
+        env:
+          WORKDIR: 'pr_source'
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
