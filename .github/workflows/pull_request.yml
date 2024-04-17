@@ -27,7 +27,7 @@ jobs:
           path: 'pr_source'
 
       - name: flake8 review
-        run: .github/workflow/scripts/reviewdog_flake8.sh
+        run: .github/workflows/scripts/reviewdog_flake8.sh
         env:
           WORKDIR: 'pr_source'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
