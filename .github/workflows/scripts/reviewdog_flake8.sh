@@ -29,7 +29,7 @@ echo "${flake8_output}" | /tmp/reviewdog -f="flake8" \
     -name="flake8" \
     -reporter="github-pr-review" \
     -filter-mode="added" \
-    -fail-on-error="false" \
+    -fail_on-error="false" \
     -level="error" || exit_val="$?"
 
 echo "Clean up reviewdog..."
