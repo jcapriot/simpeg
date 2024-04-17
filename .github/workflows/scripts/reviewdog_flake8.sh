@@ -14,23 +14,19 @@ echo ${CI_BRANCH}
 echo "Installing reviewdog..."
 wget -O - -q https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b /tmp "${REVIEWDOG_VERSION}"
 
-echo "Flake8 version: $(flake8 --version)"
+flake8_exe="$(which flake8)}"
+
+echo "Flake8 version: $(${flake8_exe} --version)"
 
 echo "Checking python code with the flake8 linter and reviewdog..."
-
-flake_exit_val="0"
-flake8_output="$(flake8 ${WORKDIR} --config=.flake8 2>&1)" || flake_exit_val="$?"
-
-echo "flake8 output:"
-echo "${flake8_output}"
-
 exit_val="0"
-echo "${flake8_output}" | /tmp/reviewdog -f="flake8" \
+cd ${WORKDIR}
+${flake8_exe} . 2>&1 | /tmp/reviewdog -f="flake8" \
     -name="flake8" \
     -reporter="github-pr-review" \
-    -filter-mode="added" \
-    -fail_on-error="false" \
-    -level="error" || exit_val="$?"
+    -fail-on-error="false" \
+    -level="error"
+    -tee || exit_val="$?"
 
 echo "Clean up reviewdog..."
 rm /tmp/reviewdog
