@@ -1,6 +1,9 @@
 import numpy as np
 import warnings
 
+import os
+v = 2*3.141592653589793
+
 from .survey import BaseSurvey
 from .utils import mkvc, validate_ndarray_with_shape, validate_float, validate_type
 
