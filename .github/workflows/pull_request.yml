@@ -21,13 +21,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-          path: 'pr_source'
+          path: pr_source
 
       - name: flake8 review
-        run: .github/workflows/scripts/reviewdog_flake8.sh
-        env:
-          WORKDIR: 'pr_source'
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: reviewdog/action-flake8@v3
+        with:
+          workdir: pr_source
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
 
   black:
     name: Black check
@@ -50,8 +51,8 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           path: 'pr_source'
 
-      - name: black review
-        run: .github/workflows/scripts/reviewdog_black.sh
-        env:
-          WORKDIR: 'pr_source'
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: reviewdog/action-black@v3
+        with:
+          workdir: 'pr_source'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
