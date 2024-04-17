@@ -27,10 +27,10 @@ jobs:
           path: 'pr_source'
 
       - name: flake8 review
-        run: .github/reviewdog_flake8.sh
+        run: .github/workflow/scripts/reviewdog_flake8.sh
         env:
-          workdir: 'pr_source'
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          WORKDIR: 'pr_source'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   black:
     name: Black check
