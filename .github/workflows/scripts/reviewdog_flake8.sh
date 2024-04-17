@@ -7,7 +7,7 @@ export REVIEWDOG_VERSION=v0.15.0
 echo "Installing reviewdog..."
 wget -O - -q https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b /tmp "${REVIEWDOG_VERSION}"
 
-flake8_exe="$(which flake8)}"
+flake8_exe="$(which flake8)"
 
 echo "Flake8 version: $(${flake8_exe} --version)"
 
