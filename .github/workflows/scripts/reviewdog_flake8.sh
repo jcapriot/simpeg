@@ -4,13 +4,6 @@ set -o pipefail
 
 export REVIEWDOG_VERSION=v0.15.0
 
-echo ${CI_PULL_REQUEST}
-echo ${CI_COMMIT}
-echo ${CI_REPO_OWNER}
-echo ${CI_REPO_NAME}
-echo ${CI_REPOSITORY}
-echo ${CI_BRANCH}
-
 echo "Installing reviewdog..."
 wget -O - -q https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b /tmp "${REVIEWDOG_VERSION}"
 
