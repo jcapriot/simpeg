@@ -388,7 +388,7 @@ plt.show()
 simulation_ip = ip.Simulation2DNodal(
     mesh,
     survey=ip_survey,
-    etaMap=chargeability_map,
+    eta=chargeability_map,
     sigma=conductivity_map * conductivity_model,
 )
 

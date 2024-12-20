@@ -61,7 +61,7 @@ class IPProblemAnalyticTests(unittest.TestCase):
             self.mesh,
             survey=surveyIP,
             sigma=self.sigmaInf,
-            etaMap=maps.IdentityMap(self.mesh),
+            eta=maps.IdentityMap(self.mesh),
         )
 
         data_full = data0 - datainf
@@ -90,7 +90,7 @@ class IPProblemAnalyticTests(unittest.TestCase):
             self.mesh,
             survey=surveyIP,
             rho=1.0 / self.sigmaInf,
-            etaMap=maps.IdentityMap(self.mesh),
+            eta=maps.IdentityMap(self.mesh),
         )
         data_full = data0 - datainf
         data = problemIP.dpred(self.eta)
@@ -165,7 +165,7 @@ class ApparentChargeability2DTest(unittest.TestCase):
         simIP = ip.Simulation2DNodal(
             self.mesh,
             sigma=self.sigmaInf,
-            etaMap=maps.IdentityMap(self.mesh),
+            eta=maps.IdentityMap(self.mesh),
             survey=self.survey_ip,
         )
         data = simIP.dpred(self.eta)
@@ -173,7 +173,7 @@ class ApparentChargeability2DTest(unittest.TestCase):
         simIP_store = ip.Simulation2DNodal(
             self.mesh,
             sigma=self.sigmaInf,
-            etaMap=maps.IdentityMap(self.mesh),
+            eta=maps.IdentityMap(self.mesh),
             survey=self.survey_ip,
             storeJ=True,
         )
@@ -206,7 +206,7 @@ class ApparentChargeability2DTest(unittest.TestCase):
         simIP = ip.Simulation2DCellCentered(
             self.mesh,
             sigma=self.sigmaInf,
-            etaMap=maps.IdentityMap(self.mesh),
+            eta=maps.IdentityMap(self.mesh),
             survey=self.survey_ip,
         )
         data = simIP.dpred(self.eta)

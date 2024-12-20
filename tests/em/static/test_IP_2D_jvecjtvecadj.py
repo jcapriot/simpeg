@@ -42,7 +42,7 @@ class IPProblemTestsCC(unittest.TestCase):
             mesh,
             survey=survey,
             sigma=sigma,
-            etaMap=maps.IdentityMap(mesh),
+            eta=maps.IdentityMap(mesh),
             verbose=False,
         )
 
@@ -125,7 +125,7 @@ class IPProblemTestsN(unittest.TestCase):
             mesh,
             survey=survey,
             rho=1.0 / sigma,
-            etaMap=maps.IdentityMap(mesh),
+            eta=maps.IdentityMap(mesh),
             verbose=False,
         )
 

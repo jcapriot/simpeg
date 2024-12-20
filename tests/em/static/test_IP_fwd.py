@@ -58,7 +58,7 @@ class IPProblemAnalyticTests(unittest.TestCase):
             mesh=self.mesh,
             survey=surveyip,
             sigma=self.sigmaInf,
-            etaMap=maps.IdentityMap(self.mesh),
+            eta=maps.IdentityMap(self.mesh),
             Ainv=simulationdc.Ainv,
             _f=finf,
         )
@@ -85,7 +85,7 @@ class IPProblemAnalyticTests(unittest.TestCase):
             mesh=self.mesh,
             survey=surveyip,
             rho=1.0 / self.sigmaInf,
-            etaMap=maps.IdentityMap(self.mesh),
+            eta=maps.IdentityMap(self.mesh),
             Ainv=simulationdc.Ainv,
             _f=finf,
         )
@@ -158,7 +158,7 @@ class ApparentChargeability3DTest(unittest.TestCase):
             mesh=self.mesh,
             survey=self.survey_ip,
             sigma=self.sigmaInf,
-            etaMap=maps.IdentityMap(self.mesh),
+            eta=maps.IdentityMap(self.mesh),
             Ainv=simulationdc.Ainv,
         )
         data = simulationip.dpred(self.eta)
@@ -167,7 +167,7 @@ class ApparentChargeability3DTest(unittest.TestCase):
             mesh=self.mesh,
             survey=self.survey_ip,
             sigma=self.sigmaInf,
-            etaMap=maps.IdentityMap(self.mesh),
+            eta=maps.IdentityMap(self.mesh),
             Ainv=simulationdc.Ainv,
             storeJ=True,
         )
@@ -201,7 +201,7 @@ class ApparentChargeability3DTest(unittest.TestCase):
             mesh=self.mesh,
             survey=self.survey_ip,
             sigma=self.sigmaInf,
-            etaMap=maps.IdentityMap(self.mesh),
+            eta=maps.IdentityMap(self.mesh),
             Ainv=simulationdc.Ainv,
         )
         data = simulationip.dpred(self.eta)

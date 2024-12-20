@@ -36,7 +36,7 @@ class IPProblemTestsCC(unittest.TestCase):
         survey = ip.survey.Survey(source_list)
         sigma = np.ones(mesh.nC)
         simulation = ip.simulation.Simulation3DCellCentered(
-            mesh=mesh, survey=survey, sigma=sigma, etaMap=maps.IdentityMap(mesh)
+            mesh=mesh, survey=survey, sigma=sigma, eta=maps.IdentityMap(mesh)
         )
         mSynth = np.ones(mesh.nC) * 0.1
         dobs = simulation.make_synthetic_data(mSynth, add_noise=True, random_seed=40)
@@ -112,7 +112,7 @@ class IPProblemTestsN(unittest.TestCase):
         survey = ip.survey.Survey(source_list)
         sigma = np.ones(mesh.nC)
         simulation = ip.simulation.Simulation3DNodal(
-            mesh=mesh, survey=survey, sigma=sigma, etaMap=maps.IdentityMap(mesh)
+            mesh=mesh, survey=survey, sigma=sigma, eta=maps.IdentityMap(mesh)
         )
         mSynth = np.ones(mesh.nC) * 0.1
         dobs = simulation.make_synthetic_data(mSynth, add_noise=True, random_seed=40)
@@ -190,7 +190,7 @@ class IPProblemTestsCC_storeJ(unittest.TestCase):
             mesh=mesh,
             survey=survey,
             sigma=sigma,
-            etaMap=maps.IdentityMap(mesh),
+            eta=maps.IdentityMap(mesh),
             storeJ=True,
         )
         mSynth = np.ones(mesh.nC) * 0.1
@@ -276,7 +276,7 @@ class IPProblemTestsN_storeJ(unittest.TestCase):
             mesh=mesh,
             survey=survey,
             sigma=sigma,
-            etaMap=maps.IdentityMap(mesh),
+            eta=maps.IdentityMap(mesh),
             storeJ=True,
         )
         mSynth = np.ones(mesh.nC) * 0.1

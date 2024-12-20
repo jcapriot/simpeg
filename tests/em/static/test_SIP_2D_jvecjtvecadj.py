@@ -53,7 +53,7 @@ class SIPProblemTestsCC(unittest.TestCase):
         problem = sip.Simulation2DCellCentered(
             mesh,
             rho=1.0 / sigma,
-            etaMap=wires.eta,
+            eta=wires.eta,
             tauiMap=wires.taui,
             verbose=False,
             survey=survey,
@@ -150,7 +150,7 @@ class SIPProblemTestsN(unittest.TestCase):
         problem = sip.Simulation2DNodal(
             mesh,
             sigma=sigma,
-            etaMap=wires.eta,
+            eta=wires.eta,
             tauiMap=wires.taui,
             verbose=False,
             survey=survey,
@@ -256,7 +256,7 @@ class SIPProblemTestsN_air(unittest.TestCase):
         problem = sip.Simulation2DNodal(
             mesh,
             sigma=sigma,
-            etaMap=actmapeta * wires.eta,
+            eta=actmapeta * wires.eta,
             tauiMap=actmaptau * wires.taui,
             cMap=actmapc * wires.c,
             actinds=~airind,

@@ -137,7 +137,7 @@ def run(plotIt=True, survey_type="dipole-dipole"):
     # "N" means potential is defined at nodes
     survey_ip = IP.from_dc_to_ip_survey(survey_dc, dim="2.5D")
     prb_ip = IP.Simulation2DNodal(
-        mesh, survey=survey_ip, etaMap=actmap, storeJ=True, rho=rho
+        mesh, survey=survey_ip, eta=actmap, storeJ=True, rho=rho
     )
 
     data_ip = prb_ip.make_synthetic_data(mtrue_ip, relative_error=0.05, add_noise=True)

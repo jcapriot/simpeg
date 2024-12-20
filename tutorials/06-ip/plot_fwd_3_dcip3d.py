@@ -431,7 +431,7 @@ cbar.set_label("Intrinsic Chargeability [V/V]", rotation=270, labelpad=15, size=
 ip_simulation = ip.Simulation3DNodal(
     mesh,
     survey=ip_survey,
-    etaMap=chargeability_map,
+    eta=chargeability_map,
     sigma=conductivity_map * conductivity_model,
 )
 

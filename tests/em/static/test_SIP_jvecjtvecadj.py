@@ -60,7 +60,7 @@ class SIPProblemTestsCC(unittest.TestCase):
             mesh,
             survey=survey,
             rho=1.0 / sigma,
-            etaMap=wires.eta,
+            eta=wires.eta,
             tauiMap=wires.taui,
             storeJ=False,
         )
@@ -161,7 +161,7 @@ class SIPProblemTestsN(unittest.TestCase):
             mesh,
             survey=survey,
             sigma=sigma,
-            etaMap=wires.eta,
+            eta=wires.eta,
             tauiMap=wires.taui,
             storeJ=False,
         )
@@ -272,7 +272,7 @@ class SIPProblemTestsN_air(unittest.TestCase):
             mesh,
             survey=survey,
             sigma=sigma,
-            etaMap=actmapeta * wires.eta,
+            eta=actmapeta * wires.eta,
             tauiMap=actmaptau * wires.taui,
             cMap=actmapc * wires.c,
             actinds=~airind,
