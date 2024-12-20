@@ -85,7 +85,7 @@ class TestModels(unittest.TestCase):
         opts = [
             ("theta_r", dict(theta_r=idnmap), 1),
             ("theta_s", dict(theta_s=idnmap), 1),
-            ("n", dict(nMap=idnmap), 1),
+            ("n", dict(n=idnmap), 1),
             ("alpha", dict(alpha=idnmap), 1),
         ]
 
@@ -199,7 +199,7 @@ class TestModels(unittest.TestCase):
         opts = [
             ("Ks", dict(Ks=expmap), 1),
             ("I", dict(I=idnmap), 1),
-            ("n", dict(nMap=idnmap), 1),
+            ("n", dict(n=idnmap), 1),
             ("alpha", dict(alpha=idnmap), 1),
         ]
 
