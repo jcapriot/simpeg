@@ -313,7 +313,7 @@ class BaseEM1DSimulation(
             out = out + Js["ds"] @ (self.sigmaDeriv @ v)
         if self._prop_map("mu"):
             out = out + Js["dmu"] @ (self.muDeriv @ v)
-        if self._prop_map("thick"):
+        if self._prop_map("thicknesses"):
             out = out + Js["dthick"] @ (self.thicknessesDeriv @ v)
         return out
 
@@ -326,7 +326,7 @@ class BaseEM1DSimulation(
             out = out + self.sigmaDeriv.T @ (Js["ds"].T @ v)
         if self._prop_map("mu"):
             out = out + self.muDeriv.T @ (Js["dmu"].T @ v)
-        if self._prop_map("thick"):
+        if self._prop_map("thicknesses"):
             out = out + self.thicknessesDeriv.T @ (Js["dthick"].T @ v)
         return out
 
@@ -586,7 +586,7 @@ class BaseEM1DSimulation(
             if self._prop_map("mu"):
                 J = Js["dmu"] @ self.muDeriv
                 out = out + np.einsum("i,ij,ij->j", W, J, J)
-            if self._prop_map("thick"):
+            if self._prop_map("thicknesses"):
                 J = Js["dthick"] @ self.thicknessesDeriv
                 out = out + np.einsum("i,ij,ij->j", W, J, J)
             self._gtgdiag = out

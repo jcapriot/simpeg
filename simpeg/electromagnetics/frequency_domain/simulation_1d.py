@@ -228,7 +228,7 @@ class Simulation1DLayered(BaseEM1DSimulation):
                         @ W.T
                     ).T
                     self._J["dmu"] = self._project_to_data(v_dmu)
-                if self._prop_map("thickness"):
+                if self._prop_map("thicknesses"):
                     rTE_dh = rTE_dh[:, i_freq]
                     rTE_dh = np.take_along_axis(rTE_dh, inv_lambs[None, ...], axis=-1)
                     v_dthick = (
