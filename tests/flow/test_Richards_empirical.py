@@ -38,8 +38,8 @@ class TestModels(unittest.TestCase):
         }
 
         opts = [
-            ("theta_r", dict(theta_rMap=idnmap), 1),
-            ("theta_s", dict(theta_sMap=idnmap), 1),
+            ("theta_r", dict(theta_r=idnmap), 1),
+            ("theta_s", dict(theta_s=idnmap), 1),
             ("alpha", dict(alphaMap=idnmap), 1),
             ("beta", dict(betaMap=idnmap), 1),
         ]
@@ -83,8 +83,8 @@ class TestModels(unittest.TestCase):
         }
 
         opts = [
-            ("theta_r", dict(theta_rMap=idnmap), 1),
-            ("theta_s", dict(theta_sMap=idnmap), 1),
+            ("theta_r", dict(theta_r=idnmap), 1),
+            ("theta_s", dict(theta_s=idnmap), 1),
             ("n", dict(nMap=idnmap), 1),
             ("alpha", dict(alphaMap=idnmap), 1),
         ]
