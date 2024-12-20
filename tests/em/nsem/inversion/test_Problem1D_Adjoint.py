@@ -44,7 +44,7 @@ def JvecAdjointTest_1D(sigmaHalf, formulation="PrimSec"):
     simulation = nsem.simulation_1d.Simulation1DRecursive(
         survey=survey,
         sigma=mapping.sigma,
-        thicknessesMap=mapping.thicknesses,
+        thicknesses=mapping.thicknesses,
     )
 
     m = np.r_[sigma_model, layer_thicknesses]

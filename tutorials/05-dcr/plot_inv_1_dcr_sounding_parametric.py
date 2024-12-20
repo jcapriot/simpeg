@@ -201,7 +201,7 @@ layer_map = maps.ExpMap(nP=mesh.nC - 1) * wire_map.t
 simulation = dc.simulation_1d.Simulation1DLayers(
     survey=survey,
     rho=resistivity_map,
-    thicknessesMap=layer_map,
+    thicknesses=layer_map,
 )
 
 #######################################################################

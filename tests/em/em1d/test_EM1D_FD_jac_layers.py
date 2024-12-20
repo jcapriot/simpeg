@@ -78,7 +78,7 @@ class EM1D_FD_Jacobian_Test_MagDipole(unittest.TestCase):
             survey=self.survey,
             sigma=self.sigma_map,
             mu=self.mu_map,
-            thicknessesMap=self.thicknesses_map,
+            thicknesses=self.thicknesses_map,
             hMap=self.h_map,
             topo=self.topo,
         )
@@ -241,7 +241,7 @@ class EM1D_FD_Jacobian_Test_CircularLoop(unittest.TestCase):
             survey=self.survey,
             sigma=self.sigma_map,
             mu=self.mu_map,
-            thicknessesMap=self.thicknesses_map,
+            thicknesses=self.thicknesses_map,
             hMap=self.h_map,
             topo=self.topo,
         )
@@ -388,7 +388,7 @@ class EM1D_FD_Jacobian_Test_LineCurrent(unittest.TestCase):
             survey=survey,
             sigma=self.sigma_map,
             mu=self.mu_map,
-            thicknessesMap=self.thicknesses_map,
+            thicknesses=self.thicknesses_map,
         )
 
         self.sim = sim

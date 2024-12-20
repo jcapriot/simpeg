@@ -97,16 +97,14 @@ def test_derivative(deriv_type):
     else:
         sigma = np.exp(log_cond)
     if deriv_type != "sigma":
-        h_map = maps.ExpMap()
+        h = maps.ExpMap()
         model = log_thick
-        h = None
     else:
-        h_map = None
         h = np.exp(log_thick)
     if deriv_type == "both":
         wire = maps.Wires(("sigma", n_layer), ("thick", n_layer - 1))
         sigma = sigma * wire.sigma
-        h_map = h_map * wire.thick
+        h = h * wire.thick
         model = np.r_[log_cond, log_thick]
     # already tested that the forward operation works for all combinations of src/rx/data_type
     # the way this simulation is set up, only need to test the derivative with
@@ -116,7 +114,6 @@ def test_derivative(deriv_type):
         survey=survey,
         sigma=sigma,
         thicknesses=h,
-        thicknessesMap=h_map,
     )
 
     def sim_1d_func(m):
@@ -143,16 +140,14 @@ def test_adjoint(deriv_type):
     else:
         sigma = np.exp(log_cond)
     if deriv_type != "sigma":
-        h_map = maps.ExpMap()
+        h = maps.ExpMap()
         model = log_thick
-        h = None
     else:
-        h_map = None
         h = np.exp(log_thick)
     if deriv_type == "both":
         wire = maps.Wires(("sigma", n_layer), ("thick", n_layer - 1))
         sigma = sigma * wire.sigma
-        h_map = h_map * wire.thick
+        h = h * wire.thick
         model = np.r_[log_cond, log_thick]
     # already tested that the forward operation works for all combinations of src/rx/data_type
     # the way this simulation is set up, only need to test the derivative with
@@ -162,7 +157,6 @@ def test_adjoint(deriv_type):
         survey=survey,
         sigma=sigma,
         thicknesses=h,
-        thicknessesMap=h_map,
     )
 
     def J(v):

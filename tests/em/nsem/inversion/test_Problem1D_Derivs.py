@@ -42,7 +42,7 @@ def DerivJvecTest_1D(halfspace_value, freq=False, expMap=True):
     simulation = nsem.simulation_1d.Simulation1DRecursive(
         survey=survey,
         sigma=mapping.sigma,
-        thicknessesMap=mapping.thicknesses,
+        thicknesses=mapping.thicknesses,
     )
 
     x0 = np.r_[sigma_model, layer_thicknesses]
