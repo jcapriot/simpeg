@@ -502,12 +502,14 @@ def _add_deprecated_physical_property_functions(
 
     @property
     def prop_map(self):
+        # getting a property map from a simulation is likely not a common operation for end-users.
         warnings.warn(
             f"Accessing {old_map} directly is no longer supported. If this is still necessary "
             f"use _prop_map('{new_name}') instead",
             UserWarning,
             stacklevel=2,
         )
+        # TODO REMOVE THE ERROR BEFORE RELEASE
         raise SyntaxError("FIX ME MAP GET")
         return self._prop_map(new_name)
 
@@ -518,6 +520,7 @@ def _add_deprecated_physical_property_functions(
             UserWarning,
             stacklevel=2,
         )
+        # TODO REMOVE THE ERROR BEFORE RELEASE
         raise SyntaxError("FIX ME MAP SET")
         setattr(self, new_name, value)
 
@@ -541,6 +544,7 @@ def _add_deprecated_physical_property_functions(
             DeprecationWarning,
             stacklevel=2,
         )
+        # TODO REMOVE THE ERROR BEFORE RELEASE
         raise SyntaxError("FIX ME DERIV GET")
         return self._prop_deriv(new_name)
 
