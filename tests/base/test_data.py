@@ -19,7 +19,9 @@ class DataTest(unittest.TestCase):
         source = survey.BaseSrc([receivers])
 
         self.sim = simulation.ExponentialSinusoidSimulation(
-            mesh=mesh, survey=survey.BaseSurvey([source]), model_map=maps.ExpMap(mesh)
+            mesh=mesh,
+            survey=survey.BaseSurvey([source]),
+            linear_model=maps.ExpMap(mesh),
         )
 
         self.dobs = self.sim.dpred(model)

@@ -1,4 +1,5 @@
 import pytest
+import pathlib
 
 
 def test_SimPEG_import():
@@ -11,4 +12,6 @@ def test_SimPEG_import():
     import simpeg
 
     assert SimPEG is simpeg
-    assert data.__file__.endswith("simpeg/data.py")
+    data_filepath = pathlib.Path(data.__file__)
+    assert data_filepath.parent.name == "simpeg"
+    assert data_filepath.name == "data.py"

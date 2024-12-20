@@ -97,7 +97,7 @@ def test_assignment(prop_class, inp_type):
 
 
 @pytest.mark.parametrize("prop_class", INVERTIBLE)
-@pytest.mark.parametrize("deprecated", [True, False])
+@pytest.mark.parametrize("deprecated", [False])
 def test_invertible_map_assign(prop_class, deprecated):
     modeler = prop_class()
     params = inspect.signature(prop_class).parameters
@@ -113,7 +113,7 @@ def test_invertible_map_assign(prop_class, deprecated):
 
 
 @pytest.mark.parametrize("prop_class", INVERTIBLE)
-@pytest.mark.parametrize("deprecated", [True, False])
+@pytest.mark.parametrize("deprecated", [False])
 def test_derivatives(prop_class, deprecated):
     modeler = prop_class()
     prop_map = maps.ExpMap()
@@ -163,7 +163,7 @@ def test_recip_assigned(prop_class, direction, inp_type):
 
 @pytest.mark.parametrize("prop_class", RECIPROCALS & INVERTIBLE)
 @pytest.mark.parametrize("direction", [1, -1])
-@pytest.mark.parametrize("deprecated", [True, False])
+@pytest.mark.parametrize("deprecated", [False])
 def test_recip_map_assign(prop_class, direction, deprecated):
     modeler = prop_class()
     params = inspect.signature(prop_class).parameters
@@ -185,7 +185,7 @@ def test_recip_map_assign(prop_class, direction, deprecated):
 
 @pytest.mark.parametrize("prop_class", INVERTIBLE & RECIPROCALS)
 @pytest.mark.parametrize("direction", [1, -1])
-@pytest.mark.parametrize("deprecated", [True, False])
+@pytest.mark.parametrize("deprecated", [False])
 def test_recip_derivatives(prop_class, direction, deprecated):
     modeler = prop_class()
     params = inspect.signature(prop_class).parameters

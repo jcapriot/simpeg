@@ -12,7 +12,7 @@ class TestLinearSimulation(unittest.TestCase):
         mesh = discretize.TensorMesh([100])
         self.sim = simulation.ExponentialSinusoidSimulation(
             mesh=mesh,
-            model_map=maps.IdentityMap(mesh),
+            linear_model=maps.IdentityMap(mesh),
         )
 
         mtrue = np.zeros(mesh.nC)

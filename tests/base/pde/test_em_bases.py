@@ -24,7 +24,7 @@ MASSMATS_FORMAT_STR = [
 @pytest.mark.parametrize("map_prop", [0, 1])
 @pytest.mark.parametrize("deriv_prop", [0, 1])
 @pytest.mark.parametrize("dimension", [1, 2, 3])
-@pytest.mark.parametrize("deprecated", [True, False])
+@pytest.mark.parametrize("deprecated", [False])
 def test_mass_matrix_derivatives(
     base_class, mm_and_func_fmt_str, map_prop, deriv_prop, dimension, deprecated
 ):

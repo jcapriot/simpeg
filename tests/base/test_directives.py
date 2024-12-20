@@ -85,9 +85,7 @@ class ValidationInInversion(unittest.TestCase):
         survey = mag.Survey(srcField)
 
         # Create the forward model operator
-        sim = mag.Simulation3DIntegral(
-            mesh, survey=survey, chiMap=maps.IdentityMap(mesh)
-        )
+        sim = mag.Simulation3DIntegral(mesh, survey=survey, chi=maps.IdentityMap(mesh))
 
         m = np.random.rand(mesh.nC)
 
@@ -392,7 +390,7 @@ class ValidationInInversion(unittest.TestCase):
 def test_save_output_dict(RegClass):
     mesh = discretize.TensorMesh([30])
     sim = simulation.ExponentialSinusoidSimulation(
-        mesh=mesh, model_map=maps.IdentityMap()
+        mesh=mesh, linear_model=maps.IdentityMap()
     )
     data = sim.make_synthetic_data(
         np.ones(mesh.n_cells), add_noise=True, random_seed=20
@@ -666,9 +664,7 @@ class TestUpdateIRLS:
             receiver_list=[rx], amplitude=5000, inclination=90, declination=0
         )
         survey = mag.Survey(igrf)
-        sim = mag.Simulation3DIntegral(
-            mesh, survey=survey, chiMap=maps.IdentityMap(mesh)
-        )
+        sim = mag.Simulation3DIntegral(mesh, survey=survey, chi=maps.IdentityMap(mesh))
         model = np.random.default_rng(seed=42).normal(size=mesh.n_cells)
         data = sim.make_synthetic_data(model, add_noise=True)
         dmisfit = L2DataMisfit(data=data, simulation=sim)

@@ -508,6 +508,7 @@ def _add_deprecated_physical_property_functions(
             UserWarning,
             stacklevel=2,
         )
+        raise SyntaxError("FIX ME MAP GET")
         return self._prop_map(new_name)
 
     @prop_map.setter
@@ -517,6 +518,7 @@ def _add_deprecated_physical_property_functions(
             UserWarning,
             stacklevel=2,
         )
+        raise SyntaxError("FIX ME MAP SET")
         setattr(self, new_name, value)
 
     prop_map.__doc__ = f"""
@@ -539,6 +541,7 @@ def _add_deprecated_physical_property_functions(
             DeprecationWarning,
             stacklevel=2,
         )
+        raise SyntaxError("FIX ME DERIV GET")
         return self._prop_deriv(new_name)
 
     prop_deriv.__doc__ = f"""

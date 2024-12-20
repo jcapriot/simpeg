@@ -362,11 +362,13 @@ class Simulation3DIntegral(BasePFSimulation, MagneticSusceptibility):
             self._gtg_diagonal = diag
         else:
             diag = self._gtg_diagonal
-        return mkvc((sdiag(np.sqrt(diag)) @ self.chiDeriv).power(2).sum(axis=0))
+        return mkvc(
+            (sdiag(np.sqrt(diag)) @ self._prop_deriv("chi")).power(2).sum(axis=0)
+        )
 
     def Jvec(self, m, v, f=None):
         self.model = m
-        dmu_dm_v = self.chiDeriv @ v
+        dmu_dm_v = self._prop_deriv("chi") @ v
 
         Jvec = self.G @ dmu_dm_v.astype(self.sensitivity_dtype, copy=False)
 
@@ -386,7 +388,7 @@ class Simulation3DIntegral(BasePFSimulation, MagneticSusceptibility):
             # dask doesn't support and "order" argument to reshape...
             v = v.T.reshape(-1)  # .reshape(-1, order="F")
         Jtvec = self.G.T @ v.astype(self.sensitivity_dtype, copy=False)
-        return np.asarray(self.chiDeriv.T @ Jtvec)
+        return np.asarray(self._prop_deriv("chi").T @ Jtvec)
 
     @property
     def ampDeriv(self):

@@ -45,12 +45,12 @@ class DataMisfitTest(unittest.TestCase):
         )
         survey = DC.Survey([src])
         simulation0 = DC.simulation.Simulation3DCellCentered(
-            mesh=mesh, survey=survey, rhoMap=maps.ExpMap(mesh)
+            mesh=mesh, survey=survey, rho=maps.ExpMap(mesh)
         )
 
         survey1 = DC.Survey([src1])
         simulation1 = DC.simulation.Simulation3DCellCentered(
-            mesh=mesh, survey=survey1, rhoMap=maps.ExpMap(mesh)
+            mesh=mesh, survey=survey1, rho=maps.ExpMap(mesh)
         )
 
         rng = np.random.default_rng(seed=42)

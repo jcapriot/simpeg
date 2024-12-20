@@ -18,7 +18,9 @@ class DataMisfitTest(unittest.TestCase):
         receivers = survey.BaseRx(20 * [[0.0]])
         source = survey.BaseSrc([receivers])
         sim = simulation.ExponentialSinusoidSimulation(
-            mesh=mesh, survey=survey.BaseSurvey([source]), model_map=maps.ExpMap(mesh)
+            mesh=mesh,
+            survey=survey.BaseSurvey([source]),
+            linear_model=maps.ExpMap(mesh),
         )
 
         synthetic_data = sim.make_synthetic_data(model, random_seed=17)
