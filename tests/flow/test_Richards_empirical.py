@@ -125,13 +125,13 @@ class TestModels(unittest.TestCase):
         wires3 = maps.Wires(("one", mesh.nC), ("two", mesh.nC), ("three", mesh.nC))
 
         opts = [
-            ("Ks", dict(KsMap=expmap), 1),
+            ("Ks", dict(Ks=expmap), 1),
             ("A", dict(AMap=expmap), 1),
             ("gamma", dict(gammaMap=expmap), 1),
-            ("Ks-A", dict(KsMap=expmap * wires2.one, AMap=expmap * wires2.two), 2),
+            ("Ks-A", dict(Ks=expmap * wires2.one, AMap=expmap * wires2.two), 2),
             (
                 "Ks-gamma",
-                dict(KsMap=expmap * wires2.one, gammaMap=expmap * wires2.two),
+                dict(Ks=expmap * wires2.one, gammaMap=expmap * wires2.two),
                 2,
             ),
             (
@@ -142,7 +142,7 @@ class TestModels(unittest.TestCase):
             (
                 "Ks-A-gamma",
                 dict(
-                    KsMap=expmap * wires3.one,
+                    Ks=expmap * wires3.one,
                     AMap=expmap * wires3.two,
                     gammaMap=expmap * wires3.three,
                 ),
@@ -197,7 +197,7 @@ class TestModels(unittest.TestCase):
         }
 
         opts = [
-            ("Ks", dict(KsMap=expmap), 1),
+            ("Ks", dict(Ks=expmap), 1),
             ("I", dict(IMap=idnmap), 1),
             ("n", dict(nMap=idnmap), 1),
             ("alpha", dict(alphaMap=idnmap), 1),

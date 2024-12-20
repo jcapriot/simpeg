@@ -134,7 +134,7 @@ def run(plotIt=True):
 
     # set up the problem and survey
     survey = tomo.Survey(source_list)
-    problem = tomo.Simulation(M, survey=survey, slownessMap=slownessMap)
+    problem = tomo.Simulation(M, survey=survey, slowness=slownessMap)
 
     if plotIt:
         _, ax = plt.subplots(1, 1)

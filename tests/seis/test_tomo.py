@@ -28,7 +28,7 @@ class TomoTest(unittest.TestCase):
         ]
 
         survey = tomo.Survey(source_list)
-        problem = tomo.Simulation(M, survey=survey, slownessMap=maps.IdentityMap(M))
+        problem = tomo.Simulation(M, survey=survey, slowness=maps.IdentityMap(M))
 
         self.M = M
         self.problem = problem

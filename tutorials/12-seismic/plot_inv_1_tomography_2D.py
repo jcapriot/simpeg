@@ -193,7 +193,7 @@ starting_model = background_velocity * np.ones(mesh.nC)
 
 # Define the forward simulation. To do this we need the mesh, the survey and
 # the mapping from the model to the slowness value on each cell.
-simulation = tomo.Simulation(mesh, survey=survey, slownessMap=model_mapping)
+simulation = tomo.Simulation(mesh, survey=survey, slowness=model_mapping)
 
 #######################################################################
 # Define the Inverse Problem

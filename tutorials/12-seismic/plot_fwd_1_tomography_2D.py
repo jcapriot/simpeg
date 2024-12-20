@@ -129,7 +129,7 @@ cbar.set_label("$Velocity (m/s)$", rotation=270, labelpad=15, size=12)
 
 # Define the forward simulation. To do this we need the mesh, the survey and
 # the mapping from the model to the slowness values on the mesh.
-simulation = tomo.Simulation(mesh, survey=survey, slownessMap=model_mapping)
+simulation = tomo.Simulation(mesh, survey=survey, slowness=model_mapping)
 
 # Compute predicted data for some model
 dpred = simulation.dpred(model)

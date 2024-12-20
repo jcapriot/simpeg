@@ -53,7 +53,7 @@ def run(plotIt=True):
     M.set_cell_gradient_BC("dirichlet")
     params = richards.empirical.HaverkampParams().celia1990
     k_fun, theta_fun = richards.empirical.haverkamp(**params)
-    k_fun.KsMap = maps.IdentityMap(nP=M.nC)
+    k_fun.Ks = maps.IdentityMap(nP=M.nC)
 
     bc = np.array([-61.5, -20.7])
     h = np.zeros(M.nC) + bc[0]

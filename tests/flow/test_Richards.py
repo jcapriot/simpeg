@@ -131,7 +131,7 @@ class RichardsTests1D(BaseRichardsTest):
         return bc, h
 
     def setup_maps(self, mesh, k_fun, theta_fun):
-        k_fun.KsMap = maps.ExpMap(nP=mesh.nC)
+        k_fun.Ks = maps.ExpMap(nP=mesh.nC)
 
     def setup_model(self):
         self.mtrue = np.log(self.Ks)
@@ -179,7 +179,7 @@ class RichardsTests1D_Saturation(RichardsTests1D):
 class RichardsTests1D_Multi(RichardsTests1D):
     def setup_maps(self, mesh, k_fun, theta_fun):
         wires = maps.Wires(("Ks", mesh.nC), ("A", mesh.nC), ("theta_s", mesh.nC))
-        k_fun.KsMap = maps.ExpMap(nP=mesh.nC) * wires.Ks
+        k_fun.Ks = maps.ExpMap(nP=mesh.nC) * wires.Ks
         k_fun.AMap = wires.A
         theta_fun.theta_sMap = wires.theta_s
 
@@ -219,7 +219,7 @@ class RichardsTests2D(BaseRichardsTest):
         return bc, h
 
     def setup_maps(self, mesh, k_fun, theta_fun):
-        k_fun.KsMap = maps.ExpMap(nP=mesh.nC)
+        k_fun.Ks = maps.ExpMap(nP=mesh.nC)
 
     def setup_model(self):
         self.mtrue = np.log(self.Ks)
@@ -264,7 +264,7 @@ class RichardsTests3D(BaseRichardsTest):
         return bc, h
 
     def setup_maps(self, mesh, k_fun, theta_fun):
-        k_fun.KsMap = maps.ExpMap(nP=mesh.nC)
+        k_fun.Ks = maps.ExpMap(nP=mesh.nC)
 
     def setup_model(self):
         self.mtrue = np.log(self.Ks)

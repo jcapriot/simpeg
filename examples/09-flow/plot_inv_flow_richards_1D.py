@@ -57,7 +57,7 @@ def run(plotIt=True):
 
     # Here we are making saturated hydraulic conductivity
     # an exponential mapping to the model (defined below)
-    k_fun.KsMap = maps.ExpMap(nP=M.nC)
+    k_fun.Ks = maps.ExpMap(nP=M.nC)
 
     # Setup the boundary and initial conditions
     bc = np.array([-61.5, -20.7])
