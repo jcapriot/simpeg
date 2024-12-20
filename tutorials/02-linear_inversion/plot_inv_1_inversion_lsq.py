@@ -113,7 +113,7 @@ ax.set_title("Columns of matrix G")
 # predicted data.
 #
 
-sim = simulation.LinearSimulation(mesh, G=G, linear_model=model_map)
+sim = simulation.LinearSimulation(G=G, linear_model=model_map)
 
 #############################################
 # Predict Synthetic Data
