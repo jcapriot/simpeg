@@ -310,7 +310,7 @@ class EM1D_TD_Loop_Center_Tests(unittest.TestCase):
 
     #     sim = tdem.Simulation1DLayered(
     #         survey=survey, thicknesses=self.thicknesses, topo=self.topo,
-    #         sigma=sigma_map, muMap=mu_map
+    #         sigma=sigma_map, mu=mu_map
     #     )
 
     #     mu = mu_0 * (1 + self.chi)

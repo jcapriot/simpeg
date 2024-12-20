@@ -47,7 +47,7 @@
 #         self.sim = mag.simulation.Simulation3DDifferential(
 #             M,
 #             survey=self.survey,
-#             muMap=maps.ChiMap(M),
+#             mu=maps.ChiMap(M),
 #         )
 #         dpre = self.sim.dpred(chi)
 #

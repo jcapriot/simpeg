@@ -98,7 +98,7 @@ def setupProblem(
             # m0 = np.hstack([1./muMod, sigmaMod])
         else:
             prob = getattr(fdem, "Simulation3D{}".format(prbtype))(
-                mesh, muMap=muMap, sigma=sigmaMap
+                mesh, mu=muMap, sigma=sigmaMap
             )
         m0 = np.hstack([muMod, sigmaMod])
 
@@ -113,7 +113,7 @@ def setupProblem(
             # m0 = 1./muMod
         else:
             prob = getattr(fdem, "Simulation3D{}".format(prbtype))(
-                mesh, sigma=sigmaMod, muMap=muMap
+                mesh, sigma=sigmaMod, mu=muMap
             )
         m0 = muMod
 
