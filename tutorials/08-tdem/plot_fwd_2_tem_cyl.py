@@ -194,8 +194,8 @@ time_steps = [(5e-06, 20), (0.0001, 20), (0.001, 21)]
 # Here we define the formulation for solving Maxwell's equations. Since we are
 # measuring the time-derivative of the magnetic flux density and working with
 # a conductivity model, the EB formulation is the most natural. We must also
-# remember to define the mapping for the conductivity model. Use *rhoMap* instead
-# of *sigmaMap* if you defined a resistivity model.
+# remember to define the mapping for the conductivity model. Use *rho* instead
+# of *sigma* if you defined a resistivity model.
 #
 
 simulation = tdem.simulation.Simulation3DMagneticFluxDensity(
