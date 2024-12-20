@@ -1014,7 +1014,7 @@ class PrimSecMappedSigma(BaseFDEMSrc):
         u_src = mkvc(f[src, self.primarySimulation._solutionType])
 
         if adjoint is True:
-            Jtv = np.zeros(simulation.sigmaMap.nP, dtype=complex)
+            Jtv = np.zeros(simulation._prop_map("sigma").nP, dtype=complex)
             ATinv = self.primarySimulation.solver(
                 A.T, **self.primarySimulation.solver_opts
             )
