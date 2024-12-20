@@ -78,10 +78,10 @@ def create_simulation_1d(sim_type, deriv_type):
     sigma_1d[50:-npad] = sigma_right
 
     if deriv_type == "sigma":
-        sim_kwargs = {"sigmaMap": maps.ExpMap()}
+        sim_kwargs = {"sigma": maps.ExpMap()}
         test_mod = np.log(sigma_1d)
     else:
-        sim_kwargs = {"muMap": maps.ExpMap(), "sigma": sigma_1d}
+        sim_kwargs = {"mu": maps.ExpMap(), "sigma": sigma_1d}
         test_mod = np.log(mu_0) * np.ones(mesh.n_cells)
     if sim_type.lower() == "e":
         sim = nsem.simulation.Simulation1DElectricField(
@@ -130,10 +130,10 @@ def create_simulation_2d(sim_type, deriv_type, mesh_type, fixed_boundary=False):
     sigma[cells[:, -1] >= 0] = sigma_air
 
     if deriv_type == "sigma":
-        sim_kwargs = {"sigmaMap": maps.ExpMap()}
+        sim_kwargs = {"sigma": maps.ExpMap()}
         test_mod = np.log(sigma)
     else:
-        sim_kwargs = {"muMap": maps.ExpMap(), "sigma": sigma}
+        sim_kwargs = {"mu": maps.ExpMap(), "sigma": sigma}
         test_mod = np.log(mu_0) * np.ones(mesh.n_cells)
 
     frequencies = np.logspace(-1, 1, 2)

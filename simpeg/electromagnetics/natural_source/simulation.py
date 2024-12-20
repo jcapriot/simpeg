@@ -310,11 +310,11 @@ class Simulation2DElectricField(BaseFDEMSimulation):
                 map_l_kwargs = {}
                 map_r_kwargs = {}
                 if self.sigmaMap is not None:
-                    map_l_kwargs["sigmaMap"] = P_l * self.sigmaMap
-                    map_r_kwargs["sigmaMap"] = P_r * self.sigmaMap
+                    map_l_kwargs["sigma"] = P_l * self.sigmaMap
+                    map_r_kwargs["sigma"] = P_r * self.sigmaMap
                 if self.muiMap is not None:
-                    map_l_kwargs["muiMap"] = P_l * self.muiMap
-                    map_r_kwargs["muiMap"] = P_r * self.muiMap
+                    map_l_kwargs["mui"] = P_l * self.muiMap
+                    map_r_kwargs["mui"] = P_r * self.muiMap
 
                 # create a survey with 1 source per frequency (no receivers)
                 frequencies = self.survey.frequencies
@@ -536,11 +536,11 @@ class Simulation2DMagneticField(BaseFDEMSimulation):
                 map_l_kwargs = {}
                 map_r_kwargs = {}
                 if self.rhoMap is not None:
-                    map_l_kwargs["rhoMap"] = P_l * self.rhoMap
-                    map_r_kwargs["rhoMap"] = P_r * self.rhoMap
+                    map_l_kwargs["rho"] = P_l * self.rhoMap
+                    map_r_kwargs["rho"] = P_r * self.rhoMap
                 if self.muMap is not None:
-                    map_l_kwargs["muMap"] = P_l * self.muMap
-                    map_r_kwargs["muMap"] = P_r * self.muMap
+                    map_l_kwargs["mu"] = P_l * self.muMap
+                    map_r_kwargs["mu"] = P_r * self.muMap
 
                 # create a survey with 1 source per frequency (no receivers)
                 frequencies = self.survey.frequencies

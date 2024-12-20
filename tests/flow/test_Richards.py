@@ -154,7 +154,7 @@ class RichardsTests1D(BaseRichardsTest):
 
 class RichardsTests1D_Saturation(RichardsTests1D):
     def setup_maps(self, mesh, k_fun, theta_fun):
-        theta_fun.theta_sMap = maps.IdentityMap(nP=mesh.nC)
+        theta_fun.theta_s = maps.IdentityMap(nP=mesh.nC)
 
     def setup_model(self):
         self.prob.hydraulic_conductivity.Ks = self.Ks
@@ -181,7 +181,7 @@ class RichardsTests1D_Multi(RichardsTests1D):
         wires = maps.Wires(("Ks", mesh.nC), ("A", mesh.nC), ("theta_s", mesh.nC))
         k_fun.Ks = maps.ExpMap(nP=mesh.nC) * wires.Ks
         k_fun.A = wires.A
-        theta_fun.theta_sMap = wires.theta_s
+        theta_fun.theta_s = wires.theta_s
 
     def setup_model(self):
         self.mtrue = np.r_[np.log(self.Ks), self.A, self.theta_s]
