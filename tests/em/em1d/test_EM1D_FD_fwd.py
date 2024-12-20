@@ -103,7 +103,7 @@ class EM1D_FD_test_failures(unittest.TestCase):
             survey = fdem.Survey(source_list)
 
             sim = fdem.Simulation1DLayered(
-                survey=survey, thicknesses=self.thicknesses, sigmaMap=sigma_map
+                survey=survey, thicknesses=self.thicknesses, sigma=sigma_map
             )
 
             self.assertRaises(error_type[ii], sim.dpred, m_1D)
@@ -202,7 +202,7 @@ class EM1D_FD_FwdProblemTests(unittest.TestCase):
     def test_EM1DFDfwd_VMD_Halfspace(self):
         sigma_map = maps.ExpMap(nP=1)
         sim = fdem.Simulation1DLayered(
-            survey=self.survey, sigmaMap=sigma_map, topo=self.topo
+            survey=self.survey, sigma=sigma_map, topo=self.topo
         )
 
         m_1D = np.array([np.log(self.sigma)])
@@ -228,7 +228,7 @@ class EM1D_FD_FwdProblemTests(unittest.TestCase):
         sim = fdem.Simulation1DLayered(
             survey=self.survey,
             thicknesses=self.thicknesses,
-            sigmaMap=sigma_map,
+            sigma=sigma_map,
             topo=self.topo,
         )
 
@@ -261,7 +261,7 @@ class EM1D_FD_FwdProblemTests(unittest.TestCase):
             survey=self.survey,
             thicknesses=self.thicknesses,
             topo=self.topo,
-            sigmaMap=sigma_map,
+            sigma=sigma_map,
             eta=eta,
             tau=tau,
             c=c,
@@ -324,7 +324,7 @@ class EM1D_FD_FwdProblemTests(unittest.TestCase):
         sim = fdem.Simulation1DLayered(
             survey=survey,
             thicknesses=self.thicknesses,
-            sigmaMap=sigma_map,
+            sigma=sigma_map,
             topo=self.topo,
         )
 
@@ -377,7 +377,7 @@ class EM1D_FD_FwdProblemTests(unittest.TestCase):
         sim = fdem.Simulation1DLayered(
             survey=survey,
             thicknesses=self.thicknesses,
-            sigmaMap=sigma_map,
+            sigma=sigma_map,
             topo=self.topo,
         )
 
@@ -427,7 +427,7 @@ class EM1D_FD_FwdProblemTests(unittest.TestCase):
             survey=survey,
             thicknesses=self.thicknesses,
             topo=self.topo,
-            sigmaMap=sigma_map,
+            sigma=sigma_map,
             eta=eta,
             tau=tau,
             c=c,
@@ -486,7 +486,7 @@ class EM1D_FD_LineCurrentTest(unittest.TestCase):
     def test_with_empymod(self):
         sim = fdem.Simulation1DLayered(
             survey=self.survey,
-            sigmaMap=maps.IdentityMap(nP=3),
+            sigma=maps.IdentityMap(nP=3),
             thicknesses=self.thicknesses,
         )
         H = sim.dpred(self.sigma)

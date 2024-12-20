@@ -181,7 +181,7 @@ cbar.set_label("Conductivity [S/m]", rotation=270, labelpad=15, size=12)
 simulation = fdem.simulation.Simulation3DMagneticFluxDensity(
     mesh,
     survey=survey,
-    sigmaMap=model_map,
+    sigma=model_map,
 )
 
 ######################################################

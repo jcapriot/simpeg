@@ -65,7 +65,7 @@ class EM1D_TD_general_Jac_layers_ProblemTests(unittest.TestCase):
         sim = tdem.Simulation1DLayered(
             survey=self.survey,
             thicknesses=self.thicknesses,
-            sigmaMap=sigma_map,
+            sigma=sigma_map,
             topo=self.topo,
         )
 
@@ -94,7 +94,7 @@ class EM1D_TD_general_Jac_layers_ProblemTests(unittest.TestCase):
         sim = tdem.Simulation1DLayered(
             survey=self.survey,
             thicknesses=self.thicknesses,
-            sigmaMap=sigma_map,
+            sigma=sigma_map,
             topo=self.topo,
         )
 
@@ -248,7 +248,7 @@ class EM1D_TD_LineCurrent_Jac_layers_ProblemTests(unittest.TestCase):
         sim = tdem.Simulation1DLayered(
             survey=self.survey,
             thicknesses=self.thicknesses,
-            sigmaMap=sigma_map,
+            sigma=sigma_map,
         )
 
         m_1D = np.log(np.ones(self.nlayers) * self.sigma)
@@ -276,7 +276,7 @@ class EM1D_TD_LineCurrent_Jac_layers_ProblemTests(unittest.TestCase):
         sim = tdem.Simulation1DLayered(
             survey=self.survey,
             thicknesses=self.thicknesses,
-            sigmaMap=sigma_map,
+            sigma=sigma_map,
         )
 
         sigma_layer = 0.1

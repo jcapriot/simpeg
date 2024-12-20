@@ -99,7 +99,7 @@ class MVIProblemTest(unittest.TestCase):
             self.mesh,
             survey=survey,
             model_type="vector",
-            chiMap=idenMap,
+            chi=idenMap,
             active_cells=actv,
             store_sensitivities="disk",
         )

@@ -156,13 +156,13 @@ class TestInductiveSourcesPermeability(unittest.TestCase):
             mesh=mesh,
             survey=survey,
             time_steps=time_steps,
-            sigmaMap=maps.IdentityMap(mesh),
+            sigma=maps.IdentityMap(mesh),
         )
         prob_late_ontime = tdem.Simulation3DMagneticFluxDensity(
             mesh=mesh,
             survey=survey_late_ontime,
             time_steps=time_steps,
-            sigmaMap=maps.IdentityMap(mesh),
+            sigma=maps.IdentityMap(mesh),
         )
 
         fields_dict = {}

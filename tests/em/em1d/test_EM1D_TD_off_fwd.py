@@ -175,7 +175,7 @@ class EM1D_TD_MagDipole_Tests(unittest.TestCase):
             sim = tdem.Simulation1DLayered(
                 survey=survey,
                 thicknesses=self.thicknesses,
-                sigmaMap=sigma_map,
+                sigma=sigma_map,
                 topo=self.topo,
             )
 
@@ -225,7 +225,7 @@ class EM1D_TD_MagDipole_Tests(unittest.TestCase):
             sim = tdem.Simulation1DLayered(
                 survey=survey,
                 thicknesses=self.thicknesses,
-                sigmaMap=sigma_map,
+                sigma=sigma_map,
                 topo=self.topo,
             )
 
@@ -310,7 +310,7 @@ class EM1D_TD_Loop_Center_Tests(unittest.TestCase):
 
     #     sim = tdem.Simulation1DLayered(
     #         survey=survey, thicknesses=self.thicknesses, topo=self.topo,
-    #         sigmaMap=sigma_map, muMap=mu_map
+    #         sigma=sigma_map, muMap=mu_map
     #     )
 
     #     mu = mu_0 * (1 + self.chi)
@@ -349,7 +349,7 @@ class EM1D_TD_Loop_Center_Tests(unittest.TestCase):
             survey=survey,
             thicknesses=self.thicknesses,
             topo=self.topo,
-            sigmaMap=sigma_map,
+            sigma=sigma_map,
             dchi=self.dchi,
             tau1=self.tau1,
             tau2=self.tau2,

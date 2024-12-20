@@ -240,7 +240,7 @@ dc_survey.drape_electrodes_on_topography(mesh, ind_active, option="top")
 # argument *rhoMap* is defined, the simulation will expect a resistivity model.
 #
 
-dc_simulation = dc.Simulation2DNodal(mesh, survey=dc_survey, sigmaMap=conductivity_map)
+dc_simulation = dc.Simulation2DNodal(mesh, survey=dc_survey, sigma=conductivity_map)
 
 # Predict the data by running the simulation. The data are the raw voltage in
 # units of volts.

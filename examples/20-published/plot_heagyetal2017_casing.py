@@ -336,7 +336,7 @@ class PrimSecCasingExample(object):
             # use H-J formulation for source with vertical current density and
             # cylindrical symmetry (h faster on cyl --> less edges than faces)
             primaryProblem = FDEM.Simulation3DMagneticField(
-                self.meshp, sigmaMap=self.primaryMapping
+                self.meshp, sigma=self.primaryMapping
             )
             primaryProblem.mu = self.muModel
 
@@ -564,7 +564,7 @@ class PrimSecCasingExample(object):
         print("Setting up Secondary Problem")
         if mapping is None:
             mapping = [("sigma", maps.IdentityMap(self.meshs))]
-        sec_problem = FDEM.Simulation3DElectricField(self.meshs, sigmaMap=mapping)
+        sec_problem = FDEM.Simulation3DElectricField(self.meshs, sigma=mapping)
         print("... done setting up secondary problem")
         return sec_problem
 

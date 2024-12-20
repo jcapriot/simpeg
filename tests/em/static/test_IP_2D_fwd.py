@@ -50,7 +50,7 @@ class IPProblemAnalyticTests(unittest.TestCase):
 
     def test_Simulation2DNodal(self):
         problemDC = dc.Simulation2DNodal(
-            self.mesh, survey=self.surveyDC, sigmaMap=maps.IdentityMap(self.mesh)
+            self.mesh, survey=self.surveyDC, sigma=maps.IdentityMap(self.mesh)
         )
         data0 = problemDC.dpred(self.sigma0)
         datainf = problemDC.dpred(self.sigmaInf)
@@ -155,7 +155,7 @@ class ApparentChargeability2DTest(unittest.TestCase):
     def test_Simulation2DNodal(self):
         simDC = dc.Simulation2DNodal(
             self.mesh,
-            sigmaMap=maps.IdentityMap(self.mesh),
+            sigma=maps.IdentityMap(self.mesh),
             survey=self.survey_dc,
         )
         data0 = simDC.dpred(self.sigma0)
@@ -196,7 +196,7 @@ class ApparentChargeability2DTest(unittest.TestCase):
     def test_Simulation2DCellCentered(self):
         simDC = dc.Simulation2DCellCentered(
             self.mesh,
-            sigmaMap=maps.IdentityMap(self.mesh),
+            sigma=maps.IdentityMap(self.mesh),
             survey=self.survey_dc,
         )
         data0 = simDC.dpred(self.sigma0)

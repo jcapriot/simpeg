@@ -165,7 +165,7 @@ class PrimSecFDEMSrcTest_Cyl2Cart_EB_EB(unittest.TestCase, PrimSecFDEMTest):
 
         # primary
         self.primarySimulation = fdem.Simulation3DMagneticFluxDensity(
-            meshp, sigmaMap=primaryMapping
+            meshp, sigma=primaryMapping
         )
         primarySrc = fdem.Src.MagDipole(self.rxlist, frequency=freq, location=src_loc)
         self.primarySurvey = fdem.Survey([primarySrc])
@@ -180,14 +180,14 @@ class PrimSecFDEMSrcTest_Cyl2Cart_EB_EB(unittest.TestCase, PrimSecFDEMTest):
         self.secondarySurvey = fdem.Survey([self.secondarySrc])
         # Secondary Problem
         self.secondarySimulation = fdem.Simulation3DMagneticFluxDensity(
-            meshs, survey=self.secondarySurvey, sigmaMap=mapping
+            meshs, survey=self.secondarySurvey, sigma=mapping
         )
 
         # Full 3D problem to compare with
         self.survey3D = fdem.Survey([primarySrc])
 
         self.simulation3D = fdem.Simulation3DMagneticFluxDensity(
-            meshs, survey=self.survey3D, sigmaMap=mapping
+            meshs, survey=self.survey3D, sigma=mapping
         )
 
         # solve and store fields
@@ -229,7 +229,7 @@ class PrimSecFDEMSrcTest_Cyl2Cart_HJ_EB(unittest.TestCase, PrimSecFDEMTest):
 
         # primary
         self.primarySimulation = fdem.Simulation3DCurrentDensity(
-            meshp, sigmaMap=primaryMapping
+            meshp, sigma=primaryMapping
         )
         s_e = np.zeros(meshp.nF)
         inds = meshp.nFx + meshp.closest_points_index(src_loc, grid_loc="Fz")
@@ -252,7 +252,7 @@ class PrimSecFDEMSrcTest_Cyl2Cart_HJ_EB(unittest.TestCase, PrimSecFDEMTest):
         self.secondarySimulation = fdem.Simulation3DElectricField(
             meshs,
             survey=self.secondarySurvey,
-            sigmaMap=mapping,
+            sigma=mapping,
         )
 
         # Full 3D problem to compare with
@@ -267,7 +267,7 @@ class PrimSecFDEMSrcTest_Cyl2Cart_HJ_EB(unittest.TestCase, PrimSecFDEMTest):
         self.survey3D = fdem.Survey([src3D])
 
         self.simulation3D = fdem.Simulation3DElectricField(
-            meshs, survey=self.survey3D, sigmaMap=mapping
+            meshs, survey=self.survey3D, sigma=mapping
         )
         self.simulation3D.model = model
 

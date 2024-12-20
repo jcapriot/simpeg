@@ -70,7 +70,7 @@ class EM1D_TD_CircularLoop_FwdProblemTests(unittest.TestCase):
         sim = tdem.Simulation1DLayered(
             survey=self.survey,
             thicknesses=self.thicknesses,
-            sigmaMap=sigma_map,
+            sigma=sigma_map,
             topo=self.topo,
         )
 
@@ -219,7 +219,7 @@ class EM1D_TD_LineCurrent_FwdProblemTests(unittest.TestCase):
         simulation = tdem.Simulation1DLayered(
             survey=survey,
             thicknesses=thicknesses,
-            sigmaMap=model_mapping,
+            sigma=model_mapping,
         )
 
         self.bzdt = simulation.dpred(model)

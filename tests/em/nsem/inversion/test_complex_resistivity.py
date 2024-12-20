@@ -88,7 +88,7 @@ class ComplexResistivityTest(unittest.TestCase):
             self.mesh,
             survey=survey_ns,
             sigmaPrimary=self.sigma_background,
-            sigmaMap=mapping,
+            sigma=mapping,
         )
         return sim
 
@@ -129,7 +129,7 @@ class ComplexResistivityTest(unittest.TestCase):
             self.mesh,
             survey=survey_ns,
             sigmaPrimary=self.sigma_background,
-            sigmaMap=mapping,
+            sigma=mapping,
         )
         return sim
 
@@ -179,7 +179,7 @@ class ComplexResistivityTest(unittest.TestCase):
         sim = ns.simulation.Simulation3DPrimarySecondary(
             self.mesh,
             survey=survey_ns,
-            sigmaMap=mapping,
+            sigma=mapping,
         )
         return sim
 
@@ -217,7 +217,7 @@ class ComplexResistivityTest(unittest.TestCase):
         sim = ns.simulation.Simulation3DPrimarySecondary(
             self.mesh,
             survey=survey_ns,
-            sigmaMap=mapping,
+            sigma=mapping,
         )
         return sim
 

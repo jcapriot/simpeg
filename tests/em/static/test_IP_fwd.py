@@ -48,7 +48,7 @@ class IPProblemAnalyticTests(unittest.TestCase):
 
     def test_Simulation3DNodal(self):
         simulationdc = dc.simulation.Simulation3DNodal(
-            mesh=self.mesh, survey=self.surveyDC, sigmaMap=maps.IdentityMap(self.mesh)
+            mesh=self.mesh, survey=self.surveyDC, sigma=maps.IdentityMap(self.mesh)
         )
         data0 = simulationdc.dpred(self.sigma0)
         finf = simulationdc.fields(self.sigmaInf)
@@ -75,7 +75,7 @@ class IPProblemAnalyticTests(unittest.TestCase):
 
     def test_Simulation3DCellCentered(self):
         simulationdc = dc.simulation.Simulation3DCellCentered(
-            mesh=self.mesh, survey=self.surveyDC, sigmaMap=maps.IdentityMap(self.mesh)
+            mesh=self.mesh, survey=self.surveyDC, sigma=maps.IdentityMap(self.mesh)
         )
         data0 = simulationdc.dpred(self.sigma0)
         finf = simulationdc.fields(self.sigmaInf)
@@ -147,7 +147,7 @@ class ApparentChargeability3DTest(unittest.TestCase):
     def test_Simulation3DNodal(self):
         simulationdc = dc.simulation.Simulation3DNodal(
             self.mesh,
-            sigmaMap=maps.IdentityMap(self.mesh),
+            sigma=maps.IdentityMap(self.mesh),
             survey=self.survey_dc,
         )
         data0 = simulationdc.dpred(self.sigma0)
@@ -190,7 +190,7 @@ class ApparentChargeability3DTest(unittest.TestCase):
     def test_Simulation3DCellCentered(self):
         simulationdc = dc.simulation.Simulation3DCellCentered(
             self.mesh,
-            sigmaMap=maps.IdentityMap(self.mesh),
+            sigma=maps.IdentityMap(self.mesh),
             survey=self.survey_dc,
         )
         data0 = simulationdc.dpred(self.sigma0)

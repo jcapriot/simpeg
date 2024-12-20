@@ -132,7 +132,7 @@ class DCProblemTestsCC_fields(unittest.TestCase):
         self.prob = dc.simulation.Simulation3DCellCentered(
             mesh=mesh,
             survey=self.survey,
-            sigmaMap=self.sigma_map,
+            sigma=self.sigma_map,
             bc_type="Dirichlet",
         )
 

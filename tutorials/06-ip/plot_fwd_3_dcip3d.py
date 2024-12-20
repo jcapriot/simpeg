@@ -258,7 +258,7 @@ dc_survey.drape_electrodes_on_topography(mesh, ind_active, option="top")
 #
 
 # Define the DC simulation
-dc_simulation = dc.Simulation3DNodal(mesh, survey=dc_survey, sigmaMap=conductivity_map)
+dc_simulation = dc.Simulation3DNodal(mesh, survey=dc_survey, sigma=conductivity_map)
 
 # Predict the data by running the simulation. The data are the measured voltage
 # normalized by the source current in units of V/A.

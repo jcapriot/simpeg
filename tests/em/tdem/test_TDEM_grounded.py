@@ -74,7 +74,7 @@ class TestGroundedSourceTDEM_j(unittest.TestCase):
             mesh,
             time_steps=time_steps,
             mu=mu,
-            sigmaMap=maps.ExpMap(mesh),
+            sigma=maps.ExpMap(mesh),
         )
         survey = tdem.Survey([src])
 

@@ -74,7 +74,7 @@ class EM1D_TD_Jacobian_Test_MagDipole(unittest.TestCase):
 
         sim = tdem.Simulation1DLayered(
             survey=self.survey,
-            sigmaMap=self.sigma_map,
+            sigma=self.sigma_map,
             muMap=self.mu_map,
             thicknessesMap=self.thicknesses_map,
             hMap=self.h_map,
@@ -236,7 +236,7 @@ class EM1D_TD_Jacobian_Test_CircularLoop(unittest.TestCase):
 
         sim = tdem.Simulation1DLayered(
             survey=self.survey,
-            sigmaMap=self.sigma_map,
+            sigma=self.sigma_map,
             muMap=self.mu_map,
             thicknessesMap=self.thicknesses_map,
             hMap=self.h_map,

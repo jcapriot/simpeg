@@ -44,7 +44,7 @@ def get_mapping(mesh):
 
 def get_prob(mesh, mapping, formulation, **kwargs):
     prb = getattr(tdem, "Simulation3D{}".format(formulation))(
-        mesh, sigmaMap=mapping, **kwargs
+        mesh, sigma=mapping, **kwargs
     )
     return prb
 

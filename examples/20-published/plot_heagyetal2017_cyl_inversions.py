@@ -87,9 +87,7 @@ def run(plotIt=True, saveFig=False):
     ]
 
     surveyFD = FDEM.Survey(source_list)
-    prbFD = FDEM.Simulation3DMagneticFluxDensity(
-        mesh, survey=surveyFD, sigmaMap=mapping
-    )
+    prbFD = FDEM.Simulation3DMagneticFluxDensity(mesh, survey=surveyFD, sigma=mapping)
     rel_err = 0.03
     dataFD = prbFD.make_synthetic_data(mtrue, relative_error=rel_err, add_noise=True)
     dataFD.noise_floor = np.linalg.norm(dataFD.dclean) * 1e-5
@@ -132,9 +130,7 @@ def run(plotIt=True, saveFig=False):
     )
 
     surveyTD = TDEM.Survey([src])
-    prbTD = TDEM.Simulation3DMagneticFluxDensity(
-        mesh, survey=surveyTD, sigmaMap=mapping
-    )
+    prbTD = TDEM.Simulation3DMagneticFluxDensity(mesh, survey=surveyTD, sigma=mapping)
     prbTD.time_steps = [(5e-5, 10), (1e-4, 10), (5e-4, 10)]
 
     rel_err = 0.03

@@ -226,7 +226,7 @@ def run(plotIt=True):
     problem = FDEM.Simulation3DMagneticField(
         mesh,
         survey=survey,
-        sigmaMap=maps.IdentityMap(mesh),
+        sigma=maps.IdentityMap(mesh),
     )
 
     # ------------- Solve ---------------------------

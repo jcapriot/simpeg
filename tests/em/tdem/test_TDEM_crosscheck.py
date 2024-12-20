@@ -66,7 +66,7 @@ def setUp_TDEM(
     survey = tdem.Survey([src])
 
     prb = getattr(tdem, "Simulation3D{}".format(prbtype))(
-        mesh, survey=survey, time_steps=time_steps, sigmaMap=mapping
+        mesh, survey=survey, time_steps=time_steps, sigma=mapping
     )
 
     rng = np.random.default_rng(seed=42)

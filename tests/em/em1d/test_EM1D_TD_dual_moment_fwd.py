@@ -66,7 +66,7 @@ class EM1D_TD_FwdProblemTests(unittest.TestCase):
         simulation = tdem.Simulation1DLayered(
             survey=survey,
             thicknesses=thicknesses,
-            sigmaMap=model_mapping,
+            sigma=model_mapping,
         )
 
         self.survey = survey

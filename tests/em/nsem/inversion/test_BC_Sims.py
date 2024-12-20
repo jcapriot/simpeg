@@ -148,7 +148,7 @@ def create_simulation_2d(sim_type, deriv_type, mesh_type, fixed_boundary=False):
             )
             mesh_1d = TensorMesh([mesh.h[1]], [mesh.origin[1]])
             sim_1d = nsem.simulation.Simulation1DElectricField(
-                mesh_1d, survey=survey_1d, sigmaMap=maps.IdentityMap()
+                mesh_1d, survey=survey_1d, sigma=maps.IdentityMap()
             )
 
             b_left, b_right, _, __ = mesh.cell_boundary_indices
@@ -198,7 +198,7 @@ def create_simulation_2d(sim_type, deriv_type, mesh_type, fixed_boundary=False):
             )
             mesh_1d = TensorMesh([mesh.h[1]], [mesh.origin[1]])
             sim_1d = nsem.simulation.Simulation1DMagneticField(
-                mesh_1d, survey=survey_1d, sigmaMap=maps.IdentityMap()
+                mesh_1d, survey=survey_1d, sigma=maps.IdentityMap()
             )
 
             b_left, b_right, _, __ = mesh.cell_boundary_indices

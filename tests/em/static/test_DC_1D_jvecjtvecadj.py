@@ -92,12 +92,10 @@ def test_derivative(deriv_type):
     log_thick = rng.uniform(size=n_layer - 1)
 
     if deriv_type != "h":
-        sigma_map = maps.ExpMap()
+        sigma = maps.ExpMap()
         model = log_cond
-        sigma = None
     else:
         sigma = np.exp(log_cond)
-        sigma_map = None
     if deriv_type != "sigma":
         h_map = maps.ExpMap()
         model = log_thick
@@ -107,7 +105,7 @@ def test_derivative(deriv_type):
         h = np.exp(log_thick)
     if deriv_type == "both":
         wire = maps.Wires(("sigma", n_layer), ("thick", n_layer - 1))
-        sigma_map = sigma_map * wire.sigma
+        sigma = sigma * wire.sigma
         h_map = h_map * wire.thick
         model = np.r_[log_cond, log_thick]
     # already tested that the forward operation works for all combinations of src/rx/data_type
@@ -117,7 +115,6 @@ def test_derivative(deriv_type):
     simulation = dc.Simulation1DLayers(
         survey=survey,
         sigma=sigma,
-        sigmaMap=sigma_map,
         thicknesses=h,
         thicknessesMap=h_map,
     )
@@ -141,12 +138,10 @@ def test_adjoint(deriv_type):
     log_thick = rng.uniform(size=n_layer - 1)
 
     if deriv_type != "h":
-        sigma_map = maps.ExpMap()
+        sigma = maps.ExpMap()
         model = log_cond
-        sigma = None
     else:
         sigma = np.exp(log_cond)
-        sigma_map = None
     if deriv_type != "sigma":
         h_map = maps.ExpMap()
         model = log_thick
@@ -156,7 +151,7 @@ def test_adjoint(deriv_type):
         h = np.exp(log_thick)
     if deriv_type == "both":
         wire = maps.Wires(("sigma", n_layer), ("thick", n_layer - 1))
-        sigma_map = sigma_map * wire.sigma
+        sigma = sigma * wire.sigma
         h_map = h_map * wire.thick
         model = np.r_[log_cond, log_thick]
     # already tested that the forward operation works for all combinations of src/rx/data_type
@@ -166,7 +161,6 @@ def test_adjoint(deriv_type):
     simulation = dc.Simulation1DLayers(
         survey=survey,
         sigma=sigma,
-        sigmaMap=sigma_map,
         thicknesses=h,
         thicknessesMap=h_map,
     )
@@ -229,7 +223,7 @@ def test_functionality():
     survey = get_survey("volt", "d", "d")
     simulation = dc.Simulation1DLayers(
         survey=survey,
-        sigmaMap=sigma_map,
+        sigma=sigma_map,
         thicknesses=thick,
     )
 

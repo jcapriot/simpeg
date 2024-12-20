@@ -151,7 +151,7 @@ idenMap = maps.IdentityMap(nP=nC)
 simulation = magnetics.simulation.Simulation3DIntegral(
     survey=survey,
     mesh=mesh,
-    chiMap=idenMap,
+    chi=idenMap,
     active_cells=actv,
     store_sensitivities="forward_only",
 )
@@ -227,7 +227,7 @@ idenMap = maps.IdentityMap(nP=nC)
 simulation = magnetics.simulation.Simulation3DIntegral(
     mesh=mesh,
     survey=survey,
-    chiMap=idenMap,
+    chi=idenMap,
     active_cells=surf,
     store_sensitivities="ram",
 )
@@ -288,7 +288,7 @@ surveyAmp = magnetics.survey.Survey(srcField)
 simulation = magnetics.simulation.Simulation3DIntegral(
     mesh=mesh,
     survey=surveyAmp,
-    chiMap=idenMap,
+    chi=idenMap,
     active_cells=surf,
     is_amplitude_data=True,
 )
@@ -350,7 +350,7 @@ mstart = np.ones(nC) * 1e-4
 simulation = magnetics.simulation.Simulation3DIntegral(
     survey=surveyAmp,
     mesh=mesh,
-    chiMap=idenMap,
+    chi=idenMap,
     active_cells=actv,
     is_amplitude_data=True,
 )

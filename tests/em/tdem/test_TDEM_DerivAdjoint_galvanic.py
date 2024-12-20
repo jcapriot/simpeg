@@ -57,7 +57,7 @@ def setUp_TDEM(prbtype="ElectricField", rxcomp="ElectricFieldx", src_z=0.0):
     m = np.log(5e-1) * np.ones(mapping.nP) + 1e-3 * rng.normal(size=mapping.nP)
 
     prb = getattr(tdem, "Simulation3D{}".format(prbtype))(
-        mesh, survey=survey, time_steps=time_steps, sigmaMap=mapping
+        mesh, survey=survey, time_steps=time_steps, sigma=mapping
     )
 
     return prb, m, mesh
