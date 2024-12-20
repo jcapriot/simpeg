@@ -162,7 +162,7 @@ class MVIProblemTest(unittest.TestCase):
         mrec_MVIC = inv.run(m0)
 
         sim.chi = maps.SphericalSystem(nP=nC * 3)
-        self.mstart = sim.chiMap.inverse(mrec_MVIC)
+        self.mstart = sim._prop_map("chi").inverse(mrec_MVIC)
         dmis.simulation.model = self.mstart
         beta = invProb.beta
 

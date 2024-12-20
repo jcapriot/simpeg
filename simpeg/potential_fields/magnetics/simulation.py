@@ -282,7 +282,7 @@ class Simulation3DIntegral(BasePFSimulation, MagneticSusceptibility):
 
     def fields(self, model):
         self.model = model
-        # model = self.chiMap * model
+        # model = self._prop_map('chi') * model
         if self.store_sensitivities == "forward_only":
             if self.engine == "choclo":
                 fields = self._forward(self.chi)

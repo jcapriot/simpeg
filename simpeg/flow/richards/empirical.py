@@ -96,7 +96,7 @@ class Haverkamp_theta(WaterRetention):
         )
 
     def _derivTheta_r(self, u):
-        if self.theta_rMap is None:
+        if not self._prop_map("theta_r"):
             return utils.Zero()
         theta_r, theta_s, alpha, beta = self._get_params()
         ddm = -alpha / (alpha + abs(u) ** beta) + 1
@@ -105,7 +105,7 @@ class Haverkamp_theta(WaterRetention):
         return dT
 
     def _derivTheta_s(self, u):
-        if self.theta_sMap is None:
+        if not self._prop_map("theta_s"):
             return utils.Zero()
         theta_r, theta_s, alpha, beta = self._get_params()
         P_p, P_n = _get_projections(u)  # Compute the positive/negative domains
@@ -335,7 +335,7 @@ class Vangenuchten_theta(WaterRetention):
         )
 
     def _derivTheta_r(self, u):
-        if self.theta_rMap is None:
+        if not self._prop_map("theta_r"):
             return utils.Zero()
         theta_r, theta_s, alpha, n = self._get_params()
         ddm = -((abs(alpha * u) ** n + 1.0) ** (-1.0 + 1.0 / n)) + 1
@@ -344,7 +344,7 @@ class Vangenuchten_theta(WaterRetention):
         return dT
 
     def _derivTheta_s(self, u):
-        if self.theta_sMap is None:
+        if not self._prop_map("theta_s"):
             return utils.Zero()
         theta_r, theta_s, alpha, n = self._get_params()
         P_p, P_n = _get_projections(u)  # Compute the positive/negative domains
