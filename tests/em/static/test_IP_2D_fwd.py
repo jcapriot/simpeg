@@ -78,7 +78,7 @@ class IPProblemAnalyticTests(unittest.TestCase):
 
     def test_Simulation2DCellCentered(self):
         problemDC = dc.Simulation2DCellCentered(
-            self.mesh, survey=self.surveyDC, rhoMap=maps.IdentityMap(self.mesh)
+            self.mesh, survey=self.surveyDC, rho=maps.IdentityMap(self.mesh)
         )
         data0 = problemDC.dpred(1.0 / self.sigma0)
         finf = problemDC.fields(1.0 / self.sigmaInf)

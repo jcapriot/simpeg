@@ -39,7 +39,7 @@ class DCProblemTestsCC_storeJ(unittest.TestCase):
         source_list = dc.utils.WennerSrcList(nElecs, aSpacing, in2D=True)
         survey = dc.survey.Survey(source_list)
         simulation = dc.simulation.Simulation3DCellCentered(
-            mesh=mesh, survey=survey, rhoMap=maps.IdentityMap(mesh), storeJ=True
+            mesh=mesh, survey=survey, rho=maps.IdentityMap(mesh), storeJ=True
         )
 
         mSynth = np.ones(mesh.nC)
@@ -122,7 +122,7 @@ class DCProblemTestsN_storeJ(unittest.TestCase):
         source_list = dc.utils.WennerSrcList(nElecs, aSpacing, in2D=True)
         survey = dc.survey.Survey(source_list)
         simulation = dc.simulation.Simulation3DNodal(
-            mesh=mesh, survey=survey, rhoMap=maps.IdentityMap(mesh), storeJ=True
+            mesh=mesh, survey=survey, rho=maps.IdentityMap(mesh), storeJ=True
         )
 
         mSynth = np.ones(mesh.nC)

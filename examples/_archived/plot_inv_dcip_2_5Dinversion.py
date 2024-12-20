@@ -125,7 +125,7 @@ def run(plotIt=True, survey_type="dipole-dipole"):
 
     # Generate 2.5D DC problem
     # "N" means potential is defined at nodes
-    prb = DC.Simulation2DNodal(mesh, survey=survey_dc, rhoMap=mapping, storeJ=True)
+    prb = DC.Simulation2DNodal(mesh, survey=survey_dc, rho=mapping, storeJ=True)
 
     # Make synthetic DC data with 5% Gaussian noise
     data_dc = prb.make_synthetic_data(mtrue_dc, relative_error=0.05, add_noise=True)

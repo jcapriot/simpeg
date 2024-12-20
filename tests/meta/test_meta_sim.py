@@ -106,7 +106,7 @@ def test_sum_sim_correctness():
     rx = gravity.Point(rx_locs, components=["gz"])
     survey = gravity.Survey(gravity.SourceField(rx))
     full_sim = gravity.Simulation3DIntegral(
-        mesh, survey=survey, rhoMap=maps.IdentityMap(), n_processes=1
+        mesh, survey=survey, rho=maps.IdentityMap(), n_processes=1
     )
 
     mesh_bot = TensorMesh([mesh.h[0], mesh.h[1], mesh.h[2][:8]], origin=mesh.origin)
@@ -120,10 +120,10 @@ def test_sum_sim_correctness():
     ]
     sims = [
         gravity.Simulation3DIntegral(
-            mesh_bot, survey=survey, rhoMap=maps.IdentityMap(), n_processes=1
+            mesh_bot, survey=survey, rho=maps.IdentityMap(), n_processes=1
         ),
         gravity.Simulation3DIntegral(
-            mesh_top, survey=survey, rhoMap=maps.IdentityMap(), n_processes=1
+            mesh_top, survey=survey, rho=maps.IdentityMap(), n_processes=1
         ),
     ]
 
@@ -187,7 +187,7 @@ def test_repeat_sim_correctness():
     rx = gravity.Point(rx_locs, components=["gz"])
     survey = gravity.Survey(gravity.SourceField(rx))
     sim = gravity.Simulation3DIntegral(
-        mesh, survey=survey, rhoMap=maps.IdentityMap(), n_processes=1
+        mesh, survey=survey, rho=maps.IdentityMap(), n_processes=1
     )
 
     time_mesh = TensorMesh(
@@ -213,7 +213,7 @@ def test_repeat_sim_correctness():
         mappings.append(maps.LinearMap(ave_full))
         simulations.append(
             gravity.Simulation3DIntegral(
-                mesh, survey=survey, rhoMap=maps.IdentityMap(), n_processes=1
+                mesh, survey=survey, rho=maps.IdentityMap(), n_processes=1
             )
         )
 
@@ -320,10 +320,10 @@ def test_sum_errors():
 
     sims = [
         gravity.Simulation3DIntegral(
-            mesh_bot, survey=survey1, rhoMap=maps.IdentityMap(mesh_bot), n_processes=1
+            mesh_bot, survey=survey1, rho=maps.IdentityMap(mesh_bot), n_processes=1
         ),
         gravity.Simulation3DIntegral(
-            mesh_top, survey=survey2, rhoMap=maps.IdentityMap(mesh_top), n_processes=1
+            mesh_top, survey=survey2, rho=maps.IdentityMap(mesh_top), n_processes=1
         ),
     ]
 

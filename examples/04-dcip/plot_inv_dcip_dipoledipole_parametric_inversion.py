@@ -146,7 +146,7 @@ def run(
     prb = DC.Simulation2DNodal(
         mesh,
         survey=survey,
-        rhoMap=mapping,
+        rho=mapping,
         storeJ=True,
     )
 

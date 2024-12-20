@@ -203,7 +203,7 @@ model_map = maps.IdentityMap(nP=len(starting_model)) * maps.ExpMap()
 
 simulation = dc.simulation_1d.Simulation1DLayers(
     survey=survey,
-    rhoMap=model_map,
+    rho=model_map,
     thicknesses=layer_thicknesses,
 )
 

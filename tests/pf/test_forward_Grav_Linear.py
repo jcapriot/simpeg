@@ -144,7 +144,7 @@ class TestsGravitySimulation:
         sim = gravity.Simulation3DIntegral(
             mesh,
             survey=survey,
-            rhoMap=idenMap,
+            rho=idenMap,
             active_cells=active_cells,
             store_sensitivities=store_sensitivities,
             engine=engine,
@@ -200,7 +200,7 @@ class TestsGravitySimulation:
         sim = gravity.Simulation3DIntegral(
             mesh,
             survey=survey,
-            rhoMap=idenMap,
+            rho=idenMap,
             active_cells=active_cells,
             store_sensitivities=store_sensitivities,
             engine=engine,
@@ -260,7 +260,7 @@ class TestsGravitySimulation:
         sim = gravity.Simulation3DIntegral(
             mesh,
             survey=survey,
-            rhoMap=idenMap,
+            rho=idenMap,
             active_cells=active_cells,
             store_sensitivities=store_sensitivities,
             engine=engine,
@@ -302,7 +302,7 @@ class TestsGravitySimulation:
         simulation = gravity.Simulation3DIntegral(
             simple_mesh,
             survey=survey,
-            rhoMap=idenMap,
+            rho=idenMap,
             active_cells=active_cells,
             engine=engine,
             store_sensitivities=store_sensitivities,

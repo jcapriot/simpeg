@@ -24,8 +24,8 @@ class DataMisfitTest(unittest.TestCase):
         sigma = np.random.rand(mesh.nC)
         model = np.log(sigma)
 
-        # prob = DC.Simulation3DCellCentered(mesh, rhoMap=maps.ExpMap(mesh))
-        # prob1 = DC.Simulation3DCellCentered(mesh, rhoMap=maps.ExpMap(mesh))
+        # prob = DC.Simulation3DCellCentered(mesh, rho=maps.ExpMap(mesh))
+        # prob1 = DC.Simulation3DCellCentered(mesh, rho=maps.ExpMap(mesh))
 
         rx = DC.Rx.Pole(
             utils.ndgrid([mesh.cell_centers_x, np.r_[mesh.cell_centers_y.max()]])

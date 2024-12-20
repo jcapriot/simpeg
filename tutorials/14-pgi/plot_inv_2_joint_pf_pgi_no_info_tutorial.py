@@ -233,7 +233,7 @@ idenMap = maps.IdentityMap(nP=nactv)
 simulation_grav = pf.gravity.simulation.Simulation3DIntegral(
     survey=data_grav.survey,
     mesh=mesh,
-    rhoMap=wires.den,
+    rho=wires.den,
     active_cells=actv,
     engine="choclo",
 )

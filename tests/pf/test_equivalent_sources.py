@@ -262,14 +262,14 @@ class TestGravityEquivalentSourcesForward:
         # Build simulations
         mapping = get_mapping(tensor_mesh)
         sim_3d = gravity.Simulation3DIntegral(
-            survey=gravity_survey, mesh=mesh_3d, rhoMap=mapping
+            survey=gravity_survey, mesh=mesh_3d, rho=mapping
         )
         eq_sources = gravity.SimulationEquivalentSourceLayer(
             mesh=tensor_mesh,
             cell_z_top=mesh_top,
             cell_z_bottom=mesh_bottom,
             survey=gravity_survey,
-            rhoMap=mapping,
+            rho=mapping,
             engine=engine,
             store_sensitivities=store_sensitivities,
         )
@@ -301,15 +301,13 @@ class TestGravityEquivalentSourcesForward:
         mesh_3d = get_mesh_3d(tensor_mesh, top=mesh_top, bottom=mesh_bottom)
         # Build simulations
         mapping = get_mapping(tensor_mesh)
-        sim_3d = gravity.Simulation3DIntegral(
-            survey=survey, mesh=mesh_3d, rhoMap=mapping
-        )
+        sim_3d = gravity.Simulation3DIntegral(survey=survey, mesh=mesh_3d, rho=mapping)
         eq_sources = gravity.SimulationEquivalentSourceLayer(
             mesh=tensor_mesh,
             cell_z_top=mesh_top,
             cell_z_bottom=mesh_bottom,
             survey=survey,
-            rhoMap=mapping,
+            rho=mapping,
             engine=engine,
             store_sensitivities=store_sensitivities,
         )
@@ -343,14 +341,14 @@ class TestGravityEquivalentSourcesForward:
         # Build simulations
         mapping = get_mapping(tensor_mesh)
         sim_3d = gravity.Simulation3DIntegral(
-            survey=gravity_survey, mesh=mesh_3d, rhoMap=mapping
+            survey=gravity_survey, mesh=mesh_3d, rho=mapping
         )
         eq_sources = gravity.SimulationEquivalentSourceLayer(
             mesh=tensor_mesh,
             cell_z_top=mesh_top,
             cell_z_bottom=mesh_bottom,
             survey=gravity_survey,
-            rhoMap=mapping,
+            rho=mapping,
             engine=engine,
             store_sensitivities="disk",
             sensitivity_path=str(sensitivity_path),
@@ -395,7 +393,7 @@ class TestGravityEquivalentSourcesForward:
         sim_3d = gravity.Simulation3DIntegral(
             survey=gravity_survey,
             mesh=mesh_3d,
-            rhoMap=mapping,
+            rho=mapping,
             active_cells=active_cells,
         )
         eq_sources = gravity.SimulationEquivalentSourceLayer(
@@ -403,7 +401,7 @@ class TestGravityEquivalentSourcesForward:
             cell_z_top=mesh_top,
             cell_z_bottom=mesh_bottom,
             survey=gravity_survey,
-            rhoMap=mapping,
+            rho=mapping,
             engine=engine,
             store_sensitivities=store_sensitivities,
             active_cells=active_cells,
@@ -425,7 +423,7 @@ class TestGravityEquivalentSourcesForward:
             cell_z_top=mesh_top,
             cell_z_bottom=mesh_bottom,
             survey=gravity_survey,
-            rhoMap=mapping,
+            rho=mapping,
             store_sensitivities=store_sensitivities,
         )
         sim_geoana = gravity.SimulationEquivalentSourceLayer(engine="geoana", **kwargs)
@@ -444,7 +442,7 @@ class TestGravityEquivalentSourcesForward:
             cell_z_top=mesh_top,
             cell_z_bottom=mesh_bottom,
             survey=gravity_survey,
-            rhoMap=mapping,
+            rho=mapping,
             engine="choclo",
         )
         sim_parallel = gravity.SimulationEquivalentSourceLayer(
@@ -764,7 +762,7 @@ class TestGravityEquivalentSources(BaseFittingEquivalentSources):
             mesh_top,
             mesh_bottom,
             survey=gravity_survey,
-            rhoMap=mapping,
+            rho=mapping,
             engine=engine,
         )
         # Generate synthetic data
