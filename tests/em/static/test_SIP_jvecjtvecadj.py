@@ -61,7 +61,7 @@ class SIPProblemTestsCC(unittest.TestCase):
             survey=survey,
             rho=1.0 / sigma,
             eta=wires.eta,
-            tauiMap=wires.taui,
+            taui=wires.taui,
             storeJ=False,
         )
         mSynth = np.r_[eta, 1.0 / tau]
@@ -162,7 +162,7 @@ class SIPProblemTestsN(unittest.TestCase):
             survey=survey,
             sigma=sigma,
             eta=wires.eta,
-            tauiMap=wires.taui,
+            taui=wires.taui,
             storeJ=False,
         )
         print(survey.nD)
@@ -273,8 +273,8 @@ class SIPProblemTestsN_air(unittest.TestCase):
             survey=survey,
             sigma=sigma,
             eta=actmapeta * wires.eta,
-            tauiMap=actmaptau * wires.taui,
-            cMap=actmapc * wires.c,
+            taui=actmaptau * wires.taui,
+            c=actmapc * wires.c,
             actinds=~airind,
             storeJ=False,
             verbose=False,

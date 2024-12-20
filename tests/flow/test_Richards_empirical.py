@@ -40,8 +40,8 @@ class TestModels(unittest.TestCase):
         opts = [
             ("theta_r", dict(theta_r=idnmap), 1),
             ("theta_s", dict(theta_s=idnmap), 1),
-            ("alpha", dict(alphaMap=idnmap), 1),
-            ("beta", dict(betaMap=idnmap), 1),
+            ("alpha", dict(alpha=idnmap), 1),
+            ("beta", dict(beta=idnmap), 1),
         ]
 
         u = np.random.randn(mesh.nC)
@@ -86,7 +86,7 @@ class TestModels(unittest.TestCase):
             ("theta_r", dict(theta_r=idnmap), 1),
             ("theta_s", dict(theta_s=idnmap), 1),
             ("n", dict(nMap=idnmap), 1),
-            ("alpha", dict(alphaMap=idnmap), 1),
+            ("alpha", dict(alpha=idnmap), 1),
         ]
 
         u = np.random.randn(mesh.nC)
@@ -126,25 +126,25 @@ class TestModels(unittest.TestCase):
 
         opts = [
             ("Ks", dict(Ks=expmap), 1),
-            ("A", dict(AMap=expmap), 1),
-            ("gamma", dict(gammaMap=expmap), 1),
-            ("Ks-A", dict(Ks=expmap * wires2.one, AMap=expmap * wires2.two), 2),
+            ("A", dict(A=expmap), 1),
+            ("gamma", dict(gamma=expmap), 1),
+            ("Ks-A", dict(Ks=expmap * wires2.one, A=expmap * wires2.two), 2),
             (
                 "Ks-gamma",
-                dict(Ks=expmap * wires2.one, gammaMap=expmap * wires2.two),
+                dict(Ks=expmap * wires2.one, gamma=expmap * wires2.two),
                 2,
             ),
             (
                 "A-gamma",
-                dict(AMap=expmap * wires2.one, gammaMap=expmap * wires2.two),
+                dict(A=expmap * wires2.one, gamma=expmap * wires2.two),
                 2,
             ),
             (
                 "Ks-A-gamma",
                 dict(
                     Ks=expmap * wires3.one,
-                    AMap=expmap * wires3.two,
-                    gammaMap=expmap * wires3.three,
+                    A=expmap * wires3.two,
+                    gamma=expmap * wires3.three,
                 ),
                 3,
             ),
@@ -198,9 +198,9 @@ class TestModels(unittest.TestCase):
 
         opts = [
             ("Ks", dict(Ks=expmap), 1),
-            ("I", dict(IMap=idnmap), 1),
+            ("I", dict(I=idnmap), 1),
             ("n", dict(nMap=idnmap), 1),
-            ("alpha", dict(alphaMap=idnmap), 1),
+            ("alpha", dict(alpha=idnmap), 1),
         ]
 
         u = np.random.randn(mesh.nC)

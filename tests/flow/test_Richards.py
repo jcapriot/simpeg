@@ -180,7 +180,7 @@ class RichardsTests1D_Multi(RichardsTests1D):
     def setup_maps(self, mesh, k_fun, theta_fun):
         wires = maps.Wires(("Ks", mesh.nC), ("A", mesh.nC), ("theta_s", mesh.nC))
         k_fun.Ks = maps.ExpMap(nP=mesh.nC) * wires.Ks
-        k_fun.AMap = wires.A
+        k_fun.A = wires.A
         theta_fun.theta_sMap = wires.theta_s
 
     def setup_model(self):

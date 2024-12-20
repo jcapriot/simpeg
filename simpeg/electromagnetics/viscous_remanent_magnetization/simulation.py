@@ -857,7 +857,7 @@ class Simulation3DLinear(BaseVRMSimulation):
 
         nAct = list(self.active_cells).count(True)
         if self.xiMap is None:
-            self.xiMap = maps.IdentityMap(nP=nAct)
+            self.xi = maps.IdentityMap(nP=nAct)
 
     @property
     def A(self):
