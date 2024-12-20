@@ -509,6 +509,8 @@ def _add_deprecated_physical_property_functions(
             UserWarning,
             stacklevel=2,
         )
+        # TODO REMOVE THE ERROR BEFORE MERGING
+        raise SyntaxError(f"FIX ME {old_map} GET")
         return self._prop_map(new_name)
 
     @prop_map.setter
@@ -518,8 +520,6 @@ def _add_deprecated_physical_property_functions(
             UserWarning,
             stacklevel=2,
         )
-        # TODO REMOVE THE ERROR BEFORE MERGING
-        raise SyntaxError("FIX ME MAP SET")
         setattr(self, new_name, value)
 
     prop_map.__doc__ = f"""

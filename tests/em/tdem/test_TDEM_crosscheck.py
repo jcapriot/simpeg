@@ -70,8 +70,8 @@ def setUp_TDEM(
     )
 
     rng = np.random.default_rng(seed=42)
-    m = np.log(1e-1) * np.ones(prb.sigmaMap.nP) + 1e-2 * rng.uniform(
-        size=prb.sigmaMap.nP
+    m = np.log(1e-1) * np.ones(prb._prop_map("sigma").nP) + 1e-2 * rng.uniform(
+        size=prb._prop_map("sigma").nP
     )
 
     return prb, m, mesh

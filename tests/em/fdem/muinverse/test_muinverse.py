@@ -192,7 +192,7 @@ class MuTests(unittest.TestCase):
         print("Testing Jvec {}".format(prbtype))
 
         rng = np.random.default_rng(seed=3321)
-        u = rng.uniform(size=self.simulation.muMap.nP)
+        u = rng.uniform(size=self.simulation._prop_map("mu").nP)
         v = rng.uniform(size=self.survey.nD)
 
         self.simulation.model = self.m0

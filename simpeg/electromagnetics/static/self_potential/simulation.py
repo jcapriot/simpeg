@@ -80,7 +80,7 @@ class Simulation3DCellCentered(dc.Simulation3DCellCentered):
     @property
     def _delete_on_model_update(self):
         # When enabling resistivity derivatives, uncomment these lines
-        # if self.rhoMap is not None:
+        # if self._prop_map('rho'):
         #     return super()._delete_on_model_update
         if self.storeJ:
             if q_map := self._prop_map("q"):

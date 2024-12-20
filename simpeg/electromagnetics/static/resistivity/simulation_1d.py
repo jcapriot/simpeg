@@ -302,9 +302,9 @@ class Simulation1DLayers(BaseSimulation, ElectricalConductivity, LayerThickness)
             J_rho, J_h = _dphi_tilde(self.rho, self.thicknesses, self._lambdas)
 
             Jmatrix = 0
-            if self.rhoMap is not None:
+            if self._prop_map("rho"):
                 Jmatrix += (self._As @ J_rho) @ self.rhoDeriv
-            if self.thicknessesMap is not None:
+            if self._prop_map("thicknesses"):
                 Jmatrix += (self._As @ J_h) @ self.thicknessesDeriv
             self._Jmatrix = Jmatrix
         return self._Jmatrix

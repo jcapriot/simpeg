@@ -128,7 +128,7 @@ class _HField(_1DField):
         return np.squeeze(y)
 
     def _eDeriv_m(self, src, v, adjoint=False):
-        if self.simulation.rhoMap is None:
+        if not self.simulation._prop_map("rho"):
             return Zero()
         dRho = self.simulation.rhoDeriv
         h = self[src, "h"]

@@ -633,7 +633,7 @@ class MagDipole(BaseFDEMSrc):
         elif formulation == "HJ":
             return Zero()
             # raise NotImplementedError
-            # if not simulation.muMap:
+            # if not simulation._prop_map('mu'):
             #     return Zero()
             # mu_s = simulation.mu - self.mu
             # MMui_s = simulation.mesh.get_edge_inner_product(

@@ -319,11 +319,11 @@ class BaseEM1DSimulation(
         out = 0.0
         if self.hMap is not None:
             out = out + Js["dh"] @ (self.hDeriv @ v)
-        if self.sigmaMap is not None:
+        if self._prop_map("sigma"):
             out = out + Js["ds"] @ (self.sigmaDeriv @ v)
-        if self.muMap is not None:
+        if self._prop_map("mu"):
             out = out + Js["dmu"] @ (self.muDeriv @ v)
-        if self.thicknessesMap is not None:
+        if self._prop_map("thick"):
             out = out + Js["dthick"] @ (self.thicknessesDeriv @ v)
         return out
 
@@ -332,11 +332,11 @@ class BaseEM1DSimulation(
         out = 0.0
         if self.hMap is not None:
             out = out + self.hDeriv.T @ (Js["dh"].T @ v)
-        if self.sigmaMap is not None:
+        if self._prop_map("sigma"):
             out = out + self.sigmaDeriv.T @ (Js["ds"].T @ v)
-        if self.muMap is not None:
+        if self._prop_map("mu"):
             out = out + self.muDeriv.T @ (Js["dmu"].T @ v)
-        if self.thicknessesMap is not None:
+        if self._prop_map("thick"):
             out = out + self.thicknessesDeriv.T @ (Js["dthick"].T @ v)
         return out
 
@@ -590,13 +590,13 @@ class BaseEM1DSimulation(
             if self.hMap is not None:
                 J = Js["dh"] @ self.hDeriv
                 out = out + np.einsum("i,ij,ij->j", W, J, J)
-            if self.sigmaMap is not None:
+            if self._prop_map("sigma"):
                 J = Js["ds"] @ self.sigmaDeriv
                 out = out + np.einsum("i,ij,ij->j", W, J, J)
-            if self.muMap is not None:
+            if self._prop_map("mu"):
                 J = Js["dmu"] @ self.muDeriv
                 out = out + np.einsum("i,ij,ij->j", W, J, J)
-            if self.thicknessesMap is not None:
+            if self._prop_map("thick"):
                 J = Js["dthick"] @ self.thicknessesDeriv
                 out = out + np.einsum("i,ij,ij->j", W, J, J)
             self._gtgdiag = out

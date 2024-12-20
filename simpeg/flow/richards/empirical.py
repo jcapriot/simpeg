@@ -199,7 +199,7 @@ class Haverkamp_k(HydraulicConductivity):
         return self._derivKs(u) + self._derivA(u) + self._derivGamma(u)
 
     def _derivKs(self, u):
-        if self.KsMap is None:
+        if not self._prop_map("Ks"):
             return utils.Zero()
 
         Ks, A, gamma = self._get_params()
@@ -491,7 +491,7 @@ class Vangenuchten_k(HydraulicConductivity):
         )
 
     def _derivKs(self, u):
-        if self.KsMap is None:
+        if not self._prop_map("Ks"):
             return utils.Zero()
 
         Ks, alpha, I, n, m = self._get_params()

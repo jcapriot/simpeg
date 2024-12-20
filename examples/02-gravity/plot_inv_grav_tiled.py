@@ -188,7 +188,7 @@ global_misfit = local_misfits[0] + local_misfits[1]
 fig = plt.figure(figsize=(12, 6))
 for ii, local_misfit in enumerate(local_misfits):
     local_mesh = local_misfit.simulation.mesh
-    local_map = local_misfit.simulation.rhoMap
+    local_map = local_misfit.simulation._prop_map("rho")
 
     inject_local = maps.InjectActiveCells(local_mesh, local_map.local_active, np.nan)
 

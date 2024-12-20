@@ -1162,7 +1162,7 @@ class Simulation3DDifferential(BaseMagneticPDESimulation):
         return self._MfMu0
 
     def makeMassMatrices(self, m):
-        mu = self.muMap * m
+        mu = self._prop_map("mu") * m
         self._MfMui = self.mesh.get_face_inner_product(1.0 / mu) / self.mesh.dim
         # self._MfMui = self.mesh.get_face_inner_product(1./mu)
         # TODO: this will break if tensor mu
@@ -1193,7 +1193,7 @@ class Simulation3DDifferential(BaseMagneticPDESimulation):
         """
         B0 = self.getB0()
 
-        mu = self.muMap * m
+        mu = self._prop_map("mu") * m
         chi = mu / mu_0 - 1
 
         # Temporary fix
@@ -1339,7 +1339,7 @@ class Simulation3DDifferential(BaseMagneticPDESimulation):
             u = self.fields(m)
 
         B, u = u["B"], u["u"]
-        mu = self.muMap * (m)
+        mu = self._prop_map("mu") * (m)
         dmu_dm = self.muDeriv
         # dchidmu = sdiag(1 / mu_0 * np.ones(self.mesh.nC))
 

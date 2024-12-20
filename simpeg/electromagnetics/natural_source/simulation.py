@@ -309,9 +309,9 @@ class Simulation2DElectricField(BaseFDEMSimulation):
 
                 map_l_kwargs = {}
                 map_r_kwargs = {}
-                if self.sigmaMap is not None:
-                    map_l_kwargs["sigma"] = P_l * self.sigmaMap
-                    map_r_kwargs["sigma"] = P_r * self.sigmaMap
+                if sigma_map := self._prop_map("sigma"):
+                    map_l_kwargs["sigma"] = P_l * sigma_map
+                    map_r_kwargs["sigma"] = P_r * sigma_map
                 if self.muiMap is not None:
                     map_l_kwargs["mui"] = P_l * self.muiMap
                     map_r_kwargs["mui"] = P_r * self.muiMap
@@ -450,7 +450,7 @@ class Simulation2DElectricField(BaseFDEMSimulation):
                     sim.mui = self._P_l @ self.mui
                 except Exception:
                     sim.mui = self.mui
-            if self.sigmaMap is None:
+            if not self._prop_map("sigma"):
                 try:
                     sim.sigma = self._P_l @ self.sigma
                 except Exception:
@@ -463,7 +463,7 @@ class Simulation2DElectricField(BaseFDEMSimulation):
                     sim.mui = self._P_r @ self.mui
                 except Exception:
                     sim.mui = self.mui
-            if self.sigmaMap is None:
+            if not self._prop_map("sigma"):
                 try:
                     sim.sigma = self._P_r @ self.sigma
                 except Exception:
@@ -535,12 +535,12 @@ class Simulation2DMagneticField(BaseFDEMSimulation):
 
                 map_l_kwargs = {}
                 map_r_kwargs = {}
-                if self.rhoMap is not None:
-                    map_l_kwargs["rho"] = P_l * self.rhoMap
-                    map_r_kwargs["rho"] = P_r * self.rhoMap
-                if self.muMap is not None:
-                    map_l_kwargs["mu"] = P_l * self.muMap
-                    map_r_kwargs["mu"] = P_r * self.muMap
+                if self._prop_map("rho"):
+                    map_l_kwargs["rho"] = P_l * self._prop_map("rho")
+                    map_r_kwargs["rho"] = P_r * self._prop_map("rho")
+                if self._prop_map("mu"):
+                    map_l_kwargs["mu"] = P_l * self._prop_map("mu")
+                    map_r_kwargs["mu"] = P_r * self._prop_map("mu")
 
                 # create a survey with 1 source per frequency (no receivers)
                 frequencies = self.survey.frequencies
@@ -667,12 +667,12 @@ class Simulation2DMagneticField(BaseFDEMSimulation):
             if model is None:
                 model = self.model
             sim = self._sim_left
-            if self.muMap is None:
+            if not self._prop_map("mu"):
                 try:
                     sim.mu = self._P_l @ self.mu
                 except Exception:
                     sim.mu = self.mu
-            if self.rhoMap is None:
+            if not self._prop_map("rho"):
                 try:
                     sim.rho = self._P_l @ self.rho
                 except Exception:
@@ -680,12 +680,12 @@ class Simulation2DMagneticField(BaseFDEMSimulation):
             f_left = sim.fields(model)
 
             sim = self._sim_right
-            if self.muMap is None:
+            if not self._prop_map("mu"):
                 try:
                     sim.mu = self._P_r @ self.mu
                 except Exception:
                     sim.mu = self.mu
-            if self.rhoMap is None:
+            if not self._prop_map("rho"):
                 try:
                     sim.rho = self._P_r @ self.rho
                 except Exception:

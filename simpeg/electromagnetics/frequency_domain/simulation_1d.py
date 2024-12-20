@@ -201,15 +201,12 @@ class Simulation1DLayered(BaseEM1DSimulation):
                 v_dh = v_dh.T
                 self._J["dh"] = self._project_to_data(v_dh)
 
-            if (
-                self.sigmaMap is not None
-                or self.muMap is not None
-                or self.thicknessesMap is not None
-            ):
+            mapped_props = self._mapped_properties
+            if mapped_props:
                 rTE_ds, rTE_dh, rTE_dmu = rTE_gradient(
                     frequencies, unique_lambs, sig, mu, self.thicknesses
                 )
-                if self.sigmaMap is not None:
+                if self._prop_map("sigma"):
                     rTE_ds = rTE_ds[:, i_freq]
                     rTE_ds = np.take_along_axis(rTE_ds, inv_lambs[None, ...], axis=-1)
                     v_ds = (
@@ -220,7 +217,7 @@ class Simulation1DLayered(BaseEM1DSimulation):
                         @ W.T
                     ).T
                     self._J["ds"] = self._project_to_data(v_ds)
-                if self.muMap is not None:
+                if self._prop_map("mu"):
                     rTE_dmu = rTE_dmu[:, i_freq]
                     rTE_dmu = np.take_along_axis(rTE_dmu, inv_lambs[None, ...], axis=-1)
                     v_dmu = (
@@ -231,7 +228,7 @@ class Simulation1DLayered(BaseEM1DSimulation):
                         @ W.T
                     ).T
                     self._J["dmu"] = self._project_to_data(v_dmu)
-                if self.thicknessesMap is not None:
+                if self._prop_map("thickness"):
                     rTE_dh = rTE_dh[:, i_freq]
                     rTE_dh = np.take_along_axis(rTE_dh, inv_lambs[None, ...], axis=-1)
                     v_dthick = (

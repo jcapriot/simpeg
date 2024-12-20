@@ -251,9 +251,9 @@ class Simulation1DRecursive(BaseSimulation, ElectricalConductivity, LayerThickne
             self.survey.frequencies, self.thicknesses, self.sigma
         )
         Js = []
-        if self.sigmaMap is not None:
+        if self._prop_map("sigma"):
             Js.append(Z_dsigma)
-        if self.thicknessesMap is not None:
+        if self._prop_map("mu"):
             Js.append(Z_dthick)
         Js = np.hstack(Js)
 
@@ -286,11 +286,11 @@ class Simulation1DRecursive(BaseSimulation, ElectricalConductivity, LayerThickne
                 start = end
         self._Jmatrix = {}
         start = 0
-        if self.sigmaMap is not None:
+        if self._prop_map("sigma"):
             end = start + Z_dsigma.shape[1]
             self._Jmatrix["sigma"] = J[:, start:end]
             start = end
-        if self.thicknessesMap is not None:
+        if self._prop_map("mu"):
             end = start + Z_dthick.shape[1]
             self._Jmatrix["thick"] = J[:, start:end]
         return self._Jmatrix
@@ -304,10 +304,10 @@ class Simulation1DRecursive(BaseSimulation, ElectricalConductivity, LayerThickne
                 W = W.diagonal() ** 2
 
             gtgdiag = 0
-            if self.sigmaMap is not None:
+            if self._prop_map("sigma"):
                 J = Js["sigma"] @ self.sigmaDeriv
                 gtgdiag += np.einsum("i,ij,ij->j", W, J, J)
-            if self.thicknessesMap is not None:
+            if self._prop_map("mu"):
                 J = Js["thick"] @ self.thicknessesDeriv
                 gtgdiag += np.einsum("i,ij,ij->j", W, J, J)
             self._gtgdiag = gtgdiag
@@ -316,18 +316,18 @@ class Simulation1DRecursive(BaseSimulation, ElectricalConductivity, LayerThickne
     def Jvec(self, m, v, f=None):
         J = self.getJ(m, f=None)
         Jvec = 0
-        if self.sigmaMap is not None:
+        if self._prop_map("sigma"):
             Jvec += J["sigma"] @ (self.sigmaDeriv * v)
-        if self.thicknessesMap is not None:
+        if self._prop_map("mu"):
             Jvec += J["thick"] @ (self.thicknessesDeriv * v)
         return Jvec
 
     def Jtvec(self, m, v, f=None):
         J = self.getJ(m, f=None)
         JTvec = 0
-        if self.sigmaMap is not None:
+        if self._prop_map("sigma"):
             JTvec += self.sigmaDeriv.T @ (J["sigma"].T @ v)
-        if self.thicknessesMap is not None:
+        if self._prop_map("mu"):
             JTvec += self.thicknessesDeriv.T @ (J["thick"].T @ v)
         return JTvec
 

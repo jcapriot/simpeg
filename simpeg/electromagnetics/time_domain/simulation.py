@@ -55,7 +55,7 @@ class BaseTDEMSimulation(BaseTimeSimulation, BaseEMSimulation):
     def __init__(self, mesh, survey=None, *, dt_threshold=1e-8, **kwargs):
         super().__init__(mesh=mesh, survey=survey, **kwargs)
         self.dt_threshold = dt_threshold
-        if self.muMap is not None:
+        if self._prop_map("mu"):
             raise NotImplementedError(
                 "Time domain EM simulations do not support magnetic permeability "
                 "inversion, yet."
@@ -620,7 +620,7 @@ class BaseTDEMSimulation(BaseTimeSimulation, BaseEMSimulation):
             List of the model-dependent attributes to clean upon model update.
         """
         items = super()._delete_on_model_update
-        if self.sigmaMap is not None:
+        if self._prop_map("sigma"):
             items = items + ["_Adcinv"]  #: clear DC matrix factors on any model updates
             # if there is a sigmaMap
         return items
