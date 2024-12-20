@@ -58,7 +58,7 @@ class _EField(_1DField):
     def _h(self, eSolution, source_list):
         omegas = np.array([omega(src.frequency) for src in source_list])
         e = self._e(eSolution, source_list)
-        if self.simulation.muiMap is not None:
+        if self.simulation._prop_map("mui") is not None:
             mui = self.simulation.mui[:, None]
         else:
             mui = self.simulation.mui
@@ -69,7 +69,7 @@ class _EField(_1DField):
         if du_dm_v.ndim == 1:
             du_dm_v = du_dm_v[:, None]
         om = omega(src.frequency)
-        if self.simulation.muiMap is not None:
+        if self.simulation._prop_map("mui"):
             mui = self.simulation.mui[:, None]
         else:
             mui = self.simulation.mui
@@ -80,7 +80,7 @@ class _EField(_1DField):
         return np.squeeze(y) / (1j * om)
 
     def _hDeriv_m(self, src, v, adjoint=False):
-        if self.simulation.muiMap is None:
+        if self.simulation._prop_map("mui") is None:
             return Zero()
         om = omega(src.frequency)
         dMui = self.simulation.muiDeriv

@@ -614,7 +614,7 @@ class MagDipole(BaseFDEMSrc):
     def s_eDeriv(self, simulation, v, adjoint=False):
         formulation = simulation._formulation
         if formulation == "EB":
-            if not simulation.muiMap:
+            if not simulation._prop_map("mui"):
                 return Zero()
             mui_s = simulation.mui - 1.0 / self.mu
             MMui_sDeriv = (

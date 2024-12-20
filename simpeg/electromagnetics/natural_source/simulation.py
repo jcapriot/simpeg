@@ -312,9 +312,9 @@ class Simulation2DElectricField(BaseFDEMSimulation):
                 if sigma_map := self._prop_map("sigma"):
                     map_l_kwargs["sigma"] = P_l * sigma_map
                     map_r_kwargs["sigma"] = P_r * sigma_map
-                if self.muiMap is not None:
-                    map_l_kwargs["mui"] = P_l * self.muiMap
-                    map_r_kwargs["mui"] = P_r * self.muiMap
+                if mui_map := self._prop_map("mui") is not None:
+                    map_l_kwargs["mui"] = P_l * mui_map
+                    map_r_kwargs["mui"] = P_r * mui_map
 
                 # create a survey with 1 source per frequency (no receivers)
                 frequencies = self.survey.frequencies
@@ -445,7 +445,7 @@ class Simulation2DElectricField(BaseFDEMSimulation):
             if model is None:
                 model = self.model
             sim = self._sim_left
-            if self.muiMap is None:
+            if not self._prop_map("mui"):
                 try:
                     sim.mui = self._P_l @ self.mui
                 except Exception:
@@ -458,7 +458,7 @@ class Simulation2DElectricField(BaseFDEMSimulation):
             f_left = sim.fields(model)
 
             sim = self._sim_right
-            if self.muiMap is None:
+            if not self._prop_map("mui"):
                 try:
                     sim.mui = self._P_r @ self.mui
                 except Exception:
