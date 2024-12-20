@@ -305,3 +305,122 @@ class WaterRetention(props.HasModel):
         ax.set_title("Water retention curve")
         ax.set_xlabel(r"Soil water potential, $-\psi$")
         ax.set_ylabel("Water content, $\\theta$")
+
+
+@props._add_deprecated_physical_property_functions("tau")
+@props._add_deprecated_physical_property_functions("taui")
+@props._add_deprecated_physical_property_functions("c")
+class ColeCole(props.HasModel):
+    r"""The cole-cole parameterization model base class.
+
+    This class is meant to be used when a simulation is dependant upon a cole-cole model.
+
+    Parameters
+    ----------
+    tau, taui : float, array_like, optional
+        The Cole-Cole time constant (`tau`) and its inverse (`taui`) parameters.
+    c : float, array_like, optional
+        The Cole-Cole frequency exponent (`c`) parameter.
+    tauMap, tauiMap : simpeg.maps.IdentityMap, optional
+        The mapping for the respective Cole-Cole parameters. If set, that parameter will be calculated using
+        this mapping and the simulation's `model`, and also enable the derivative of the property with respect to the
+        `model` needed for inversions.
+    cMap : simpeg.maps.IdentityMap, optional
+        The mapping for the 'c' Cole-Cole parameter. If set, this parameter will be calculated using
+        this mapping and the simulation's `model`, and also enable the derivative of the property needed
+        for inversions.
+
+    Notes
+    -----
+
+    The Cole-Cole parameterization expresses electrical conductivity :math:`\sigma` as a function of frequency as
+
+    .. math::
+
+        \sigma(\omega) = \sigma_{\infty} - \frac{\eta \sigma_{\infty}}{1 + (i \omega \tau)^{c}}
+
+    with the electrical chargeability, :math:`\eta`, defined as
+
+    .. math::
+
+        \eta = \frac{\sigma_\infty - \sigma_0}{\sigma_\infty}
+
+    See Also
+    --------
+    ElectricalConductivity, ElectricalChargeability
+
+    """
+
+    tau = props.PhysicalProperty("Time constant (s)")
+    taui = props.PhysicalProperty("Inverse of time constant (1/s)", reciprocal=tau)
+    c = props.PhysicalProperty("Frequency dependency")
+
+    def __init__(
+        self,
+        tau=None,
+        taui=None,
+        c=None,
+        **kwargs,
+    ):
+        super().__init__(**kwargs)
+        self.tau = tau
+        self.taui = taui
+        self.c = c
+
+
+class ViscousMagneticSusceptibility(props.HasModel):
+    """The viscous remanent magnetic susceptibility parameterization model base class
+
+    Parameters
+    ----------
+    dchi : float, array_like, optional
+        Frequency dependence parameter
+    tau1 : float, array_like, optional
+        Lower bound for log-uniform distribution of time-relaxation constants (s)
+    tau2 : float, array_like, optional
+        Upper bound for log-uniform distribution of time-relaxation constants (s)
+    """
+
+    dchi = props.PhysicalProperty("Frequency dependence parameter", invertible=False)
+    tau1 = props.PhysicalProperty(
+        "Lower bound for log-uniform distribution of time-relaxation constants (s)",
+        invertible=False,
+    )
+    tau2 = props.PhysicalProperty(
+        "Upper bound for log-uniform distribution of time-relaxation constants (s)",
+        invertible=False,
+    )
+
+    def __init__(self, dchi=None, tau1=None, tau2=None, **kwargs):
+        super().__init__(**kwargs)
+        self.dchi = dchi
+        self.tau1 = tau1
+        self.tau2 = tau2
+
+
+@props._add_deprecated_physical_property_functions("xi")
+class AmalgamatedViscousMagneticSusceptibility(props.HasModel):
+    r"""The amalgamated viscous remanent magnetic susceptibility parameterization model base class
+
+    Parameters
+    ----------
+    xi : float, array_like, optional
+        Amalgamated Viscous Remanent Magnetization Parameter
+    xiMap :  : simpeg.maps.IdentityMap, optional
+
+    Notes
+    -----
+
+    .. math::
+        \xi = \frac{\Delta\chi}{\log(\tau_2/\tau_1)}
+
+    See Also
+    --------
+    ViscousMagneticSusceptibility
+    """
+
+    xi = props.PhysicalProperty("Amalgamated Viscous Remanent Magnetization Parameter")
+
+    def __init__(self, xi=None, **kwargs):
+        super().__init__(**kwargs)
+        self.xi = xi
