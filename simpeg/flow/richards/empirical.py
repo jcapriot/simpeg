@@ -114,7 +114,7 @@ class Haverkamp_theta(WaterRetention):
         return dT_p + dT_n
 
     def _derivAlpha(self, u):
-        if self.alphaMap is None:
+        if not self._prop_map("alpha"):
             return utils.Zero()
         theta_r, theta_s, alpha, beta = self._get_params()
         ddm = -alpha * (-theta_r + theta_s) / (alpha + abs(u) ** beta) ** 2 + (
@@ -125,7 +125,7 @@ class Haverkamp_theta(WaterRetention):
         return dA
 
     def _derivBeta(self, u):
-        if self.betaMap is None:
+        if not self._prop_map("beta"):
             return utils.Zero()
         theta_r, theta_s, alpha, beta = self._get_params()
         ddm = (
@@ -210,7 +210,7 @@ class Haverkamp_k(HydraulicConductivity):
         return dKs_dm_p + dKs_dm_n
 
     def _derivA(self, u):
-        if self.AMap is None:
+        if not self._prop_map("A"):
             return utils.Zero()
         Ks, A, gamma = self._get_params()
         ddm = Ks / (A + abs(u) ** gamma) - Ks * A / (A + abs(u) ** gamma) ** 2
@@ -219,7 +219,7 @@ class Haverkamp_k(HydraulicConductivity):
         return dA_dm
 
     def _derivGamma(self, u):
-        if self.gammaMap is None:
+        if not self._prop_map("gamma"):
             return utils.Zero()
         Ks, A, gamma = self._get_params()
         ddm = -(A * Ks * np.log(abs(u)) * abs(u) ** gamma) / (A + abs(u) ** gamma) ** 2
@@ -357,7 +357,7 @@ class Vangenuchten_theta(WaterRetention):
         return dT_p + dT_n
 
     def _derivN(self, u):
-        if self.nMap is None:
+        if not self._prop_map("n"):
             return utils.Zero()
         theta_r, theta_s, alpha, n = self._get_params()
         ddm = (
@@ -376,7 +376,7 @@ class Vangenuchten_theta(WaterRetention):
         return dN
 
     def _derivAlpha(self, u):
-        if self.alphaMap is None:
+        if not self._prop_map("alpha"):
             return utils.Zero()
         theta_r, theta_s, alpha, n = self._get_params()
         ddm = (
@@ -506,7 +506,7 @@ class Vangenuchten_k(HydraulicConductivity):
         return dKs_dm_p + dKs_dm_n
 
     def _derivAlpha(self, u):
-        if self.alphaMap is None:
+        if not self._prop_map("alpha"):
             return utils.Zero()
         Ks, alpha, I, n, m = self._get_params()
         ddm = I * u * n * Ks * abs(alpha * u) ** (n - 1) * np.sign(alpha * u) * (
@@ -557,7 +557,7 @@ class Vangenuchten_k(HydraulicConductivity):
         return dA
 
     def _derivN(self, u):
-        if self.nMap is None:
+        if not self._prop_map("n"):
             return utils.Zero()
         Ks, alpha, I, n, m = self._get_params()
         ddm = 1.0 * I * Ks * (
@@ -654,7 +654,7 @@ class Vangenuchten_k(HydraulicConductivity):
         return dn
 
     def _derivI(self, u):
-        if self.IMap is None:
+        if not self._prop_map("I"):
             return utils.Zero()
         Ks, alpha, I, n, m = self._get_params()
         ddm = (

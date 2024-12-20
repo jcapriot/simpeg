@@ -317,7 +317,7 @@ class BaseEM1DSimulation(
     def Jvec(self, m, v, f=None):
         Js = self.getJ(m, f=f)
         out = 0.0
-        if self.hMap is not None:
+        if self._prop_map("h"):
             out = out + Js["dh"] @ (self.hDeriv @ v)
         if self._prop_map("sigma"):
             out = out + Js["ds"] @ (self.sigmaDeriv @ v)
@@ -330,7 +330,7 @@ class BaseEM1DSimulation(
     def Jtvec(self, m, v, f=None):
         Js = self.getJ(m, f=f)
         out = 0.0
-        if self.hMap is not None:
+        if self._prop_map("h"):
             out = out + self.hDeriv.T @ (Js["dh"].T @ v)
         if self._prop_map("sigma"):
             out = out + self.sigmaDeriv.T @ (Js["ds"].T @ v)
@@ -359,7 +359,7 @@ class BaseEM1DSimulation(
             if is_circular_loop:
                 if np.any(src.orientation[:-1] != 0.0):
                     raise ValueError("Can only simulate horizontal circular loops")
-            if self.hMap is not None:
+            if self._prop_map("h"):
                 h = 0  # source height above topo
             else:
                 h = src.location[2] - self.topo[-1]
@@ -587,7 +587,7 @@ class BaseEM1DSimulation(
             else:
                 W = W.diagonal() ** 2
             out = 0.0
-            if self.hMap is not None:
+            if self._prop_map("h"):
                 J = Js["dh"] @ self.hDeriv
                 out = out + np.einsum("i,ij,ij->j", W, J, J)
             if self._prop_map("sigma"):

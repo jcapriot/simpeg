@@ -145,7 +145,7 @@ class Simulation1DLayered(BaseEM1DSimulation):
             sig = self.compute_complex_sigma(frequencies)
             mu = self.compute_complex_mu(frequencies)
 
-            if self.hMap is not None:
+            if self._prop_map("h"):
                 # Grab a copy
                 C0s_dh = C0s.copy()
                 C1s_dh = C1s.copy()

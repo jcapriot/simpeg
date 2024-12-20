@@ -853,11 +853,10 @@ class Simulation3DLinear(BaseVRMSimulation):
 
     def __init__(self, mesh, xi=None, **kwargs):
         super().__init__(mesh, **kwargs)
-        self.xi = xi
-
         nAct = list(self.active_cells).count(True)
-        if self.xiMap is None:
-            self.xi = maps.IdentityMap(nP=nAct)
+        if xi is None:
+            xi = maps.IdentityMap(nP=nAct)
+        self.xi = xi
 
     @property
     def A(self):
@@ -938,12 +937,8 @@ class Simulation3DLinear(BaseVRMSimulation):
             AssertionError("A survey must be set to generate A matrix")
 
         self.model = m  # Initiates/updates model and initiates mapping
-
-        # Project to active mesh cells
-        m = self.xiMap * m
-
         # Must return as a numpy array
-        return mkvc(sp.coo_matrix.dot(self.T, np.dot(self.A, m)))
+        return mkvc(sp.coo_matrix.dot(self.T, np.dot(self.A, self.xi)))
 
     def Jvec(self, m, v, f=None):
         """Compute Pd*T*A*dxidm*v"""
@@ -952,7 +947,8 @@ class Simulation3DLinear(BaseVRMSimulation):
             AssertionError("A survey must be set to generate A matrix")
 
         # Jacobian of xi wrt model
-        dxidm = self.xiMap.deriv(m)
+        self.model = m
+        dxidm = self.xiDeriv
 
         # dxidm*v
         v = dxidm * v
@@ -971,6 +967,7 @@ class Simulation3DLinear(BaseVRMSimulation):
 
         if self.survey is None:
             AssertionError("A survey must be set to generate A matrix")
+        self.model = m
 
         # Define v as a column vector
         v = np.atleast_2d(v).T
@@ -983,7 +980,7 @@ class Simulation3DLinear(BaseVRMSimulation):
         v = (np.dot(v.T, self.A)).T
 
         # Jacobian of xi wrt model
-        dxidm = self.xiMap.deriv(m)
+        dxidm = self.xiDeriv
 
         # Must return an array
         return mkvc(dxidm.T * v)
