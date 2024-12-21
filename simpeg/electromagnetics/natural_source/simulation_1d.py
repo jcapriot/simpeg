@@ -253,7 +253,7 @@ class Simulation1DRecursive(BaseSimulation, ElectricalConductivity, LayerThickne
         Js = []
         if self._prop_map("sigma"):
             Js.append(Z_dsigma)
-        if self._prop_map("mu"):
+        if self._prop_map("thicknesses"):
             Js.append(Z_dthick)
         Js = np.hstack(Js)
 
@@ -290,7 +290,7 @@ class Simulation1DRecursive(BaseSimulation, ElectricalConductivity, LayerThickne
             end = start + Z_dsigma.shape[1]
             self._Jmatrix["sigma"] = J[:, start:end]
             start = end
-        if self._prop_map("mu"):
+        if self._prop_map("thicknesses"):
             end = start + Z_dthick.shape[1]
             self._Jmatrix["thick"] = J[:, start:end]
         return self._Jmatrix
@@ -307,7 +307,7 @@ class Simulation1DRecursive(BaseSimulation, ElectricalConductivity, LayerThickne
             if self._prop_map("sigma"):
                 J = Js["sigma"] @ self.sigmaDeriv
                 gtgdiag += np.einsum("i,ij,ij->j", W, J, J)
-            if self._prop_map("mu"):
+            if self._prop_map("thicknesses"):
                 J = Js["thick"] @ self.thicknessesDeriv
                 gtgdiag += np.einsum("i,ij,ij->j", W, J, J)
             self._gtgdiag = gtgdiag
@@ -318,7 +318,7 @@ class Simulation1DRecursive(BaseSimulation, ElectricalConductivity, LayerThickne
         Jvec = 0
         if self._prop_map("sigma"):
             Jvec += J["sigma"] @ (self.sigmaDeriv * v)
-        if self._prop_map("mu"):
+        if self._prop_map("thicknesses"):
             Jvec += J["thick"] @ (self.thicknessesDeriv * v)
         return Jvec
 
@@ -327,7 +327,7 @@ class Simulation1DRecursive(BaseSimulation, ElectricalConductivity, LayerThickne
         JTvec = 0
         if self._prop_map("sigma"):
             JTvec += self.sigmaDeriv.T @ (J["sigma"].T @ v)
-        if self._prop_map("mu"):
+        if self._prop_map("thicknesses"):
             JTvec += self.thicknessesDeriv.T @ (J["thick"].T @ v)
         return JTvec
 
