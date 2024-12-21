@@ -853,7 +853,11 @@ class Simulation3DLinear(BaseVRMSimulation, AmalgamatedViscousMagneticSusceptibi
         super().__init__(mesh, survey=survey, **kwargs)
 
         nAct = list(self.active_cells).count(True)
-        if xi is None:
+        if xi is None and "xi" not in self._mapped_properties:
+            # ('xi' in self._mapped_properties) would happen if
+            # `xi` was set with deprecated `xiMap` argument.
+            # TODO Remove "and 'xi' not in self._mapped_properties" when xiMap
+            #  setting is changed to an error.
             xi = maps.IdentityMap(nP=nAct)
         self.xi = xi
 
