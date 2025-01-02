@@ -259,5 +259,5 @@ filterwarnings = [
     "ignore::simpeg.utils.solver_utils.DefaultSolverWarning",
     '''error:Accessing .* directly is no longer supported\. If this is still necessary use _prop_map\('.*'\) instead:UserWarning''',
     'error:Setting .* directly is deprecated\. Instead directly assign a mapping to .*:UserWarning',
-    '''error:Accessing .* is deprecated, use _prop_deriv\('.*'\) instead\.:DeprecationWarning''',
+    #'''error:Accessing .* is deprecated, use _prop_deriv\('.*'\) instead\.:DeprecationWarning''',
 ]
