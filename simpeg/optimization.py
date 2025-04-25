@@ -269,16 +269,16 @@ class IterationPrinters(object):
         "title": "CG |Ax-b|/|b|",
         "value": lambda M: M.cg_rel_resid,
         "width": 15,
-        "format": "%1.2e",
-        # "format": lambda v: f"{v:1.2e}",
+        # "format": "%1.2e",
+        "format": lambda v: f"{v:1.2e}",
     }
 
     iteration_CG_abs_residual = {
         "title": "CG |Ax-b|",
         "value": lambda M: M.cg_abs_resid,
         "width": 11,
-        "format": "%1.2e",
-        # "format": lambda v: f"{v:1.2e}",
+        # "format": "%1.2e",
+        "format": lambda v: f"{v:1.2e}",
     }
 
 
@@ -1416,9 +1416,9 @@ class ProjectedGNCG(Bounded, InexactGaussNewton):
         self.active_set_grad_scale = active_set_grad_scale
 
         # initialize some tracking parameters
-        self.cg_count = 0
-        self.cg_abs_resid = np.inf
-        self.cg_rel_resid = np.inf
+        self.cg_count = None
+        self.cg_abs_resid = None
+        self.cg_rel_resid = None
 
         self.printers.extend(
             [
