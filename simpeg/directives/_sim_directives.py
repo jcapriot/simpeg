@@ -2,7 +2,7 @@ import numpy as np
 from ..regularization import BaseSimilarityMeasure
 from ..utils import eigenvalue_by_power_iteration
 from ..optimization import IterationPrinters, StoppingCriteria
-from .directives import InversionDirective, SaveOutputEveryIteration
+from ._directives import InversionDirective, SaveOutputEveryIteration
 
 
 ###############################################################################
