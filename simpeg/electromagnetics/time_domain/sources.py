@@ -168,7 +168,8 @@ class StepOffWaveform(BaseWaveform):
         super().__init__(off_time=off_time, has_initial_fields=True, **kwargs)
 
     def eval(self, time):  # noqa: A003
-        if (abs(time - 0.0) < self.epsilon) or ((time - self.off_time) < self.epsilon):
+        dt = time - self.off_time
+        if dt < self.epsilon:
             return 1.0
         else:
             return 0.0
@@ -197,14 +198,21 @@ class RampOffWaveform(BaseWaveform):
 
     """
 
-    def __init__(self, off_time=0.0, **kwargs):
-        super().__init__(off_time=off_time, has_initial_fields=True, **kwargs)
+    def __init__(self, ramp_end=0.0, ramp_start=0.0, **kwargs):
+        off_time = kwargs.pop("off_time", None)
+        if off_time is not None:
+            ramp_end = off_time
+            warnings.warn("bad", DeprecationWarning, stacklevel=2)
+        super().__init__(off_time=ramp_end, has_initial_fields=True, **kwargs)
+        self.ramp_start = ramp_start
+        self.ramp_end = ramp_end
 
     def eval(self, time):  # noqa: A003
-        if abs(time - 0.0) < self.epsilon:
+        dt = time - self.ramp_start
+        if dt < self.epsilon:
             return 1.0
-        elif time < self.off_time:
-            return -1.0 / self.off_time * (time - self.off_time)
+        elif dt < self.ramp_end:
+            return 1 - 1.0 / (self.ramp_end - self.ramp_start) * dt
         else:
             return 0.0
 
