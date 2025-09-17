@@ -277,9 +277,6 @@ class DirectiveList(object):
         self.inversion = inversion
         self.verbose = debug
 
-    def __iter__(self):
-        return self.dList.__iter__()
-
     @property
     def debug(self):
         """Whether or not to print debugging information
@@ -1651,6 +1648,16 @@ class SaveEveryIteration(InversionDirective, metaclass=ABCMeta):
     """SaveEveryIteration
 
     This directive saves information at each iteration.
+
+    Parameters
+    ----------
+    directory : pathlib.Path or str, optional
+        The directory to store output information to, defaults to current directory.
+    name : str, optional
+        Root of the filename to be saved, commonly this will get iteration specific
+        details appended to it.
+    on_disk : bool, optional
+        Whether this directive will save a log file to disk.
     """
 
     def __init__(self, directory=".", name="InversionModel", on_disk=True, **kwargs):
@@ -1674,7 +1681,7 @@ class SaveEveryIteration(InversionDirective, metaclass=ABCMeta):
             self._iter_format = f"0{max_digit}d"
 
     @property
-    def on_disk(self):
+    def on_disk(self) -> bool:
         """Whether this object stores information to `file_abs_path`."""
         return self._on_disk
 
@@ -1705,7 +1712,7 @@ class SaveEveryIteration(InversionDirective, metaclass=ABCMeta):
         self._directory = value
 
     @property
-    def name(self):
+    def name(self) -> str:
         """Root of the filename to be saved.
 
         Returns
@@ -1734,6 +1741,16 @@ class SaveEveryIteration(InversionDirective, metaclass=ABCMeta):
         return pathlib.Path(f"{self.name}_{self._start_time}")
 
     def _mkdir_and_check_output_file(self, should_exist=False):
+        """
+        Use this to ensure a directory exists, and to check if file_abs_path exists.
+        Issues a warning if the output file exists but should not,
+        or if it doesn't exist but does.
+
+        Parameters
+        ----------
+        should_exist : bool, optional
+            Whether file_abs_path should exist.
+        """
         self.directory.mkdir(exist_ok=True)
         fp = self.file_abs_path
         exists = fp.exists()
@@ -1749,7 +1766,7 @@ class SaveEveryIteration(InversionDirective, metaclass=ABCMeta):
     @property
     def fileName(self):
         warnings.warn(
-            "'fileName' as been deprecated and will be removed in SimPEG 0.26.0 use 'file_abs_path'",
+            "'fileName' has been deprecated and will be removed in SimPEG 0.26.0 use 'file_abs_path'",
             FutureWarning,
             stacklevel=2,
         )
@@ -1757,19 +1774,41 @@ class SaveEveryIteration(InversionDirective, metaclass=ABCMeta):
 
     @property
     @abstractmethod
-    def file_abs_path(self) -> pathlib.Path: ...
+    def file_abs_path(self) -> pathlib.Path:
+        """The absolute path to the saved output file.
+
+        Returns
+        -------
+        pathlib.Path
+        """
 
 
 class SaveModelEveryIteration(SaveEveryIteration):
-    """SaveModelEveryIteration
+    """Saves the inversion model at the end of every iteration to a directory
+
+    Parameters
+    ----------
+    directory : pathlib.Path or str, optional
+        The directory to store output information to, defaults to current directory.
+    name : str, optional
+        Root of the filename to be saved, defaults to ``'InversionModel'``
+
+    Notes
+    -----
 
     This directive saves the model as a numpy array at each iteration. The
     default directory is the current directory and the models are saved as
-    ``InversionModel_YYYY-MM-DD-HH-MM_iter.npy``
+    `name` + ``'_YYYY-MM-DD-HH-MM_iter.npy'``
     """
 
     def __init__(self, **kwargs):
-        kwargs.pop("on_disk", None)
+        if "on_disk" in kwargs:
+            msg = (
+                f"The 'on_disk' argument is ignored by the '{type(self).__name__}' "
+                "directive, it's always True."
+            )
+            warnings.warn(msg, UserWarning, stacklevel=2)
+            kwargs.pop("on_disk")
         super().__init__(on_disk=True, **kwargs)
 
     def initialize(self):
@@ -1780,12 +1819,26 @@ class SaveModelEveryIteration(SaveEveryIteration):
         )
 
     @property
-    def on_disk(self):
-        """This class always saves to disk."""
+    def on_disk(self) -> bool:
+        """This class always saves to disk.
+
+        Returns
+        -------
+        bool
+        """
         return True
 
+    @on_disk.setter
+    def on_disk(self, value):  # noqa: F811
+        """This class always saves to disk."""
+        msg = (
+            f"Cannot modify value of 'on_disk' for {type(self).__name__}' directive. "
+            "It's always True."
+        )
+        raise AttributeError(msg)
+
     @property
-    def file_abs_path(self):
+    def file_abs_path(self) -> pathlib.Path:
         return self.directory / self._time_iter_file_name.with_suffix(".npy")
 
     def endIter(self):
@@ -1794,7 +1847,17 @@ class SaveModelEveryIteration(SaveEveryIteration):
 
 
 class SaveOutputEveryIteration(SaveEveryIteration):
-    """SaveOutputEveryIteration"""
+    """Keeps track of the objective function values.
+
+    Parameters
+    ----------
+    on_disk : bool, optional
+        Whether this directive additionally stores the log to a text file.
+    directory : pathlib.Path, optional
+        The directory to store output information to if `on_disk`, defaults to current directory.
+    name : str, optional
+        The root name of the file to save to, will append the inversion start time to this value.
+    """
 
     def __init__(self, on_disk=True, **kwargs):
         if (save_txt := kwargs.pop("save_txt", None)) is not None:
@@ -1831,8 +1894,9 @@ class SaveOutputEveryIteration(SaveEveryIteration):
         self.phi = []
 
     @property
-    def file_abs_path(self):
-        if self.save_txt:
+    def file_abs_path(self) -> pathlib.Path | None:
+        """The absolute path to the saved log file."""
+        if self.on_disk:
             return self.directory / self._time_file_name.with_suffix(".txt")
 
     save_txt = deprecate_property(
@@ -2027,8 +2091,19 @@ class SaveOutputEveryIteration(SaveEveryIteration):
 
 
 class SaveOutputDictEveryIteration(SaveEveryIteration):
-    """
-    Saves inversion parameters at every iteration.
+    """Saves inversion parameters to a dictionary at every iteration.
+
+    At the end of every iteration, information about the current iteration is
+    saved to the `outDict` property of this object.
+
+    Parameters
+    ----------
+    on_disk : bool, optional
+        Whether to also save the parameters to an `npz` file at the end of each iteration.
+    directory : pathlib.Path or str, optional
+        Directory to save inversion parameters to if `on_disk`, defaults to current directory.
+    name : str, optional
+        Root name of the output file. The inversion start time and the iteration are appended to this.
     """
 
     # Initialize the output dict
@@ -2046,7 +2121,7 @@ class SaveOutputDictEveryIteration(SaveEveryIteration):
     )
 
     @property
-    def file_abs_path(self):
+    def file_abs_path(self) -> pathlib.Path | None:
         if self.on_disk:
             return self.directory / self._time_iter_file_name.with_suffix(".npz")
 
