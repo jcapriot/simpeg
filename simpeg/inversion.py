@@ -112,7 +112,6 @@ class BaseInversion(object):
 
         self.invProb.startup(m0)
         self.directiveList.call("initialize")
-        # print("model has any nan: {:b}".format(np.any(np.isnan(self.invProb.model)))) minimize will do this check...
         self.m = self.opt.minimize(self.invProb.evalFunction, self.invProb.model)
         self.directiveList.call("finish")
 
