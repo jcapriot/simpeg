@@ -191,7 +191,7 @@ class BaseInvProblem:
         self._init_bfgs = validate_type("init_bfgs", value, bool)
 
     @call_hooks("startup")
-    def startup(self, m0, init_bfgsH0=True):
+    def startup(self, m0):
         """startup(m0)
 
         Called when inversion is first starting.
