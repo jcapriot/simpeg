@@ -5,6 +5,8 @@ import discretize
 from simpeg import maps, tests
 from simpeg.electromagnetics import time_domain as tdem
 
+plotIt = False
+
 testDeriv = True
 testAdjoint = True
 
@@ -133,10 +135,10 @@ class Base_DerivAdjoint_Test(unittest.TestCase):
         else:
             sigma_map = get_sigma_mapping(mesh)
             self.prob = get_prob(mesh, self.formulation, sigma_map, survey=self.survey)
-            rng = np.random.default_rng(seed=42)
-            self.m = np.log(1e-1) * np.ones(self.prob.sigmaMap.nP) + 1e-3 * rng.normal(
-                size=self.prob.sigmaMap.nP
-            )
+            self.m = np.log(1e-1) * np.ones(
+                self.prob.sigmaMap.nP
+            ) + 1e-3 * np.random.randn(self.prob.sigmaMap.nP)
+
         print("Solving Fields for problem {}".format(self.formulation))
         t = time.time()
         self.fields = self.prob.fields(self.m)
@@ -196,8 +198,9 @@ class Base_DerivAdjoint_Test(unittest.TestCase):
                 prbtype=self.formulation, rxcomp=rxcomp
             )
         )
-        np.random.seed(10)  # use seed for check_derivative
-        tests.check_derivative(derChk, self.m, plotIt=False, num=2, eps=1e-20)
+        tests.check_derivative(
+            derChk, self.m, plotIt=False, num=2, eps=1e-20, random_seed=12
+        )
 
     def JvecVsJtvecTest(self, rxcomp):
         self.set_receiver_list(rxcomp)

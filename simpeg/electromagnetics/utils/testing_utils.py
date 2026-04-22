@@ -125,7 +125,6 @@ def getFDEMProblem(fdemType, comp, SrcList, freq, useMu=False, verbose=False):
 
     else:
         raise NotImplementedError()
-    # prb.solver_opts = dict(check_accuracy=True)
 
     return prb
 

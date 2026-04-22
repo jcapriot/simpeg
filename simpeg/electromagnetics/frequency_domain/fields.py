@@ -389,16 +389,8 @@ class Fields3DElectricField(FieldsFDEM):
         self._MeSigmaDeriv = self.simulation.MeSigmaDeriv
         self._MfMui = self.simulation.MfMui
         self._MfMuiDeriv = self.simulation.MfMuiDeriv
-        # Not all meshes support MeI so don't always ask for it.
-        # Should be a better solution than this though...
-        try:
-            self._MeI = self.simulation.MeI
-        except NotImplementedError:
-            self._MeI = None
-        try:
-            self._MfI = self.simulation.MfI
-        except NotImplementedError:
-            self._MfI = None
+        self._MeI = self.simulation.MeI
+        self._MfI = self.simulation.MfI
 
     def _GLoc(self, fieldType):
         if fieldType in ["e", "eSecondary", "ePrimary", "j"]:
@@ -872,13 +864,13 @@ class Fields3DMagneticFluxDensity(FieldsFDEM):
         e = self._edgeCurl.T * (self._MfMui * bSolution)
         for i, src in enumerate(source_list):
             s_e = src.s_e(self.simulation)
-            e[:, i] = e[:, i] - s_e
+            e[:, i] = e[:, i] + -s_e
 
             if self.simulation.permittivity is not None:
                 MeyhatI = self.simulation._get_edge_admittivity_property_matrix(
                     src.frequency, invert_matrix=True
                 )
-                e[:, i] *= MeyhatI
+                e[:, i] = MeyhatI * e[:, i]
 
         if self.simulation.permittivity is None:
             return self._MeSigmaI * e
@@ -1136,6 +1128,7 @@ class Fields3DCurrentDensity(FieldsFDEM):
         self._nC = self.simulation.mesh.nC
         self._MeI = self.simulation.MeI
         self._MfI = self.simulation.MfI
+        self._faceDiv = self.simulation.mesh.face_divergence
 
     def _GLoc(self, fieldType):
         if fieldType in ["h", "hSecondary", "hPrimary", "b"]:
@@ -1564,6 +1557,7 @@ class Fields3DMagneticField(FieldsFDEM):
         self._nC = self.simulation.mesh.nC
         self._MfI = self.simulation.MfI
         self._MeI = self.simulation.MeI
+        self._faceDiv = self.simulation.mesh.face_divergence
 
     def _GLoc(self, fieldType):
         if fieldType in ["h", "hSecondary", "hPrimary", "b"]:

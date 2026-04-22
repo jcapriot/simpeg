@@ -9,10 +9,16 @@ from ._base import (
     Wires,
 )
 from ._clustering import PolynomialPetroClusterMap
-from ._injection import Mesh2Mesh, InjectActiveCells
+from ._injection import (
+    Mesh2Mesh,
+    InjectActiveCells,
+    InjectActiveFaces,
+    InjectActiveEdges,
+)
 from ._property_maps import (
     ChiMap,
     ComplexMap,
+    EffectiveSusceptibilityMap,
     ExpMap,
     LogisticSigmoidMap,
     LogMap,
