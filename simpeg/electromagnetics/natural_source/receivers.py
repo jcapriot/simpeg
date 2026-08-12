@@ -91,7 +91,7 @@ class BaseNaturalSourceRx(BaseRx):
         Parameters
         ----------
         mesh : discretize.BaseMesh
-            A discretize mesh.
+            A discretize mesh
         projected_grid : str
             Define what part of the mesh (i.e. edges, faces, centers, nodes) to
             project from. Must be one of::
@@ -116,6 +116,8 @@ class BaseNaturalSourceRx(BaseRx):
         scipy.sparse.csr_matrix
             P, the interpolation matrix.
         """
+        # docerator: provenance
+        # docerator: from simpeg.survey.BaseRx: mesh, projected_grid
         key = (mesh, projected_grid, location_id)
         if key in self._Ps:
             return self._Ps[key]
@@ -209,9 +211,15 @@ class Impedance(_ElectricAndMagneticReceiver):
         - 'rho': Apparent resistivity (:math:`\Omega m`)
         - 'phase': Phase angle (degrees)
         - 'complex': The complex impedance is returned. Do not use for inversion!
-    storeProjections : bool
-        Whether to cache to internal projection matrices.
+    storeProjections : bool, Default = ``False``
+        Store projections from the mesh to receiver
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: storeProjections
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: storeProjections
 
     def __init__(
         self,
@@ -531,8 +539,6 @@ class Impedance(_ElectricAndMagneticReceiver):
 
         Parameters
         ----------
-        str : .frequency_domain.sources.BaseFDEMSrc
-            The NSEM source.
         mesh : discretize.TensorMesh
             Mesh on which the discretize solution is obtained.
         f : simpeg.electromagnetics.frequency_domain.fields.FieldsFDEM
@@ -543,6 +549,8 @@ class Impedance(_ElectricAndMagneticReceiver):
             Vector of size
         adjoint : bool, optional
             Whether to compute the ajoint operation.
+        str : .frequency_domain.sources.BaseFDEMSrc
+            The NSEM source.
 
         Returns
         -------
@@ -606,9 +614,15 @@ class Tipper(BaseNaturalSourceRx):
         - 'real': Real component of the tipper (unitless)
         - 'imag': Imaginary component of the tipper (unitless)
         - 'complex': The complex tipper is returned. Do not use for inversion!
-    storeProjections : bool
-        Whether to cache to internal projection matrices.
+    storeProjections : bool, Default = ``False``
+        Store projections from the mesh to receiver
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: storeProjections
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: storeProjections
 
     _loc_names = ("Roving magnetic field", "Base station magnetic field")
 
@@ -899,9 +913,15 @@ class Admittance(_ElectricAndMagneticReceiver):
         - 'real': Real component of the admittance (A/V)
         - 'imag': Imaginary component of the admittance (A/V)
         - 'complex': The complex admittance is returned. Do not use for inversion!
-    storeProjections : bool
-        Whether to cache to internal projection matrices.
+    storeProjections : bool, Default = ``False``
+        Store projections from the mesh to receiver
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: storeProjections
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: storeProjections
 
     def __init__(
         self,
@@ -1158,8 +1178,8 @@ class ApparentConductivity(_ElectricAndMagneticReceiver):
     locations_h : (n_loc, n_dim) array_like, optional
         Locations where the magnetic fields are measured. Defaults to the same
         locations as electric field measurements, `locations_e`.
-    storeProjections : bool
-        Whether to cache to internal projection matrices.
+    storeProjections : bool, Default = ``False``
+        Store projections from the mesh to receiver
 
     Notes
     -----
@@ -1168,6 +1188,12 @@ class ApparentConductivity(_ElectricAndMagneticReceiver):
     summing can result in simulated anomalies which do not presented entirely over
     conductive/resistive targets.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: storeProjections
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: storeProjections
 
     def __init__(self, locations_e, locations_h=None, storeProjections=False):
         if locations_h is None:

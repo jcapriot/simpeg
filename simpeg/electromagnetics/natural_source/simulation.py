@@ -55,7 +55,18 @@ class Simulation1DElectricField(BaseFDEMSimulation):
 
     where the Magnetic field is defined on edges, and the electric field is
     defined on cell centers.
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
 
     _solutionType = "eSolution"
     _formulation = "EB"  # electric-field component is on cell-centers
@@ -118,10 +129,19 @@ class Simulation1DElectricField(BaseFDEMSimulation):
 
             This method hasn't been implemented yet for this class.
 
+        Parameters
+        ----------
+        m : (n_param,) numpy.ndarray
+            The model parameters.
+        f : .frequency_domain.fields.FieldsFDEM, optional
+            Fields solved for all sources.
+
         Raises
-        -------
+        ------
         NotImplementedError
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.frequency_domain.simulation.BaseFDEMSimulation: m, f
         msg = (
             "The getJ method hasn't been implemented for the "
             f"{type(self).__name__} yet."
@@ -135,7 +155,18 @@ class Simulation1DMagneticField(BaseFDEMSimulation):
 
     This corresponds to the TM mode 2D simulation where the magnetic field is
     located at faces (nodes) and the electric field is on edges (cell_centers).
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
 
     _solutionType = "hSolution"
     _formulation = "HJ"
@@ -197,10 +228,19 @@ class Simulation1DMagneticField(BaseFDEMSimulation):
 
             This method hasn't been implemented yet for this class.
 
+        Parameters
+        ----------
+        m : (n_param,) numpy.ndarray
+            The model parameters.
+        f : .frequency_domain.fields.FieldsFDEM, optional
+            Fields solved for all sources.
+
         Raises
-        -------
+        ------
         NotImplementedError
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.frequency_domain.simulation.BaseFDEMSimulation: m, f
         msg = (
             "The getJ method hasn't been implemented for the "
             f"{type(self).__name__} yet."
@@ -235,7 +275,22 @@ class Simulation1DPrimarySecondary(Simulation1DElectricField):
     The total field :math:`\mathbf{e} = \mathbf{e_p} + \mathbf{e_s}`.
 
     The primary field is estimated from a background model (commonly half space ).
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
+    survey : .frequency_domain.survey.Survey
+        The frequency-domain EM survey.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.frequency_domain.simulation.BaseFDEMSimulation: survey
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.frequency_domain.simulation.BaseFDEMSimulation: survey
 
     fieldsPair = Fields1DPrimarySecondary
 
@@ -292,7 +347,18 @@ class Simulation1DPrimarySecondary(Simulation1DElectricField):
 class Simulation2DElectricField(BaseFDEMSimulation):
     """
     A
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
 
     _solutionType = "eSolution"
     _formulation = "EB"
@@ -521,7 +587,18 @@ class Simulation2DElectricField(BaseFDEMSimulation):
 class Simulation2DMagneticField(BaseFDEMSimulation):
     """
     A
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
 
     _solutionType = "hSolution"
     _formulation = "HJ"
@@ -776,7 +853,22 @@ class Simulation3DPrimarySecondary(Simulation3DElectricField):
     The total field :math:`\mathbf{e} = \mathbf{e_p} + \mathbf{e_s}`.
 
     The primary field is estimated from a background model (commonly as a 1D model).
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
+    survey : .frequency_domain.survey.Survey
+        The frequency-domain EM survey.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.frequency_domain.simulation.BaseFDEMSimulation: survey
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.frequency_domain.simulation.BaseFDEMSimulation: survey
 
     def __init__(self, mesh, survey=None, sigmaPrimary=None, **kwargs):
         super().__init__(mesh=mesh, survey=survey, **kwargs)

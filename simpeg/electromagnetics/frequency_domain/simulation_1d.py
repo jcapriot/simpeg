@@ -12,10 +12,16 @@ from geoana.kernels.tranverse_electric_reflections import rTE_forward, rTE_gradi
 #######################################################################
 
 
+# docerator: override=survey
 class Simulation1DLayered(BaseEM1DSimulation):
     """
     Simulation class for simulating the FEM response over a 1D layered Earth
     for a single sounding.
+
+    Parameters
+    ----------
+    survey : .frequency_domain.survey.Survey, optional
+        The survey for the simulation.
     """
 
     def __init__(self, survey=None, **kwargs):
@@ -92,7 +98,17 @@ class Simulation1DLayered(BaseEM1DSimulation):
         Return predicted data.
         Predicted data, (`_pred`) are computed when
         self.fields is called.
+
+        Parameters
+        ----------
+        m : (n_param,) numpy.ndarray
+            The model parameters.
+        f : simpeg.fields.Fields, optional
+            If provided, will be used to compute the predicted data
+            without recalculating the fields.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m, f
         if f is None:
             f = self.fields(m)
 
@@ -103,7 +119,14 @@ class Simulation1DLayered(BaseEM1DSimulation):
         This method evaluates the Hankel transform for each source and
         receiver and outputs it as a list. Used for computing response
         or sensitivities.
+
+        Parameters
+        ----------
+        m : (n_param,) numpy.ndarray
+            The model parameters.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m
         self._compute_coefficients()
 
         self.model = m

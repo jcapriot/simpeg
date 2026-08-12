@@ -15,6 +15,7 @@ from .fields import (
 )
 
 
+# docerator: override=survey
 class BaseTDEMSimulation(BaseTimeSimulation, BaseEMSimulation):
     r"""Base class for quasi-static TDEM simulation with finite volume.
 
@@ -105,13 +106,15 @@ class BaseTDEMSimulation(BaseTimeSimulation, BaseEMSimulation):
         Parameters
         ----------
         m : (n_param,) numpy.ndarray
-            The model.
+            The model parameters.
 
         Returns
         -------
         .time_domain.fields.FieldsTDEM
             The TDEM fields object.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m
 
         self.model = m
 
@@ -165,6 +168,7 @@ class BaseTDEMSimulation(BaseTimeSimulation, BaseEMSimulation):
         Ainv.clean()
         return f
 
+    # docerator: override=f
     def Jvec(self, m, v, f=None):
         r"""Compute the sensitivity matrix times a vector.
 
@@ -183,18 +187,21 @@ class BaseTDEMSimulation(BaseTimeSimulation, BaseEMSimulation):
 
         Parameters
         ----------
-        m : (n_param,) numpy.ndarray
+        m : (n_param, ) numpy.ndarray
             The model parameters.
-        v : (n_param,) numpy.ndarray
-            The vector.
+        v : (n_param, ) numpy.ndarray
+            Vector we are multiplying.
         f : .time_domain.fields.FieldsTDEM, optional
-            Fields solved for all sources.
+            If provided, fields will not need to be recomputed for the
+            current model to compute `Jvec`.
 
         Returns
         -------
         (n_data,) numpy.ndarray
             The sensitivity matrix times a vector.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m, v
 
         if f is None:
             f = self.fields(m)
@@ -283,6 +290,7 @@ class BaseTDEMSimulation(BaseTimeSimulation, BaseEMSimulation):
         # return mkvc(Jv)
         return np.hstack(Jv)
 
+    # docerator: override=f
     def Jtvec(self, m, v, f=None):
         r"""Compute the adjoint sensitivity matrix times a vector.
 
@@ -301,18 +309,21 @@ class BaseTDEMSimulation(BaseTimeSimulation, BaseEMSimulation):
 
         Parameters
         ----------
-        m : (n_param,) numpy.ndarray
+        m : (n_param, ) numpy.ndarray
             The model parameters.
-        v : (n_data,) numpy.ndarray
-            The vector.
+        v : (n_data, ) numpy.ndarray
+            Vector we are multiplying.
         f : .time_domain.fields.FieldsTDEM, optional
-            Fields solved for all sources.
+            If provided, fields will not need to be recomputed for the
+            current model to compute `Jtvec`.
 
         Returns
         -------
         (n_param,) numpy.ndarray
             The adjoint sensitivity matrix times a vector.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m, v
 
         if f is None:
             f = self.fields(m)

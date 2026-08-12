@@ -65,8 +65,8 @@ class PGIsmallness(Smallness):
         in the regularization and an :class:`.maps.IdentityMap` from model values to physical
         property values.
     mesh : simpeg.regularization.RegularizationMesh, discretize.base.BaseMesh
-        Mesh on which the regularization is discretized. Implemented for
-        ``tensor``, ``QuadTree`` or ``Octree`` meshes.
+        Mesh on which the regularization is discretized. This is not necessarily
+        the same as the mesh on which the simulation is defined.
     approx_gradient : bool
         If ``True``, use the L2-approximation of the gradient by assuming
         the physical property distributions of each geologic units are distinct
@@ -180,6 +180,12 @@ class PGIsmallness(Smallness):
         - :math:`\mathcal{N}` represent the multivariate Gaussian distribution.
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.BaseRegularization: mesh
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.BaseRegularization: mesh
 
     _multiplier_pair = "alpha_pgi"
     _maplist = None
@@ -433,8 +439,8 @@ class PGIsmallness(Smallness):
 
         Parameters
         ----------
-        m : (n_param, ) numpy.ndarray
-            The model for which the function is evaluated.
+        m : (nP) numpy.ndarray
+            A vector representing a set of model parameters.
         external_weights : bool
             Include custom cell weighting when evaluating the regularization function.
 
@@ -443,6 +449,8 @@ class PGIsmallness(Smallness):
         float
             The regularization function evaluated for the model provided.
         """
+        # docerator: provenance
+        # docerator: from simpeg.objective_function.BaseObjectiveFunction: m
         if external_weights:
             W = self.W
         else:
@@ -531,6 +539,8 @@ class PGIsmallness(Smallness):
         (n_param, ) numpy.ndarray
             Gradient of the regularization function evaluated for the model provided.
         """
+        # docerator: provenance
+        # docerator: from simpeg.objective_function.BaseObjectiveFunction: m
         if getattr(self, "reference_model", None) is None:
             self.reference_model = mkvc(self.gmm.means_[self.membership(m)])
 
@@ -725,7 +735,7 @@ class PGIsmallness(Smallness):
         ----------
         m : (n_param, ) numpy.ndarray
             The model for which the Hessian is evaluated.
-        v : None, (n_param, ) numpy.ndarray (optional)
+        v : None or (n_param, ) numpy.ndarray, optional
             A vector.
 
         Returns
@@ -735,6 +745,8 @@ class PGIsmallness(Smallness):
             function for the model provided is returned. If *v* is not ``None``,
             the Hessian multiplied by the vector provided is returned.
         """
+        # docerator: provenance
+        # docerator: from simpeg.objective_function.BaseObjectiveFunction: m, v
         if getattr(self, "reference_model", None) is None:
             self.reference_model = mkvc(self.gmm.means_[self.membership(m)])
 
@@ -953,14 +965,6 @@ class PGI(ComboObjectiveFunction):
         `tensor`, `QuadTree` or `Octree` meshes.
     gmmref : simpeg.utils.WeightedGaussianMixture
         Reference Gaussian mixture model.
-    gmm : None, simpeg.utils.WeightedGaussianMixture
-        Set the Gaussian mixture model used to constrain the recovered physical property model.
-        Can be left static throughout the inversion or updated using the
-        :class:`.directives.PGI_UpdateParameters` directive. If ``None``, the
-        :class:`.directives.PGI_UpdateParameters` directive must be used to ensure there
-        is a Gaussian mixture model for the inversion.
-    alpha_pgi : float
-        Scaling constant for the PGI smallness term.
     alpha_x, alpha_y, alpha_z : float or None, optional
         Scaling constants for the first order smoothness along x, y and z, respectively.
         If set to ``None``, the scaling constant is set automatically according to the
@@ -969,6 +973,12 @@ class PGI(ComboObjectiveFunction):
         Scaling constants for the second order smoothness along x, y and z, respectively.
         If set to ``None``, the scaling constant is set automatically according to the
         length scales; see :class:`regularization.WeightedLeastSquares`.
+    gmm : None, simpeg.utils.WeightedGaussianMixture
+        Set the Gaussian mixture model used to constrain the recovered physical property model.
+        Can be left static throughout the inversion or updated using the
+        :class:`.directives.PGI_UpdateParameters` directive. If ``None``, the
+        :class:`.directives.PGI_UpdateParameters` directive must be used to ensure there
+        is a Gaussian mixture model for the inversion.
     wiresmap : None, simpeg.maps.Wires
         Mapping from the model to the model parameters of each type.
         If ``None``, we assume only a single physical property type in the inversion.
@@ -977,18 +987,20 @@ class PGI(ComboObjectiveFunction):
         one for each physical property. If ``None``, we assume a single physical property type
         in the regularization and an :class:`.maps.IdentityMap` from model values to physical
         property values.
+    alpha_pgi : float
+        Scaling constant for the PGI smallness term.
+    approx_hessian : bool
+        Approximate the Hessian of the regularization function.
     approx_gradient : bool
         If ``True``, use the L2-approximation of the gradient by assuming
         physical property values of different types are uncorrelated.
     approx_eval : bool
         If ``True``, use the L2-approximation evaluation of the smallness term by assuming
         physical property values of different types are uncorrelated.
-    approx_hessian : bool
-        Approximate the Hessian of the regularization function.
-    non_linear_relationship : bool
-        Whether relationships in the Gaussian mixture model are non-linear.
     reference_model_in_smooth : bool, optional
         Whether to include the reference model in the smoothness terms.
+    non_linear_relationship : bool
+        Whether relationships in the Gaussian mixture model are non-linear.
 
     Notes
     -----

@@ -10,13 +10,21 @@ class BaseRx(BaseTimeRx):
 
     Parameters
     ----------
-    locations : (n_loc, n_dim) numpy.ndarray
-        Receiver locations.
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
+    times : array_like
+        Time channels
     orientation : {'z', 'x', 'y'} or numpy.ndarray
         Receiver orientation.
-    times : (n_times) numpy.ndarray
-        Time channels
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.survey.BaseTimeRx: times
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.survey.BaseTimeRx: times
 
     def __init__(
         self,
@@ -84,7 +92,7 @@ class BaseRx(BaseTimeRx):
         Parameters
         ----------
         mesh : discretize.BaseMesh
-            A discretize mesh
+            A ``discretize`` mesh; i.e. ``TensorMesh``, ``CylindricalMesh``, ``TreeMesh``
         f : simpeg.electromagnetics.time_domain.fields.FieldsTDEM
 
         Returns
@@ -92,6 +100,8 @@ class BaseRx(BaseTimeRx):
         scipy.sparse.csr_matrix
             P, the interpolation matrix
         """
+        # docerator: provenance
+        # docerator: from simpeg.survey.BaseTimeRx: mesh
         P = Zero()
         field = f._GLoc(self.projField)
         for strength, comp in zip(self.orientation, ["x", "y", "z"]):
@@ -108,8 +118,8 @@ class BaseRx(BaseTimeRx):
 
         Parameters
         ----------
-        time_mesh : discretize.TensorMesh
-            A 1D ``TensorMesh`` defining the time discretization
+        time_mesh : 1D discretize.TensorMesh
+            A 1D tensor mesh defining the time steps; either at cell centers or nodes.
         f : simpeg.electromagnetics.time_domain.fields.FieldsTDEM
 
         Returns
@@ -117,6 +127,8 @@ class BaseRx(BaseTimeRx):
         scipy.sparse.csr_matrix
             P, the interpolation matrix
         """
+        # docerator: provenance
+        # docerator: from simpeg.survey.BaseTimeRx: time_mesh
         projected_time_grid = f._TLoc(self.projField)
         return time_mesh.get_interpolation_matrix(self.times, projected_time_grid)
 
@@ -126,7 +138,7 @@ class BaseRx(BaseTimeRx):
         Parameters
         ----------
         mesh : discretize.BaseMesh
-            A discretize mesh defining spatial discretization
+            A discretize mesh
         time_mesh : discretize.TensorMesh
             A 1D ``TensorMesh`` defining the time discretization
         f : simpeg.electromagnetics.time_domain.fields.FieldsTDEM
@@ -140,6 +152,8 @@ class BaseRx(BaseTimeRx):
         -----
         Projection matrices are stored as a dictionary (mesh, time_mesh) if storeProjections is True
         """
+        # docerator: provenance
+        # docerator: from simpeg.survey.BaseRx: mesh
         if (mesh, time_mesh) in self._Ps:
             return self._Ps[(mesh, time_mesh)]
 
@@ -213,13 +227,23 @@ class PointElectricField(BaseRx):
 
     Parameters
     ----------
-    locations : (n_loc, n_dim) numpy.ndarray
-        Receiver locations.
-    times : (n_times) numpy.ndarray
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
+    times : array_like
         Time channels
-    orientation : {'z', 'x', 'y'}
+    orientation : {'z', 'x', 'y'} or numpy.ndarray
         Receiver orientation.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.survey.BaseTimeRx: times
+    # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.survey.BaseTimeRx: times
+    # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
 
     def __init__(self, locations=None, times=None, orientation="z", **kwargs):
         self.projField = "e"
@@ -233,13 +257,23 @@ class PointMagneticFluxDensity(BaseRx):
 
     Parameters
     ----------
-    locations : (n_loc, n_dim) numpy.ndarray
-        Receiver locations.
-    times : (n_times) numpy.ndarray
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
+    times : array_like
         Time channels
-    orientation : {'z', 'x', 'y'}
+    orientation : {'z', 'x', 'y'} or numpy.ndarray
         Receiver orientation.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.survey.BaseTimeRx: times
+    # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.survey.BaseTimeRx: times
+    # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
 
     def __init__(self, locations=None, times=None, orientation="z", **kwargs):
         self.projField = "b"
@@ -253,13 +287,23 @@ class PointMagneticFluxTimeDerivative(BaseRx):
 
     Parameters
     ----------
-    locations : (n_loc, n_dim) numpy.ndarray
-        Receiver locations.
-    times : (n_times) numpy.ndarray
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
+    times : array_like
         Time channels
-    orientation : {'z', 'x', 'y'}
+    orientation : {'z', 'x', 'y'} or numpy.ndarray
         Receiver orientation.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.survey.BaseTimeRx: times
+    # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.survey.BaseTimeRx: times
+    # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
 
     def __init__(self, locations=None, times=None, orientation="z", **kwargs):
         self.projField = "dbdt"
@@ -286,6 +330,8 @@ class PointMagneticFluxTimeDerivative(BaseRx):
         numpy.ndarray
             Fields projected to the receiver(s)
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: src, mesh, time_mesh, f
 
         if self.projField in f.aliasFields:
             return super(PointMagneticFluxTimeDerivative, self).eval(
@@ -303,8 +349,8 @@ class PointMagneticFluxTimeDerivative(BaseRx):
 
         Parameters
         ----------
-        time_mesh : discretize.TensorMesh
-            A 1D ``TensorMesh`` defining the time discretization
+        time_mesh : 1D discretize.TensorMesh
+            A 1D tensor mesh defining the time steps; either at cell centers or nodes.
         f : simpeg.electromagnetics.time_domain.fields.FieldsTDEM
 
         Returns
@@ -312,6 +358,9 @@ class PointMagneticFluxTimeDerivative(BaseRx):
         scipy.sparse.csr_matrix
             P, the interpolation matrix
         """
+        # docerator: provenance
+        # docerator: from simpeg.survey.BaseTimeRx: time_mesh
+        # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: f
         if self.projField in f.aliasFields:
             return super(PointMagneticFluxTimeDerivative, self).getTimeP(time_mesh, f)
 
@@ -326,13 +375,23 @@ class PointMagneticField(BaseRx):
 
     Parameters
     ----------
-    locations : (n_loc, n_dim) numpy.ndarray
-        Receiver locations.
-    times : (n_times) numpy.ndarray
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
+    times : array_like
         Time channels
-    orientation : {'z', 'x', 'y'}
+    orientation : {'z', 'x', 'y'} or numpy.ndarray
         Receiver orientation.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.survey.BaseTimeRx: times
+    # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.survey.BaseTimeRx: times
+    # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
 
     def __init__(self, locations=None, times=None, orientation="x", **kwargs):
         self.projField = "h"
@@ -346,13 +405,23 @@ class PointCurrentDensity(BaseRx):
 
     Parameters
     ----------
-    locations : (n_loc, n_dim) numpy.ndarray
-        Receiver locations.
-    times : (n_times) numpy.ndarray
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
+    times : array_like
         Time channels
-    orientation : {'z', 'x', 'y'}
+    orientation : {'z', 'x', 'y'} or numpy.ndarray
         Receiver orientation.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.survey.BaseTimeRx: times
+    # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.survey.BaseTimeRx: times
+    # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
 
     def __init__(self, locations=None, times=None, orientation="x", **kwargs):
         self.projField = "j"
@@ -366,13 +435,23 @@ class PointMagneticFieldTimeDerivative(BaseRx):
 
     Parameters
     ----------
-    locations : (n_loc, n_dim) numpy.ndarray
-        Receiver locations.
-    times : (n_times) numpy.ndarray
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
+    times : array_like
         Time channels
-    orientation : {'z', 'x', 'y'}
+    orientation : {'z', 'x', 'y'} or numpy.ndarray
         Receiver orientation.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.survey.BaseTimeRx: times
+    # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.survey.BaseTimeRx: times
+    # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
 
     def __init__(self, locations=None, times=None, orientation="x", **kwargs):
         self.projField = "dhdt"

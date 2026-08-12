@@ -18,7 +18,7 @@ class BaseRx:
 
     Parameters
     ----------
-    locations : (n_loc, ndim) numpy.ndarray
+    locations : (n_loc, n_dim) array_like
         Locations assocated with a given receiver
     storeProjections : bool, Default = ``False``
         Store projections from the mesh to receiver
@@ -181,11 +181,14 @@ class BaseTimeRx(BaseRx):
 
     Parameters
     ----------
-    locations : (n, dim) array_like
-        Receiver locations
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
     times : array_like
         Time channels
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
 
     def __init__(self, locations, times, **kwargs):
         super().__init__(locations=locations, **kwargs)
@@ -261,11 +264,33 @@ class BaseTimeRx(BaseRx):
         list for all components collected by
         the receivers.
 
+        Parameters
+        ----------
+        mesh : discretize.BaseMesh
+            A discretize mesh
+        projected_grid : str
+            Define what part of the mesh (i.e. edges, faces, centers, nodes) to
+            project from. Must be one of::
+
+                'Ex', 'edges_x'           -> x-component of field defined on x edges
+                'Ey', 'edges_y'           -> y-component of field defined on y edges
+                'Ez', 'edges_z'           -> z-component of field defined on z edges
+                'Fx', 'faces_x'           -> x-component of field defined on x faces
+                'Fy', 'faces_y'           -> y-component of field defined on y faces
+                'Fz', 'faces_z'           -> z-component of field defined on z faces
+                'N', 'nodes'              -> scalar field defined on nodes
+                'CC', 'cell_centers'      -> scalar field defined on cell centers
+                'CCVx', 'cell_centers_x'  -> x-component of vector field defined on cell centers
+                'CCVy', 'cell_centers_y'  -> y-component of vector field defined on cell centers
+                'CCVz', 'cell_centers_z'  -> z-component of vector field defined on cell centers
+
         Notes
         -----
         Projection matrices are stored as a dictionary (mesh, timeMesh)
         if `storeProjections` is ``True``
         """
+        # docerator: provenance
+        # docerator: from simpeg.survey.BaseRx: mesh, projected_grid
         if (mesh, time_mesh) in self._Ps:
             return self._Ps[(mesh, time_mesh)]
 
@@ -286,7 +311,7 @@ class BaseSrc:
     ----------
     receiver_list : list of simpeg.survey.BaseRx objects
         Sets the receivers associated with the source
-    location : (n_dim) numpy.ndarray
+    location : (n_dim) array_like
         Location of the source
     """
 
@@ -312,7 +337,7 @@ class BaseSrc:
 
         Returns
         -------
-        (n_dim) np.ndarray
+        (n_dim) numpy.ndarray
             Source location.
         """
         return self._location

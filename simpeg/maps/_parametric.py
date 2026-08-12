@@ -22,6 +22,7 @@ from ._base import IdentityMap
 from ..utils.code_utils import deprecate_property
 
 
+# docerator: override=mesh
 class ParametricCircleMap(IdentityMap):
     r"""Mapping for a parameterized circle.
 
@@ -184,6 +185,8 @@ class ParametricCircleMap(IdentityMap):
             input argument *v* is not ``None``, the method returns the derivative times
             the vector *v*.
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
         a = self.slope
         sig1, sig2, x, y, r = m[0], m[1], m[2], m[3], m[4]
         if self.logSigma:
@@ -251,6 +254,7 @@ class ParametricCircleMap(IdentityMap):
         return False
 
 
+# docerator: override=mesh
 class ParametricPolyMap(IdentityMap):
     r"""Mapping for 2 layer model whose interface is defined by a polynomial.
 
@@ -618,6 +622,8 @@ class ParametricPolyMap(IdentityMap):
             the vector *v*.
 
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
         alpha = self.slope
         sig1, sig2, c = m[0], m[1], m[2:]
         if self.logSigma:
@@ -688,6 +694,7 @@ class ParametricPolyMap(IdentityMap):
         return False
 
 
+# docerator: override=mesh
 class ParametricSplineMap(IdentityMap):
     r"""Mapping to parameterize the boundary between two geological units using
     spline interpolation.
@@ -1071,6 +1078,7 @@ class ParametricSplineMap(IdentityMap):
         return False
 
 
+# docerator: override=mesh
 class BaseParametric(IdentityMap):
     """Base class for parametric mappings from simple geological structures to meshes.
 
@@ -1471,6 +1479,8 @@ class ParametricLayer(BaseParametric):
             input argument *v* is not ``None``, the method returns the derivative times
             the vector *v*.
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
         mDict = self.mDict(m)
         derivative = sp.csr_matrix(
             np.vstack(
@@ -1533,19 +1543,19 @@ class ParametricBlock(BaseParametric):
     ----------
     mesh : discretize.BaseMesh
         A discretize mesh
-    active_cells : numpy.ndarray
-        Active cells array. Can be a boolean ``numpy.ndarray`` of length *mesh.nC*
-        or a ``numpy.ndarray`` of ``int`` containing the indices of the active cells.
-    slope : float
-        Directly define the constant *a* in the mapping function which defines the
-        sharpness of the boundaries.
-    slopeFact : float
-        Scaling factor for the sharpness of the boundaries based on cell size.
-        Using this option, we set *a = slopeFact / dh*.
     epsilon : float
         Epsilon value used in the ekblom representation of the block
     p : float
         p-value used in the ekblom representation of the block.
+    active_cells : numpy.ndarray, optional
+        Active cells array. Can be a boolean ``numpy.ndarray`` of length *mesh.nC*
+        or a ``numpy.ndarray`` of ``int`` containing the indices of the active cells.
+    slope : float, optional
+        Directly set the scaling parameter *slope* which sets the sharpness of boundaries
+        between units.
+    slopeFact : float, optional
+        Set sharpness of boundaries between units based on minimum cell size. If set,
+        the scalaing parameter *slope = slopeFact / dh*.
 
     Examples
     --------
@@ -1574,6 +1584,12 @@ class ParametricBlock(BaseParametric):
     >>> mesh.plot_image(act_map * block_map * model, ax=ax)
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._parametric.BaseParametric: mesh, active_cells, slope, slopeFact
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._parametric.BaseParametric: mesh, active_cells, slope, slopeFact
 
     def __init__(self, mesh, epsilon=1e-6, p=10, **kwargs):
         self.epsilon = epsilon
@@ -1828,6 +1844,8 @@ class ParametricBlock(BaseParametric):
             input argument *v* is not ``None``, the method returns the derivative times
             the vector *v*.
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
         derivative = sp.csr_matrix(
             getattr(self, "_deriv{}D".format(self.mesh.dim))(self.mDict(m))
         )
@@ -1881,15 +1899,15 @@ class ParametricEllipsoid(ParametricBlock):
     ----------
     mesh : discretize.BaseMesh
         A discretize mesh
-    active_cells : numpy.ndarray
+    active_cells : numpy.ndarray, optional
         Active cells array. Can be a boolean ``numpy.ndarray`` of length *mesh.nC*
         or a ``numpy.ndarray`` of ``int`` containing the indices of the active cells.
-    slope : float
-        Directly define the constant *a* in the mapping function which defines the
-        sharpness of the boundaries.
-    slopeFact : float
-        Scaling factor for the sharpness of the boundaries based on cell size.
-        Using this option, we set *a = slopeFact / dh*.
+    slope : float, optional
+        Directly set the scaling parameter *slope* which sets the sharpness of boundaries
+        between units.
+    slopeFact : float, optional
+        Set sharpness of boundaries between units based on minimum cell size. If set,
+        the scalaing parameter *slope = slopeFact / dh*.
     epsilon : float
         Epsilon value used in the ekblom representation of the block
 
@@ -1921,6 +1939,14 @@ class ParametricEllipsoid(ParametricBlock):
 
     """
 
+    # docerator: provenance
+    # docerator: from simpeg.maps._parametric.BaseParametric: mesh, active_cells, slope, slopeFact
+    # docerator: from simpeg.maps._parametric.ParametricBlock: epsilon
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._parametric.BaseParametric: mesh, active_cells, slope, slopeFact
+    # docerator: from simpeg.maps._parametric.ParametricBlock: epsilon
+
     def __init__(self, mesh, **kwargs):
         super(ParametricEllipsoid, self).__init__(mesh, p=2, **kwargs)
 
@@ -1929,21 +1955,33 @@ class ParametricCasingAndLayer(ParametricLayer):
     """
     Parametric layered space with casing.
 
-    .. code:: python
+    Parameters
+    ----------
+    mesh : discretize.BaseMesh
+        A discretize mesh
 
-        m = [val_background,
-             val_layer,
-             val_casing,
-             val_insideCasing,
-             layer_center,
-             layer_thickness,
-             casing_radius,
-             casing_thickness,
-             casing_bottom,
-             casing_top
-        ]
+    Examples
+    --------
+
+    >>> m = [val_background,
+    ...      val_layer,
+    ...      val_casing,
+    ...      val_insideCasing,
+    ...      layer_center,
+    ...      layer_thickness,
+    ...      casing_radius,
+    ...      casing_thickness,
+    ...      casing_bottom,
+    ...      casing_top
+    ...     ]
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._parametric.BaseParametric: mesh
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._parametric.BaseParametric: mesh
 
     def __init__(self, mesh, **kwargs):
         assert (
@@ -2250,37 +2288,36 @@ class ParametricBlockInLayer(ParametricLayer):
     """
     Parametric Block in a Layered Space
 
+    Parameters
+    ----------
+    mesh : discretize.BaseMesh
+        A discretize mesh
+
+    Examples
+    --------
     For 2D:
 
-    .. code:: python
-
-        m = [val_background,
-             val_layer,
-             val_block,
-             layer_center,
-             layer_thickness,
-             block_x0,
-             block_dx
-        ]
+    >>> m = [val_background,
+    ...      val_layer,
+    ...      val_block,
+    ...      layer_center,
+    ...      layer_thickness,
+    ...      block_x0,
+    ...      block_dx
+    ... ]
 
     For 3D:
 
-    .. code:: python
-
-        m = [val_background,
-             val_layer,
-             val_block,
-             layer_center,
-             layer_thickness,
-             block_x0,
-             block_y0,
-             block_dx,
-             block_dy
-        ]
-
-    **Required**
-
-    :param discretize.base.BaseMesh mesh: SimPEG Mesh, 2D or 3D
+    >>> m = [val_background,
+    ...      val_layer,
+    ...      val_block,
+    ...      layer_center,
+    ...      layer_thickness,
+    ...      block_x0,
+    ...      block_y0,
+    ...      block_dx,
+    ...      block_dy
+    ... ]
 
     **Optional**
 
@@ -2291,6 +2328,12 @@ class ParametricBlockInLayer(ParametricLayer):
     :param numpy.ndarray active_cells: bool vector with
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._parametric.BaseParametric: mesh
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._parametric.BaseParametric: mesh
 
     def __init__(self, mesh, **kwargs):
         super().__init__(mesh, **kwargs)

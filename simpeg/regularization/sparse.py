@@ -30,21 +30,6 @@ class BaseSparse(BaseRegularization):
     mesh : simpeg.regularization.RegularizationMesh, discretize.base.BaseMesh
         Mesh on which the regularization is discretized. This is not necessarily
         the same as the mesh on which the simulation is defined.
-    active_cells : None, (n_cells, ) numpy.ndarray of bool
-        Boolean array defining the set of :py:class:`~.regularization.RegularizationMesh`
-        cells that are active in the inversion. If ``None``, all cells are active.
-    mapping : None, simpeg.maps.BaseMap
-        The mapping from the model parameters to the active cells in the inversion.
-        If ``None``, the mapping is the identity map.
-    reference_model : None, (n_param, ) numpy.ndarray
-        Reference model values used to constrain the inversion. If ``None``, the starting model
-        is set as the reference model.
-    units : None, str
-        Units for the model parameters. Some regularization classes behave
-        differently depending on the units; e.g. 'radian'.
-    weights : None, dict
-        Weight multipliers to customize the least-squares function. Each key points to a (n_cells, )
-        numpy.ndarray that is defined on the :py:class:`~.regularization.RegularizationMesh`.
     norm : float
         The norm used in the regularization function. Must be between within the interval [0, 2].
     irls_scaled : bool
@@ -52,8 +37,31 @@ class BaseSparse(BaseRegularization):
         If ``False``, do not scale.
     irls_threshold : float
         Constant added to IRLS weights to ensures stability in the algorithm.
+    active_cells : None, (n_cells, ) numpy.ndarray of bool
+        Boolean array defining the set of :py:class:`~.regularization.RegularizationMesh`
+        cells that are active in the inversion. If ``None``, all cells are active.
+    mapping : simpeg.mapping.BaseMap
+        A SimPEG mapping object that maps from the model space to the
+        quantity evaluated in the objective function.
+    reference_model : None, (n_param, ) numpy.ndarray
+        Reference model. If ``None``, the reference model in the inversion is set to
+        the starting model.
+    units : None, str
+        Units for the model parameters. Some regularization classes behave
+        differently depending on the units; e.g. 'radian'.
+    weights : None, dict
+        Weight multipliers to customize the least-squares function.
+        Each value is a numpy.ndarray of shape(:py:property:`~.regularization.RegularizationMesh.n_cells`, ).
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units, weights
+    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units, weights
+    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
 
     def __init__(self, mesh, norm=2.0, irls_scaled=True, irls_threshold=1e-8, **kwargs):
         super().__init__(mesh=mesh, **kwargs)
@@ -398,6 +406,8 @@ class SparseSmallness(BaseSparse, Smallness):
         self.set_weights(irls=self.get_lp_weights(f_m))
 
 
+# docerator: override=weights
+# docerator: override=norm
 class SparseSmoothness(BaseSparse, SmoothnessFirstOrder):
     r"""Sparse smoothness (blockiness) regularization.
 
@@ -411,11 +421,14 @@ class SparseSmoothness(BaseSparse, SmoothnessFirstOrder):
 
     Parameters
     ----------
-    mesh : .regularization.RegularizationMesh
-        Mesh on which the regularization is discretized. Not the mesh used to
-        define the simulation.
+    mesh : simpeg.regularization.RegularizationMesh, discretize.base.BaseMesh
+        Mesh on which the regularization is discretized. This is not necessarily
+        the same as the mesh on which the simulation is defined.
     orientation : {'x','y','z'}
         The direction along which sparse smoothness is applied.
+    gradient_type : {"total", "component"}
+        Gradient measure used in the IRLS re-weighting. Whether to re-weight using the total
+        gradient or components of the gradient.
     norm : float, array_like
         The norm defining sparseness thoughout the regularization function. Must be within the
         interval [0,2]. There are several options:
@@ -427,13 +440,12 @@ class SparseSmoothness(BaseSparse, SmoothnessFirstOrder):
     active_cells : None, (n_cells, ) numpy.ndarray of bool
         Boolean array defining the set of :py:class:`~.regularization.RegularizationMesh`
         cells that are active in the inversion. If ``None``, all cells are active.
-    mapping : None, simpeg.maps.BaseMap
-        The mapping from the model parameters to the active cells in the inversion.
-        If ``None``, the mapping is the identity map.
+    mapping : simpeg.mapping.BaseMap
+        A SimPEG mapping object that maps from the model space to the
+        quantity evaluated in the objective function.
     reference_model : None, (n_param, ) numpy.ndarray
         Reference model. If ``None``, the reference model in the inversion is set to
-        the starting model. To include the reference model in the regularization, the
-        `reference_model_in_smooth` property must be set to ``True``.
+        the starting model.
     reference_model_in_smooth : bool, optional
         Whether to include the reference model in the smoothness terms.
     units : None, str
@@ -451,9 +463,6 @@ class SparseSmoothness(BaseSparse, SmoothnessFirstOrder):
         If ``False``, do not scale.
     irls_threshold : float
         Constant added to IRLS weights to ensures stability in the algorithm.
-    gradient_type : {"total", "component"}
-        Gradient measure used in the IRLS re-weighting. Whether to re-weight using the total
-        gradient or components of the gradient.
 
     Notes
     -----
@@ -572,6 +581,16 @@ class SparseSmoothness(BaseSparse, SmoothnessFirstOrder):
     >>> reg.set_weights(weights_1=array_1, weights_2=array_2})
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units
+    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
+    # docerator: from simpeg.regularization.sparse.BaseSparse: irls_scaled, irls_threshold
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units
+    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
+    # docerator: from simpeg.regularization.sparse.BaseSparse: irls_scaled, irls_threshold
 
     def __init__(self, mesh, orientation="x", gradient_type="total", **kwargs):
         self.gradient_type = gradient_type
@@ -706,9 +725,25 @@ class Sparse(WeightedLeastSquares):
     active_cells : None, (n_cells, ) numpy.ndarray of bool
         Boolean array defining the set of :py:class:`~.regularization.RegularizationMesh`
         cells that are active in the inversion. If ``None``, all cells are active.
-    mapping : None, simpeg.maps.BaseMap
-        The mapping from the model parameters to the active cells in the inversion.
-        If ``None``, the mapping is the identity map.
+    norms : (dim+1, ) numpy.ndarray
+        The respective norms used for the sparse smallness, x-smoothness, (y-smoothness
+        and z-smoothness) regularization function. Must all be within the interval [0, 2].
+        E.g. `np.r_[2, 1, 1, 1]` uses a 2-norm on the smallness term and a 1-norm on all
+        smoothness terms.
+    gradient_type : {"total", "component"}
+        Gradient measure used in the IRLS re-weighting. Whether to re-weight using the
+        total gradient or components of the gradient.
+    irls_scaled : bool
+        If ``True``, scale the IRLS weights to preserve magnitude of the regularization
+        function. If ``False``, do not scale.
+    irls_threshold : float
+        Constant added to IRLS weights to ensures stability in the algorithm.
+    objfcts : None or list of simpeg.objective_function.BaseObjectiveFunction, optional
+        List containing the objective functions that will live inside the
+        composite class. If ``None``, an empty list will be created.
+    mapping : simpeg.mapping.BaseMap
+        A SimPEG mapping object that maps from the model space to the
+        quantity evaluated in the objective function.
     reference_model : None, (n_param, ) numpy.ndarray
         Reference model. If ``None``, the reference model in the inversion is set to
         the starting model.
@@ -728,19 +763,6 @@ class Sparse(WeightedLeastSquares):
         value of the `length_scale` parameter.
     length_scale_x, length_scale_y, length_scale_z : float, optional
         First order smoothness length scales for the respective dimensions.
-    gradient_type : {"total", "component"}
-        Gradient measure used in the IRLS re-weighting. Whether to re-weight using the
-        total gradient or components of the gradient.
-    norms : (dim+1, ) numpy.ndarray
-        The respective norms used for the sparse smallness, x-smoothness, (y-smoothness
-        and z-smoothness) regularization function. Must all be within the interval [0, 2].
-        E.g. `np.r_[2, 1, 1, 1]` uses a 2-norm on the smallness term and a 1-norm on all
-        smoothness terms.
-    irls_scaled : bool
-        If ``True``, scale the IRLS weights to preserve magnitude of the regularization
-        function. If ``False``, do not scale.
-    irls_threshold : float
-        Constant added to IRLS weights to ensures stability in the algorithm.
 
     Notes
     -----
@@ -895,6 +917,11 @@ class Sparse(WeightedLeastSquares):
 
     Likewise for y and z.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.WeightedLeastSquares: mesh, active_cells, reference_model, reference_model_in_smooth, units, weights, alpha_s, alpha_x, alpha_y, alpha_z, length_scale_x, length_scale_y, length_scale_z
+    # docerator: from simpeg.objective_function.ComboObjectiveFunction: objfcts
+    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
 
     def __init__(
         self,

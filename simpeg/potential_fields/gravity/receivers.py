@@ -25,8 +25,8 @@ class Point(survey.BaseRx):
 
     Parameters
     ----------
-    locations: (n_loc, 3) numpy.ndarray
-        Receiver locations
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
     components: str or list of str
         Data component(s) measured at each receiver location. Use a ``str`` for a
         single component or a ``list`` of ``str`` if multiple components are simulated
@@ -47,6 +47,12 @@ class Point(survey.BaseRx):
     --------
     simpeg.potential_fields.gravity.Simulation3DIntegral
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
 
     def __init__(self, locations, components="gz", **kwargs):
         super(Point, self).__init__(locations, **kwargs)

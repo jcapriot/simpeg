@@ -25,10 +25,24 @@ from discretize.utils import make_boundary_bool
 import discretize.base
 
 
+# docerator: override=survey
 class BaseDCSimulation2D(BaseElectricalPDESimulation):
     """
     Base 2.5D DC problem
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
+    survey : .resistivity.survey.Survey
+        The resistivity survey for the simulation.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
 
     fieldsPair = Fields2D  # simpeg.EM.Static.Fields_2D
     fieldsPair_fwd = FieldsDC
@@ -253,7 +267,17 @@ class BaseDCSimulation2D(BaseElectricalPDESimulation):
         :param Fields u: fields object
         :rtype: numpy.ndarray
         :return: data
+
+        Parameters
+        ----------
+        m : (n_param,) numpy.ndarray
+            The model parameters.
+        f : simpeg.fields.Fields, optional
+            If provided, will be used to compute the predicted data
+            without recalculating the fields.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m, f
         if f is None:
             if m is None:
                 m = self.model
@@ -291,7 +315,19 @@ class BaseDCSimulation2D(BaseElectricalPDESimulation):
     def Jvec(self, m, v, f=None):
         """
         Compute sensitivity matrix (J) and vector (v) product.
+
+        Parameters
+        ----------
+        m : (n_param, ) numpy.ndarray
+            The model parameters.
+        v : (n_param, ) numpy.ndarray
+            Vector we are multiplying.
+        f : simpeg.field.Fields, optional
+            If provided, fields will not need to be recomputed for the
+            current model to compute `Jvec`.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m, v, f
         if self.storeJ:
             J = self.getJ(m, f=f)
             Jv = mkvc(np.dot(J, v))
@@ -336,7 +372,19 @@ class BaseDCSimulation2D(BaseElectricalPDESimulation):
     def Jtvec(self, m, v, f=None):
         """
         Compute adjoint sensitivity matrix (J^T) and vector (v) product.
+
+        Parameters
+        ----------
+        m : (n_param, ) numpy.ndarray
+            The model parameters.
+        v : (n_data, ) numpy.ndarray
+            Vector we are multiplying.
+        f : simpeg.field.Fields, optional
+            If provided, fields will not need to be recomputed for the
+            current model to compute `Jtvec`.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m, v, f
         if self.storeJ:
             J = self.getJ(m, f=f)
             Jtv = mkvc(np.dot(J.T, v))
@@ -482,7 +530,22 @@ class BaseDCSimulation2D(BaseElectricalPDESimulation):
 class Simulation2DCellCentered(BaseDCSimulation2D):
     """
     2.5D cell centered DC problem
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
+    survey : .resistivity.survey.Survey
+        The resistivity survey for the simulation.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.static.resistivity.simulation_2d.BaseDCSimulation2D: survey
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.static.resistivity.simulation_2d.BaseDCSimulation2D: survey
 
     _solutionType = "phiSolution"
     _formulation = "HJ"  # CC potentials means J is on faces
@@ -629,7 +692,22 @@ class Simulation2DCellCentered(BaseDCSimulation2D):
 class Simulation2DNodal(BaseDCSimulation2D):
     """
     2.5D nodal DC problem
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
+    survey : .resistivity.survey.Survey
+        The resistivity survey for the simulation.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.static.resistivity.simulation_2d.BaseDCSimulation2D: survey
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.static.resistivity.simulation_2d.BaseDCSimulation2D: survey
 
     _solutionType = "phiSolution"
     _formulation = "EB"  # CC potentials means J is on faces

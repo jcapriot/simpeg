@@ -11,17 +11,25 @@ class BaseRx(BaseTimeRx):
 
     Parameters
     ----------
-    locations : (n_loc, dim) numpy.ndarray
-        Receiver locations.
-    times : numpy.array_like
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
+    times : array_like
         Time channels
-    orientation : {``None``, 'x', 'y', 'z'}
-        Receiver orientation
     data_type : {"volt", "apparent_chargeability"}
         Data type.
+    orientation : {``None``, 'x', 'y', 'z'}
+        Receiver orientation
     projField : {"phi", "e", "j"}
         Fields solved on the mesh.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.survey.BaseTimeRx: times
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.survey.BaseTimeRx: times
 
     def __init__(
         self,
@@ -200,6 +208,7 @@ class BaseRx(BaseTimeRx):
             return P.T * v
 
 
+# docerator: override=locations
 class Dipole(BaseRx):
     """
     Spectral IP dipole receiver class
@@ -210,14 +219,24 @@ class Dipole(BaseRx):
         M electrode locations; remember to set 'locations_n' keyword argument to define N electrode locations.
     locations_n : (n_loc, dim) numpy.ndarray
         N electrode locations; remember to set 'locations_m' keyword argument to define M electrode locations.
-    locations : list or tuple of length 2 of numpy.ndarray
+    times : array_like
+        Time channels
+    locations : list or tuple of length 2 of (n_loc, n_dim) array_like
         M and N electrode locations. In this case, do not set the 'locations_m' and 'locations_n'
         keyword arguments. And we supply a list or tuple of the form [locations_m, locations_n].
     orientation : {``None``, 'x', 'y', 'z'}
-        Receiver orientation.
+        Receiver orientation
     data_type : {"volt", "apparent_chargeability"}
         Data type.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseTimeRx: times
+    # docerator: from simpeg.electromagnetics.static.spectral_induced_polarization.receivers.BaseRx: orientation, data_type
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseTimeRx: times
+    # docerator: from simpeg.electromagnetics.static.spectral_induced_polarization.receivers.BaseRx: orientation, data_type
 
     def __init__(
         self, locations_m=None, locations_n=None, times=None, locations=None, **kwargs
@@ -333,22 +352,23 @@ class Dipole(BaseRx):
 
         Parameters
         ----------
-        mesh : discretize.base.BaseMesh
-            The mesh on which the discrete set of equations is solved
+        mesh : discretize.BaseMesh
+            A discretize mesh
         projected_grid : str
-            Tensor locations on the mesh being interpolated from. *projected_grid* must be one of:
+            Define what part of the mesh (i.e. edges, faces, centers, nodes) to
+            project from. Must be one of::
 
-            - 'Ex', 'edges_x'           -> x-component of field defined on x edges
-            - 'Ey', 'edges_y'           -> y-component of field defined on y edges
-            - 'Ez', 'edges_z'           -> z-component of field defined on z edges
-            - 'Fx', 'faces_x'           -> x-component of field defined on x faces
-            - 'Fy', 'faces_y'           -> y-component of field defined on y faces
-            - 'Fz', 'faces_z'           -> z-component of field defined on z faces
-            - 'N', 'nodes'              -> scalar field defined on nodes
-            - 'CC', 'cell_centers'      -> scalar field defined on cell centers
-            - 'CCVx', 'cell_centers_x'  -> x-component of vector field defined on cell centers
-            - 'CCVy', 'cell_centers_y'  -> y-component of vector field defined on cell centers
-            - 'CCVz', 'cell_centers_z'  -> z-component of vector field defined on cell centers
+                'Ex', 'edges_x'           -> x-component of field defined on x edges
+                'Ey', 'edges_y'           -> y-component of field defined on y edges
+                'Ez', 'edges_z'           -> z-component of field defined on z edges
+                'Fx', 'faces_x'           -> x-component of field defined on x faces
+                'Fy', 'faces_y'           -> y-component of field defined on y faces
+                'Fz', 'faces_z'           -> z-component of field defined on z faces
+                'N', 'nodes'              -> scalar field defined on nodes
+                'CC', 'cell_centers'      -> scalar field defined on cell centers
+                'CCVx', 'cell_centers_x'  -> x-component of vector field defined on cell centers
+                'CCVy', 'cell_centers_y'  -> y-component of vector field defined on cell centers
+                'CCVz', 'cell_centers_z'  -> z-component of vector field defined on cell centers
 
         Returns
         -------
@@ -356,6 +376,8 @@ class Dipole(BaseRx):
             P, the interpolation matrix
 
         """
+        # docerator: provenance
+        # docerator: from simpeg.survey.BaseRx: mesh, projected_grid
         if mesh in self._Ps:
             return self._Ps[mesh]
 
@@ -406,28 +428,31 @@ class Pole(BaseRx):
 
         Parameters
         ----------
-        mesh : discretize.base.BaseMesh
-            The mesh on which the discrete set of equations is solved
+        mesh : discretize.BaseMesh
+            A discretize mesh
         projected_grid : str
-            Tensor locations on the mesh being interpolated from. *projected_grid* must be one of:
+            Define what part of the mesh (i.e. edges, faces, centers, nodes) to
+            project from. Must be one of::
 
-            - 'Ex', 'edges_x'           -> x-component of field defined on x edges
-            - 'Ey', 'edges_y'           -> y-component of field defined on y edges
-            - 'Ez', 'edges_z'           -> z-component of field defined on z edges
-            - 'Fx', 'faces_x'           -> x-component of field defined on x faces
-            - 'Fy', 'faces_y'           -> y-component of field defined on y faces
-            - 'Fz', 'faces_z'           -> z-component of field defined on z faces
-            - 'N', 'nodes'              -> scalar field defined on nodes
-            - 'CC', 'cell_centers'      -> scalar field defined on cell centers
-            - 'CCVx', 'cell_centers_x'  -> x-component of vector field defined on cell centers
-            - 'CCVy', 'cell_centers_y'  -> y-component of vector field defined on cell centers
-            - 'CCVz', 'cell_centers_z'  -> z-component of vector field defined on cell centers
+                'Ex', 'edges_x'           -> x-component of field defined on x edges
+                'Ey', 'edges_y'           -> y-component of field defined on y edges
+                'Ez', 'edges_z'           -> z-component of field defined on z edges
+                'Fx', 'faces_x'           -> x-component of field defined on x faces
+                'Fy', 'faces_y'           -> y-component of field defined on y faces
+                'Fz', 'faces_z'           -> z-component of field defined on z faces
+                'N', 'nodes'              -> scalar field defined on nodes
+                'CC', 'cell_centers'      -> scalar field defined on cell centers
+                'CCVx', 'cell_centers_x'  -> x-component of vector field defined on cell centers
+                'CCVy', 'cell_centers_y'  -> y-component of vector field defined on cell centers
+                'CCVz', 'cell_centers_z'  -> z-component of vector field defined on cell centers
 
         Returns
         -------
         scipy.sparse.csr_matrix
             P, the interpolation matrix
         """
+        # docerator: provenance
+        # docerator: from simpeg.survey.BaseRx: mesh, projected_grid
         if mesh in self._Ps:
             return self._Ps[mesh]
 

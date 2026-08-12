@@ -17,10 +17,30 @@ from .utils import _mini_pole_pole
 from discretize.utils import make_boundary_bool
 
 
+# docerator: override=survey
 class BaseDCSimulation(BaseElectricalPDESimulation):
     """
     Base DC Problem
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
+    survey : .resistivity.survey.Survey
+        The resistivity survey for the simulation.
+    storeJ : bool, optional
+        Whether to store the sensitivity matrix.
+    miniaturize : bool, optional
+        Whether to reduce the number of sources in the survey to unique pole sources.
+    surface_faces : (n_bf, ) numpy.ndarray of bool, optional
+        Array defining which boundary faces to interpret as surfaces of Neumann boundary.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
 
     _mini_survey = None
 
@@ -156,7 +176,19 @@ class BaseDCSimulation(BaseElectricalPDESimulation):
     def Jvec(self, m, v, f=None):
         """
         Compute sensitivity matrix (J) and vector (v) product.
+
+        Parameters
+        ----------
+        m : (n_param, ) numpy.ndarray
+            The model parameters.
+        v : (n_param, ) numpy.ndarray
+            Vector we are multiplying.
+        f : simpeg.field.Fields, optional
+            If provided, fields will not need to be recomputed for the
+            current model to compute `Jvec`.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m, v, f
         if f is None:
             f = self.fields(m)
 
@@ -189,7 +221,19 @@ class BaseDCSimulation(BaseElectricalPDESimulation):
     def Jtvec(self, m, v, f=None):
         """
         Compute adjoint sensitivity matrix (J^T) and vector (v) product.
+
+        Parameters
+        ----------
+        m : (n_param, ) numpy.ndarray
+            The model parameters.
+        v : (n_data, ) numpy.ndarray
+            Vector we are multiplying.
+        f : simpeg.field.Fields, optional
+            If provided, fields will not need to be recomputed for the
+            current model to compute `Jtvec`.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m, v, f
 
         if f is None:
             f = self.fields(m)
@@ -318,10 +362,54 @@ class BaseDCSimulation(BaseElectricalPDESimulation):
         return out
 
 
+# docerator: expand_kwargs
 class Simulation3DCellCentered(BaseDCSimulation):
     """
     3D cell centered DC problem
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
+    survey : .resistivity.survey.Survey
+        The resistivity survey for the simulation.
+    bc_type : {"Dirichlet", "Neumann", "Robin", "Mixed"}, optional
+        Type of boundary condition to use for simulation. Default is "Robin".
+
+    Other Parameters
+    ----------------
+    sensitivity_path : str, optional
+        Path to directory where sensitivity file is stored.
+    counter : None or simpeg.utils.Counter
+        SimPEG ``Counter`` object to store iterations and run-times.
+    verbose : bool, optional
+        Verbose progress printout.
+    solver : type[pymatsolver.base.Base], optional
+        Numerical solver used to solve the forward problem. If ``None``,
+        an appropriate solver specific to the simulation class is set by default.
+    solver_opts : dict, optional
+        Solver-specific parameters. If ``None``, default parameters are used for
+        the solver set by ``solver``. Otherwise, the ``dict`` must contain appropriate
+        pairs of keyword arguments and parameter values for the solver. Please visit
+        `pymatsolver <https://pymatsolver.readthedocs.io/en/latest/>`__ to learn more
+        about solvers and their parameters.
+    storeJ : bool, optional
+        Whether to store the sensitivity matrix.
+    miniaturize : bool, optional
+        Whether to reduce the number of sources in the survey to unique pole sources.
+    surface_faces : (n_bf, ) numpy.ndarray of bool, optional
+        Array defining which boundary faces to interpret as surfaces of Neumann boundary.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh, solver, solver_opts
+    # docerator: from simpeg.electromagnetics.static.resistivity.simulation.BaseDCSimulation: survey, storeJ, miniaturize, surface_faces
+    # docerator: from simpeg.simulation.BaseSimulation: sensitivity_path, counter, verbose
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh, solver, solver_opts
+    # docerator: from simpeg.electromagnetics.static.resistivity.simulation.BaseDCSimulation: survey, storeJ, miniaturize, surface_faces
+    # docerator: from simpeg.simulation.BaseSimulation: sensitivity_path, counter, verbose
 
     _solutionType = "phiSolution"
     _formulation = "HJ"  # CC potentials means J is on faces
@@ -480,10 +568,55 @@ class Simulation3DCellCentered(BaseDCSimulation):
         self.Grad = self.Grad - B
 
 
+# docerator: expand_kwargs
 class Simulation3DNodal(BaseDCSimulation):
     """
     3D nodal DC problem
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
+    survey : .resistivity.survey.Survey
+        The resistivity survey for the simulation.
+    bc_type : str, optional
+        The type of boundary condition to use. Defaults to "Robin".
+
+    Other Parameters
+    ----------------
+    sensitivity_path : str, optional
+        Path to directory where sensitivity file is stored.
+    counter : None or simpeg.utils.Counter
+        SimPEG ``Counter`` object to store iterations and run-times.
+    verbose : bool, optional
+        Verbose progress printout.
+    solver : type[pymatsolver.base.Base], optional
+        Numerical solver used to solve the forward problem. If ``None``,
+        an appropriate solver specific to the simulation class is set by default.
+    solver_opts : dict, optional
+        Solver-specific parameters. If ``None``, default parameters are used for
+        the solver set by ``solver``. Otherwise, the ``dict`` must contain appropriate
+        pairs of keyword arguments and parameter values for the solver. Please visit
+        `pymatsolver <https://pymatsolver.readthedocs.io/en/latest/>`__ to learn more
+        about solvers and their parameters.
+    storeJ : bool, optional
+        Whether to store the sensitivity matrix.
+    miniaturize : bool, optional
+        Whether to reduce the number of sources in the survey to unique pole sources.
+    surface_faces : (n_bf, ) numpy.ndarray of bool, optional
+        Array defining which boundary faces to interpret as surfaces of Neumann boundary.
+
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh, solver, solver_opts
+    # docerator: from simpeg.electromagnetics.static.resistivity.simulation.BaseDCSimulation: survey, storeJ, miniaturize, surface_faces
+    # docerator: from simpeg.simulation.BaseSimulation: sensitivity_path, counter, verbose
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh, solver, solver_opts
+    # docerator: from simpeg.electromagnetics.static.resistivity.simulation.BaseDCSimulation: survey, storeJ, miniaturize, surface_faces
+    # docerator: from simpeg.simulation.BaseSimulation: sensitivity_path, counter, verbose
 
     _solutionType = "phiSolution"
     _formulation = "EB"  # N potentials means B is on faces

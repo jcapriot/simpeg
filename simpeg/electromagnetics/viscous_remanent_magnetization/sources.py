@@ -11,6 +11,8 @@ from .waveforms import BaseVRMWaveform
 #########################################
 
 
+# docerator: override=receiver_list
+# docerator: override=location
 class BaseSrcVRM(BaseSrc):
     """Base VRM source class
 
@@ -69,14 +71,20 @@ class MagDipole(BaseSrcVRM):
     Parameters
     ----------
     receiver_list : list of simpeg.electromagnetics.viscous_remanent_magnetization.receivers.Point
-        VRM receivers
+        A list of VRM receivers
     location : (3) array_like
-        source location
+        Source location
     moment : (3) array_like
         dipole moment (mx, my, mz)
     waveform : simpeg.electromagnetics.viscous_remanent_magnetization.waveforms.BaseVRMWaveform
-        VRM waveform
+        A VRM waveform
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.sources.BaseSrcVRM: receiver_list, location, waveform
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.sources.BaseSrcVRM: receiver_list, location, waveform
 
     def __init__(self, receiver_list, location, moment, waveform, **kwargs):
         if len(location) != 3:
@@ -190,9 +198,9 @@ class CircLoop(BaseSrcVRM):
     Parameters
     ----------
     receiver_list : list of simpeg.electromagnetics.viscous_remanent_magnetization.receivers.Point
-        VRM receivers
+        A list of VRM receivers
     location : (3) array_like
-        source location
+        Source location
     radius : float
         loop radius
     orientation : (2) array_like
@@ -200,8 +208,14 @@ class CircLoop(BaseSrcVRM):
     Imax : float
         Maximum current amplitude
     waveform : simpeg.electromagnetics.viscous_remanent_magnetization.waveforms.BaseVRMWaveform
-        VRM waveform
+        A VRM waveform
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.sources.BaseSrcVRM: receiver_list, location, waveform
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.sources.BaseSrcVRM: receiver_list, location, waveform
 
     def __init__(
         self, receiver_list, location, radius, orientation, Imax, waveform, **kwargs
@@ -374,21 +388,28 @@ class CircLoop(BaseSrcVRM):
 #########################################
 
 
+# docerator: override=location
 class LineCurrent(BaseSrcVRM):
     """Line current source.
 
     Parameters
     ----------
-    receiver_list : list of simpeg.electromagnetics.time_domain.receivers.BaseRx
-        List of TDEM receivers
+    receiver_list : list of simpeg.electromagnetics.viscous_remanent_magnetization.receivers.Point
+        A list of VRM receivers
     location : (n, 3) numpy.ndarray
         Array defining the node locations for the wire path. For inductive sources,
         you must close the loop.
     Imax : float
         Maximum current amplitude
     waveform : simpeg.electromagnetics.viscous_remanent_magnetization.waveforms.BaseVRMWaveform
-        VRM waveform
+        A VRM waveform
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.sources.BaseSrcVRM: receiver_list, waveform
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.sources.BaseSrcVRM: receiver_list, waveform
 
     def __init__(self, receiver_list, location, Imax, waveform, **kwargs):
         super(LineCurrent, self).__init__(receiver_list, location, waveform, **kwargs)

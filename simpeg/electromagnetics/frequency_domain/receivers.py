@@ -8,9 +8,9 @@ class BaseRx(survey.BaseRx):
 
     Parameters
     ----------
-    locations : (n_loc, n_dim) numpy.ndarray
-        Receiver locations.
-    orientation : {'z', 'x', 'y'} or numpy.ndarray
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
+    orientation : {'x', 'y', 'z'} or numpy.ndarray
         Receiver orientation.
     component : {'real', 'imag', 'both', 'complex'}
         Component of the receiver; i.e. 'real' or 'imag'. The options 'both' and
@@ -23,10 +23,13 @@ class BaseRx(survey.BaseRx):
         offset.
     """
 
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+
     def __init__(
         self,
         locations,
-        orientation="z",
+        orientation="x",
         component="real",
         data_type="field",
         use_source_receiver_offset=False,
@@ -144,15 +147,25 @@ class BaseRx(survey.BaseRx):
             Define what part of the mesh (i.e. edges, faces, centers, nodes) to
             project from. Must be one of::
 
-                'E', 'edges_'           -> field defined on edges
-                'F', 'faces_'           -> field defined on faces
-                'CCV', 'cell_centers_'  -> vector field defined on cell centers
+                'Ex', 'edges_x'           -> x-component of field defined on x edges
+                'Ey', 'edges_y'           -> y-component of field defined on y edges
+                'Ez', 'edges_z'           -> z-component of field defined on z edges
+                'Fx', 'faces_x'           -> x-component of field defined on x faces
+                'Fy', 'faces_y'           -> y-component of field defined on y faces
+                'Fz', 'faces_z'           -> z-component of field defined on z faces
+                'N', 'nodes'              -> scalar field defined on nodes
+                'CC', 'cell_centers'      -> scalar field defined on cell centers
+                'CCVx', 'cell_centers_x'  -> x-component of vector field defined on cell centers
+                'CCVy', 'cell_centers_y'  -> y-component of vector field defined on cell centers
+                'CCVz', 'cell_centers_z'  -> z-component of vector field defined on cell centers
 
         Returns
         -------
         scipy.sparse.csr_matrix
             P, the interpolation matrix
         """
+        # docerator: provenance
+        # docerator: from simpeg.survey.BaseRx: mesh, projected_grid
         if (mesh, projected_grid) in self._Ps:
             return self._Ps[(mesh, projected_grid)]
 
@@ -263,13 +276,18 @@ class PointElectricField(BaseRx):
 
     Parameters
     ----------
-    locations : (n_loc, n_dim) numpy.ndarray
-        Receiver locations.
-    orientation : {'x', 'y', 'z'}
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
+    orientation : {'x', 'y', 'z'} or numpy.ndarray
         Receiver orientation.
-    component : {'real', 'imag'}
-        Real or imaginary component.
+    component : {'real', 'imag', 'both', 'complex'}
+        Component of the receiver; i.e. 'real' or 'imag'. The options 'both' and
+        'complex' are only available for the 1D layered simulations.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.electromagnetics.frequency_domain.receivers.BaseRx: orientation, component
 
     def __init__(self, locations, orientation="x", component="real", **kwargs):
         self.projField = "e"
@@ -281,13 +299,18 @@ class PointMagneticFluxDensity(BaseRx):
 
     Parameters
     ----------
-    locations : (n_loc, n_dim) numpy.ndarray
-        Receiver locations.
-    orientation : {'x', 'y', 'z'}
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
+    orientation : {'x', 'y', 'z'} or numpy.ndarray
         Receiver orientation.
-    component : {'real', 'imag'}
-        Real or imaginary component.
+    component : {'real', 'imag', 'both', 'complex'}
+        Component of the receiver; i.e. 'real' or 'imag'. The options 'both' and
+        'complex' are only available for the 1D layered simulations.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.electromagnetics.frequency_domain.receivers.BaseRx: orientation, component
 
     def __init__(self, locations, orientation="x", component="real", **kwargs):
         self.projField = "b"
@@ -299,13 +322,18 @@ class PointMagneticFluxDensitySecondary(BaseRx):
 
     Parameters
     ----------
-    locations : (n_loc, n_dim) numpy.ndarray
-        Receiver locations.
-    orientation : {'x', 'y', 'z'}
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
+    orientation : {'x', 'y', 'z'} or numpy.ndarray
         Receiver orientation.
-    component : {'real', 'imag'}
-        Real or imaginary component.
+    component : {'real', 'imag', 'both', 'complex'}
+        Component of the receiver; i.e. 'real' or 'imag'. The options 'both' and
+        'complex' are only available for the 1D layered simulations.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.electromagnetics.frequency_domain.receivers.BaseRx: orientation, component
 
     def __init__(self, locations, orientation="x", component="real", **kwargs):
         self.projField = "bSecondary"
@@ -317,9 +345,9 @@ class PointMagneticField(BaseRx):
 
     Parameters
     ----------
-    locations : (n_loc, n_dim) numpy.ndarray
-        Receiver locations.
-    orientation : {'x', 'y', 'z'}
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
+    orientation : {'x', 'y', 'z'} or numpy.ndarray
         Receiver orientation.
     component : {'real', 'imag', 'both', 'complex'}
         Component of the receiver; i.e. 'real' or 'imag'. The options 'both' and
@@ -337,6 +365,10 @@ class PointMagneticField(BaseRx):
     `'complex'` for component are only implemented for the `Simulation1DLayered`.
     """
 
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.electromagnetics.frequency_domain.receivers.BaseRx: orientation, component, data_type, use_source_receiver_offset
+
     def __init__(self, locations, orientation="x", component="real", **kwargs):
         self.projField = "h"
         super().__init__(locations, orientation, component, **kwargs)
@@ -346,11 +378,12 @@ class PointMagneticFieldSecondary(BaseRx):
     """
     Magnetic flux FDEM receiver
 
-
-    locations : (n_loc, n_dim) numpy.ndarray
-        Receiver locations.
-    orientation : {'x', 'y', 'z'}
-        Receiver orientation
+    Parameters
+    ----------
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
+    orientation : {'x', 'y', 'z'} or numpy.ndarray
+        Receiver orientation.
     component : {'real', 'imag', 'both', 'complex'}
         Component of the receiver; i.e. 'real' or 'imag'. The options 'both' and
         'complex' are only available for the 1D layered simulations.
@@ -366,6 +399,10 @@ class PointMagneticFieldSecondary(BaseRx):
     `data_type`, `use_source_receiver_offset`, and the options of `'both'` and
     `'complex'` for component are only implemented for the `Simulation1DLayered`.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.electromagnetics.frequency_domain.receivers.BaseRx: orientation, component, data_type, use_source_receiver_offset
 
     def __init__(self, locations, orientation="x", component="real", **kwargs):
         self.projField = "hSecondary"
@@ -379,13 +416,18 @@ class PointCurrentDensity(BaseRx):
 
     Parameters
     ----------
-    locations : (n_loc, n_dim) numpy.ndarray
-        Receiver locations.
-    orientation : {'x', 'y', 'z'}
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
+    orientation : {'x', 'y', 'z'} or numpy.ndarray
         Receiver orientation.
-    component : {'real', 'imag'}
-        Real or imaginary component.
+    component : {'real', 'imag', 'both', 'complex'}
+        Component of the receiver; i.e. 'real' or 'imag'. The options 'both' and
+        'complex' are only available for the 1D layered simulations.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.electromagnetics.frequency_domain.receivers.BaseRx: orientation, component
 
     def __init__(self, locations, orientation="x", component="real", **kwargs):
         self.projField = "j"

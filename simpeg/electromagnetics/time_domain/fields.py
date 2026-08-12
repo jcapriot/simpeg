@@ -107,10 +107,13 @@ class FieldsDerivativesEB(FieldsTDEM):
 
     Parameters
     ----------
-    simulation : .time_domain.BaseTDEMSimulation
-        The TDEM simulation object associated with the fields.
+    simulation : simpeg.simulation.BaseSimulation
+        The simulation object used to compute the discrete field solution.
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.fields.Fields: simulation
 
     def __init__(self, simulation):
         super().__init__(simulation=simulation)
@@ -129,10 +132,13 @@ class FieldsDerivativesHJ(FieldsTDEM):
 
     Parameters
     ----------
-    simulation : .time_domain.BaseTDEMSimulation
-        The TDEM simulation object associated with the fields.
+    simulation : simpeg.simulation.BaseSimulation
+        The simulation object used to compute the discrete field solution.
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.fields.Fields: simulation
 
     def __init__(self, simulation):
         super().__init__(simulation=simulation)

@@ -66,12 +66,12 @@ class BaseObjectiveFunction(BaseSimPEG):
         self.debug = debug
         self.has_fields = has_fields
 
-    def __call__(self, x, f=None):
+    def __call__(self, m, f=None):
         """Evaluate the objective function for a given model.
 
         Parameters
         ----------
-        x : (nP) numpy.ndarray
+        m : (nP) numpy.ndarray
             A vector representing a set of model parameters.
         f : simpeg.fields.Fields, optional
             Field object (if applicable).
@@ -453,7 +453,17 @@ class ComboObjectiveFunction(BaseObjectiveFunction):
         self._multipliers = value
 
     def __call__(self, m, f=None):
-        """Evaluate the objective functions for a given model."""
+        """Evaluate the objective functions for a given model.
+
+        Parameters
+        ----------
+        m : (nP) numpy.ndarray
+            A vector representing a set of model parameters.
+        f : simpeg.fields.Fields, optional
+            Field object (if applicable).
+        """
+        # docerator: provenance
+        # docerator: from simpeg.objective_function.BaseObjectiveFunction: m, f
         fct = 0.0
         obj_vals = []
         for i, phi in enumerate(self):
@@ -587,6 +597,12 @@ class L2ObjectiveFunction(BaseObjectiveFunction):
         Print debugging information.
     """
 
+    # docerator: provenance
+    # docerator: from simpeg.objective_function.BaseObjectiveFunction: nP, mapping, has_fields, counter, debug
+
+    # docerator: provenance
+    # docerator: from simpeg.objective_function.BaseObjectiveFunction: nP, mapping, has_fields, counter, debug
+
     def __init__(
         self,
         nP=None,
@@ -630,7 +646,15 @@ class L2ObjectiveFunction(BaseObjectiveFunction):
         return self._W
 
     def __call__(self, m):
-        """Evaluate the objective function for a given model."""
+        """Evaluate the objective function for a given model.
+
+        Parameters
+        ----------
+        m : (nP) numpy.ndarray
+            A vector representing a set of model parameters.
+        """
+        # docerator: provenance
+        # docerator: from simpeg.objective_function.BaseObjectiveFunction: m
         r = self.W * (self.mapping * m)
         return r.dot(r)
 

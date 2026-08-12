@@ -28,10 +28,16 @@ for filter_name in libdlf.fourier.__all__:
         COS_FILTERS[filter_name] = fourier_filter
 
 
+# docerator: override=survey
 class Simulation1DLayered(BaseEM1DSimulation):
     """
     Simulation class for simulating the TEM response over a 1D layered Earth
     for a single sounding.
+
+    Parameters
+    ----------
+    survey : .time_domain.survey.Survey, optional
+        The survey for the simulation.
     """
 
     def __init__(self, survey=None, time_filter="key_81_2009", **kwargs):
@@ -216,7 +222,17 @@ class Simulation1DLayered(BaseEM1DSimulation):
         Return predicted data.
         Predicted data, (`_pred`) are computed when
         self.fields is called.
+
+        Parameters
+        ----------
+        m : (n_param,) numpy.ndarray
+            The model parameters.
+        f : simpeg.fields.Fields, optional
+            If provided, will be used to compute the predicted data
+            without recalculating the fields.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m, f
         if f is None:
             f = self.fields(m)
 
@@ -227,7 +243,14 @@ class Simulation1DLayered(BaseEM1DSimulation):
         This method evaluates the Hankel transform for each source and
         receiver and outputs it as a list. Used for computing response
         or sensitivities.
+
+        Parameters
+        ----------
+        m : (n_param,) numpy.ndarray
+            The model parameters.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m
         self._compute_coefficients()
 
         self.model = m

@@ -36,6 +36,7 @@ class BaseVectorRegularization(BaseRegularization):
         return [(mesh.nC,), (self.n_comp * mesh.nC,), (mesh.nC, self.n_comp)]
 
 
+# docerator: override=weights
 class CrossReferenceRegularization(Smallness, BaseVectorRegularization):
     r"""Cross reference regularization for models representing vector quantities.
 
@@ -51,17 +52,18 @@ class CrossReferenceRegularization(Smallness, BaseVectorRegularization):
 
     Parameters
     ----------
-    mesh : discretize.base.BaseMesh, .RegularizationMesh
-        The mesh defining the model discretization.
+    mesh : simpeg.regularization.RegularizationMesh, discretize.base.BaseMesh
+        Mesh on which the regularization is discretized. This is not necessarily
+        the same as the mesh on which the simulation is defined.
     ref_dir : (mesh.dim,) array_like or (mesh.dim, n_active) array_like
         The reference direction model. This can be either a constant vector applied
         to every model cell, or different for every active model cell.
-    active_cells : index_array, optional
-        Boolean array or an array of active indices indicating the active cells of the
-        inversion domain mesh.
-    mapping : simpeg.maps.IdentityMap, optional
-        An optional linear mapping that would go from the model space to the space where
-        the cross-product is enforced.
+    active_cells : None, (n_cells, ) numpy.ndarray of bool
+        Boolean array defining the set of :py:class:`~.regularization.RegularizationMesh`
+        cells that are active in the inversion. If ``None``, all cells are active.
+    mapping : simpeg.mapping.BaseMap
+        A SimPEG mapping object that maps from the model space to the
+        quantity evaluated in the objective function.
     weights : dict of [str: array_like], optional
         Any cell based weights for the regularization. Note if given a weight that is
         (n_cells, dim), meaning it is dependent on the vector component, it will compute
@@ -172,6 +174,14 @@ class CrossReferenceRegularization(Smallness, BaseVectorRegularization):
 
     """
 
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells
+    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells
+    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
+
     def __init__(
         self, mesh, ref_dir, active_cells=None, mapping=None, weights=None, **kwargs
     ):
@@ -245,7 +255,7 @@ class CrossReferenceRegularization(Smallness, BaseVectorRegularization):
         Parameters
         ----------
         m : numpy.ndarray
-            The vector model.
+            The model.
 
         Returns
         -------
@@ -275,6 +285,8 @@ class CrossReferenceRegularization(Smallness, BaseVectorRegularization):
             \phi_m (\mathbf{m}) = \Big \| \mathbf{W} \, \mathbf{f_m} \Big \|^2
 
         """
+        # docerator: provenance
+        # docerator: from simpeg.regularization.base.Smallness: m
         return self._X @ (self.mapping * m)
 
     def f_m_deriv(self, m):
@@ -292,7 +304,7 @@ class CrossReferenceRegularization(Smallness, BaseVectorRegularization):
         Parameters
         ----------
         m : numpy.ndarray
-            The vector model.
+            The model.
 
         Returns
         -------
@@ -327,6 +339,8 @@ class CrossReferenceRegularization(Smallness, BaseVectorRegularization):
             \frac{\partial \mathbf{f_m}}{\partial \mathbf{m}} = \mathbf{X}
 
         """
+        # docerator: provenance
+        # docerator: from simpeg.regularization.base.Smallness: m
         return self._X @ self.mapping.deriv(m)
 
     @property
@@ -416,6 +430,8 @@ class BaseAmplitude(BaseVectorRegularization):
         (n_param, ) numpy.ndarray
             Gradient of the regularization function evaluated for the model provided.
         """
+        # docerator: provenance
+        # docerator: from simpeg.objective_function.BaseObjectiveFunction: m
         d_m = self._delta_m(m)
 
         return (
@@ -446,7 +462,7 @@ class BaseAmplitude(BaseVectorRegularization):
         ----------
         m : (n_param, ) numpy.ndarray
             The model for which the Hessian is evaluated.
-        v : None, (n_param, ) numpy.ndarray (optional)
+        v : None or (n_param, ) numpy.ndarray, optional
             A vector.
 
         Returns
@@ -456,6 +472,8 @@ class BaseAmplitude(BaseVectorRegularization):
             function for the model provided is returned. If *v* is not ``None``,
             the Hessian multiplied by the vector provided is returned.
         """
+        # docerator: provenance
+        # docerator: from simpeg.objective_function.BaseObjectiveFunction: m, v
         f_m_deriv = self.f_m_deriv(m)
 
         if v is None:
@@ -1002,12 +1020,12 @@ class VectorAmplitude(Sparse):
     mesh : simpeg.regularization.RegularizationMesh, discretize.base.BaseMesh
         Mesh on which the regularization is discretized. This is not necessarily
         the same as the mesh on which the simulation is defined.
+    mapping : simpeg.mapping.BaseMap
+        A SimPEG mapping object that maps from the model space to the
+        quantity evaluated in the objective function.
     active_cells : None, (n_cells, ) numpy.ndarray of bool
         Boolean array defining the set of :py:class:`~.regularization.RegularizationMesh`
         cells that are active in the inversion. If ``None``, all cells are active.
-    mapping : None, simpeg.maps.BaseMap
-        The mapping from the model parameters to the active cells in the inversion.
-        If ``None``, the mapping is the identity map.
     reference_model : None, (n_param, ) numpy.ndarray
         Reference model. If ``None``, the reference model in the inversion is set to
         the starting model.
@@ -1210,6 +1228,11 @@ class VectorAmplitude(Sparse):
     Likewise for y and z.
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.WeightedLeastSquares: mesh, active_cells, reference_model, reference_model_in_smooth, units, weights, alpha_s, alpha_x, alpha_y, alpha_z, length_scale_x, length_scale_y, length_scale_z
+    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
+    # docerator: from simpeg.regularization.sparse.Sparse: gradient_type, norms, irls_scaled, irls_threshold
 
     def __init__(
         self,

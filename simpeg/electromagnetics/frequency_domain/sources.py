@@ -20,6 +20,7 @@ from ..utils import segmented_line_current_source_term, line_through_faces
 from ..base import BaseEMSrc
 
 
+# docerator: override=receiver_list
 class BaseFDEMSrc(BaseEMSrc):
     """Base FDEM source class
 
@@ -29,9 +30,15 @@ class BaseFDEMSrc(BaseEMSrc):
         A list of FDEM receivers
     frequency : float
         Source frequency
-    location : (dim) numpy.ndarray, default: ``None``
-        Source location.
+    location : (n_dim) array_like
+        Location of the source
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseSrc: location
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseSrc: location
 
     _ePrimary = None
     _bPrimary = None
@@ -202,27 +209,7 @@ class BaseFDEMSrc(BaseEMSrc):
         """
         return Zero()
 
-
-class RawVec_e(BaseFDEMSrc):
-    """User-provided electric source term (s_e) class.
-
-    Parameters
-    ----------
-    receiver_list : list of simpeg.electromagnetics.frequency_domain.receivers.BaseRx
-        A list of FDEM receivers
-    frequency : float
-        Source frequency
-    s_e: numpy.ndarray
-        Electric source term
-    integrate : bool, default: ``False``
-        If ``True``, integrate the source term; i.e. multiply by Me matrix
-    """
-
-    def __init__(self, receiver_list, frequency, s_e, **kwargs):
-        self._s_e = np.asarray(s_e, dtype=complex)
-
-        super().__init__(receiver_list, frequency=frequency, **kwargs)
-
+    # docerator: override=simulation
     def s_e(self, simulation):
         """Electric source term (s_e)
 
@@ -236,6 +223,102 @@ class RawVec_e(BaseFDEMSrc):
         numpy.ndarray
             electric source term on mesh.
         """
+        return super().s_e(simulation)
+
+    # docerator: override=simulation
+    def s_m(self, simulation):
+        """Magnetic source term (s_m)
+
+        Parameters
+        ----------
+        simulation : BaseFDEMSimulation
+            SimPEG FDEM simulation
+
+        Returns
+        -------
+        numpy.ndarray
+            magnetic source term on mesh.
+        """
+        return super().s_m(simulation)
+
+    # docerator: override=simulation
+    def s_mDeriv(self, simulation, v, adjoint=False):
+        """
+        Derivative of magnetic source term with respect to the inversion model
+
+        Parameters
+        ----------
+        simulation : BaseFDEMSimulation
+            An FDEM Simulation object
+        v : numpy.ndarray
+            A vector to take the dot product with
+        adjoint : bool, default==Fasel
+            If ``True``, return the adjoint operation
+
+        Returns
+        -------
+        numpy.ndarray
+            Product of the derivative of the magnetic source term and a vector
+        """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.base.BaseEMSrc: v, adjoint
+
+        return super().s_mDeriv(simulation, v, adjoint=adjoint)
+
+    # docerator: override=simulation
+    def s_eDeriv(self, simulation, v, adjoint=False):
+        """
+        Derivative of electric source term with respect to the inversion model
+
+        Parameters
+        ----------
+        simulation : BaseFDEMSimulation
+            An FDEM Simulation object
+        v : numpy.ndarray
+            A vector to take the dot product with
+        adjoint : bool, default==Fasel
+            If ``True``, return the adjoint operation
+
+        Returns
+        -------
+        numpy.ndarray
+            Product of the derivative of the electric source term and a vector
+        """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.base.BaseEMSrc: v, adjoint
+
+        return super().s_eDeriv(simulation, v, adjoint=adjoint)
+
+
+class RawVec_e(BaseFDEMSrc):
+    """User-provided electric source term (s_e) class.
+
+    Parameters
+    ----------
+    receiver_list : list of simpeg.electromagnetics.frequency_domain.receivers.BaseRx
+        A list of FDEM receivers
+    frequency : float
+        Source frequency
+    s_e: numpy.ndarray
+        Electric source term
+    integrate : bool
+        If ``True``, we integrate the source term
+    """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
+    # docerator: from simpeg.electromagnetics.base.BaseEMSrc: integrate
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
+    # docerator: from simpeg.electromagnetics.base.BaseEMSrc: integrate
+
+    def __init__(self, receiver_list, frequency, s_e, **kwargs):
+        self._s_e = np.asarray(s_e, dtype=complex)
+
+        super().__init__(receiver_list, frequency=frequency, **kwargs)
+
+    def s_e(self, simulation):
         if simulation._formulation == "EB" and self.integrate is True:
             return simulation.Me * self._s_e
         return self._s_e
@@ -252,9 +335,17 @@ class RawVec_m(BaseFDEMSrc):
         Source frequency
     s_m: numpy.ndarray
         Magnetic source term
-    integrate : bool, default: ``False``
-        If ``True``, integrate the source term; i.e. multiply by Me matrix
+    integrate : bool
+        If ``True``, we integrate the source term
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
+    # docerator: from simpeg.electromagnetics.base.BaseEMSrc: integrate
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
+    # docerator: from simpeg.electromagnetics.base.BaseEMSrc: integrate
 
     def __init__(self, receiver_list, frequency, s_m, **kwargs):
         self._s_m = np.asarray(s_m, dtype=complex)
@@ -273,6 +364,8 @@ class RawVec_m(BaseFDEMSrc):
         numpy.ndarray
             magnetic source term on mesh.
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: simulation
         if simulation._formulation == "HJ" and self.integrate is True:
             return simulation.Me * self._s_m
         return self._s_m
@@ -289,11 +382,21 @@ class RawVec(RawVec_e, RawVec_m):
         Source frequency
     s_m: numpy.ndarray
         Magnetic source term
-    s_e: numpy.ndarray
+    s_e : numpy.ndarray
         Electric source term
-    integrate : bool, default: ``False``
-        If ``True``, integrate the source terms; i.e. multiply by Me matrix
+    integrate : bool
+        If ``True``, we integrate the source term
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.RawVec_e: s_e
+    # docerator: from simpeg.electromagnetics.base.BaseEMSrc: integrate
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.RawVec_e: s_e
+    # docerator: from simpeg.electromagnetics.base.BaseEMSrc: integrate
 
     def __init__(self, receiver_list, frequency, s_m, s_e, **kwargs):
         super().__init__(
@@ -305,11 +408,30 @@ class RawVec(RawVec_e, RawVec_m):
         )
 
 
+# docerator: override=location
 class MagDipole(BaseFDEMSrc):
     r"""
     Point magnetic dipole source calculated by taking the curl of a magnetic
     vector potential. By taking the discrete curl, we ensure that the magnetic
     flux density is divergence free (no magnetic monopoles!).
+
+    Parameters
+    ----------
+    receiver_list : list of simpeg.electromagnetics.frequency_domain.receivers.BaseRx
+        A list of FDEM receivers
+    frequency : float
+        Source frequency
+    location : (n_dim) numpy.ndarray, optional
+        Location of the source, default is [0, 0, 0]
+    moment : float
+        Magnetic dipole moment amplitude
+    orientation : {'z', x', 'y'} or (dim) numpy.ndarray
+        Orientation of the dipole.
+    mu : float
+        Background magnetic permeability
+
+    Notes
+    -----
 
     This approach uses a primary-secondary in frequency. Here we show the
     derivation for E-B formulation noting that similar steps are followed for
@@ -364,22 +486,13 @@ class MagDipole(BaseFDEMSrc):
     .. math::
 
         \vec{B}^P = \nabla \times \vec{A}
-
-    Parameters
-    ----------
-    receiver_list : list of simpeg.electromagnetics.frequency_domain.receivers.BaseRx
-        A list of FDEM receivers
-    frequency : float
-        Source frequency
-    location : (dim) numpy.ndarray, default: numpy.r_[0., 0., 0.]
-        Source location.
-    moment : float
-        Magnetic dipole moment amplitude
-    orientation : {'z', x', 'y'} or (dim) numpy.ndarray
-        Orientation of the dipole.
-    mu : float
-        Background magnetic permeability
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
 
     def __init__(
         self,
@@ -498,6 +611,8 @@ class MagDipole(BaseFDEMSrc):
         numpy.ndarray
             Primary magnetic flux density
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: simulation
         coordinates = "cartesian"
 
         if simulation._formulation == "EB":
@@ -540,6 +655,8 @@ class MagDipole(BaseFDEMSrc):
         numpy.ndarray
             Primary magnetic field
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: simulation
         if simulation._formulation == "1D":
             if getattr(self, "_1d_h", None) is None:
                 dipole = self._dipole
@@ -598,6 +715,8 @@ class MagDipole(BaseFDEMSrc):
         numpy.ndarray
             Magnetic source term on mesh.
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: simulation
 
         if simulation._formulation == "EB":
             b_p = self.bPrimary(simulation)
@@ -620,6 +739,8 @@ class MagDipole(BaseFDEMSrc):
         numpy.ndarray
             Electric source term on mesh.
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: simulation
 
         if all(np.r_[self.mu] == np.r_[simulation.mu]):
             return Zero()
@@ -687,8 +808,8 @@ class MagDipole_Bfield(MagDipole):
         A list of FDEM receivers
     frequency : float
         Source frequency
-    location : (dim) numpy.ndarray, default: np.r_[0., 0., 0.]
-        Source location.
+    location : (n_dim) numpy.ndarray, optional
+        Location of the source, default is [0, 0, 0]
     moment : float
         Magnetic dipole moment amplitude
     orientation : {'z', x', 'y'} or (dim) numpy.ndarray
@@ -696,6 +817,14 @@ class MagDipole_Bfield(MagDipole):
     mu : float
         Background magnetic permeability
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.MagDipole: location, moment, orientation, mu
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.MagDipole: location, moment, orientation, mu
 
     def __init__(self, receiver_list, frequency, location=None, **kwargs):
         super().__init__(
@@ -722,10 +851,18 @@ class MagDipole_Bfield(MagDipole):
         The primary magnetic flux density from the analytic solution for
         magnetic fields from a dipole
 
-        :param BaseFDEMSimulation simulation: FDEM simulation
-        :rtype: numpy.ndarray
-        :return: primary magnetic field
+        Parameters
+        ----------
+        simulation : BaseFDEMSimulation
+            A SimPEG FDEM simulation
+
+        Returns
+        -------
+        numpy.ndarray
+            The primary magnetic field
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: simulation
 
         formulation = simulation._formulation
         coordinates = "cartesian"
@@ -935,10 +1072,10 @@ class PrimSecMappedSigma(BaseFDEMSrc):
 
     Parameters
     ----------
-    receiver_list : list of simpeg.electromagnetics.frequency_domain.receiver.BaseRx
-        List of FDEM receivers
+    receiver_list : list of simpeg.electromagnetics.frequency_domain.receivers.BaseRx
+        A list of FDEM receivers
     frequency : float
-        Frequency
+        Source frequency
     primarySimulation : BaseFDEMSimulation
         Base simulation
     primarySurvey : BaseEMSimulation
@@ -946,6 +1083,12 @@ class PrimSecMappedSigma(BaseFDEMSrc):
     map2meshSecondary : maps.BaseMap
         Mapping current model to act as primary model on the secondary mesh
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
 
     def __init__(
         self,
@@ -1176,6 +1319,8 @@ class PrimSecMappedSigma(BaseFDEMSrc):
         numpy.ndarray
             Electric source term on mesh.
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: simulation
         sigmaPrimary = self.map2meshSecondary * simulation.model
 
         return mkvc(
@@ -1234,17 +1379,24 @@ class LineCurrent(BaseFDEMSrc):
     Parameters
     ----------
     receiver_list : list of simpeg.electromagnetics.frequency_domain.receivers.BaseRx
-        List of FDEM receivers
+        A list of FDEM receivers
     frequency : float
         Source frequency
-    location : (n,3) numpy.ndarray
-        Array defining the node locations for the wire path. For inductive sources,
-        you must close the loop.
+    location : (n_dim) array_like
+        Location of the source
     current : float, optional
         Strength of the current.
     mu : float, optional
         Magnetic permeability to use.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
+    # docerator: from simpeg.survey.BaseSrc: location
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
+    # docerator: from simpeg.survey.BaseSrc: location
 
     def __init__(
         self,
@@ -1388,6 +1540,8 @@ class LineCurrent(BaseFDEMSrc):
         numpy.ndarray
             Magnetic source term on mesh.
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: simulation
         return Zero()
 
     def s_e(self, simulation):
@@ -1403,6 +1557,8 @@ class LineCurrent(BaseFDEMSrc):
         numpy.ndarray
             Electric source term on mesh.
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: simulation
 
         if simulation._formulation == "EB":
             return self.Mejs(simulation)

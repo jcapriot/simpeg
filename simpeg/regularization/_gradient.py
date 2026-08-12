@@ -16,9 +16,9 @@ class SmoothnessFullGradient(BaseRegularization):
 
     Parameters
     ----------
-    mesh : discretize.BaseMesh
-        The mesh object to use for regularization. The mesh should either have
-        a ``cell_gradient`` or a ``stencil_cell_gradient`` defined.
+    mesh : simpeg.regularization.RegularizationMesh, discretize.base.BaseMesh
+        Mesh on which the regularization is discretized. This is not necessarily
+        the same as the mesh on which the simulation is defined.
     alphas : (mesh.dim,) or (mesh.n_cells, mesh.dim) array_like of float, optional.
         The weights of the regularization for each axis. This can be defined
         for each cell in the mesh. Default is uniform weights equal to the
@@ -30,6 +30,28 @@ class SmoothnessFullGradient(BaseRegularization):
         Whether to check ``reg_dirs`` for orthogonality.
     **kwargs
         Keyword arguments passed to the parent class ``BaseRegularization``.
+
+    Notes
+    -----
+    The regularization object is the discretized form of the continuous
+    regularization
+
+    .. math::
+
+       f(m) = \int_V \nabla m \cdot \mathbf{a} \nabla m \, \text{d} V
+
+    The tensor quantity :math:`\mathbf{a}` is used to represent the potential
+    preferential directions of regularization. :math:`\mathbf{a}` must be
+    symmetric positive semi-definite with an eigendecomposition of:
+
+    .. math::
+
+      \mathbf{a} = \mathbf{Q}\mathbf{L}\mathbf{Q}^{-1}
+
+    :math:`\mathbf{Q}` is then the regularization directions ``reg_dirs``, and
+    :math:`\mathbf{L}` is represents the weighting
+    along each direction, with ``alphas`` along its diagonal. These are
+    multiplied to form the anisotropic alpha used for rotated gradients.
 
     Examples
     --------
@@ -65,29 +87,13 @@ class SmoothnessFullGradient(BaseRegularization):
     ...     [sqrt2, sqrt2],
     ... ])
     >>> reg = SmoothnessFullGradient(mesh, alphas, reg_dirs=reg_dirs)
-
-    Notes
-    -----
-    The regularization object is the discretized form of the continuous
-    regularization
-
-    .. math::
-
-       f(m) = \int_V \nabla m \cdot \mathbf{a} \nabla m \, \text{d} V
-
-    The tensor quantity :math:`\mathbf{a}` is used to represent the potential
-    preferential directions of regularization. :math:`\mathbf{a}` must be
-    symmetric positive semi-definite with an eigendecomposition of:
-
-    .. math::
-
-      \mathbf{a} = \mathbf{Q}\mathbf{L}\mathbf{Q}^{-1}
-
-    :math:`\mathbf{Q}` is then the regularization directions ``reg_dirs``, and
-    :math:`\mathbf{L}` is represents the weighting
-    along each direction, with ``alphas`` along its diagonal. These are
-    multiplied to form the anisotropic alpha used for rotated gradients.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.BaseRegularization: mesh
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.BaseRegularization: mesh
 
     def __init__(self, mesh, alphas=None, reg_dirs=None, ortho_check=True, **kwargs):
         if mesh.dim < 2:

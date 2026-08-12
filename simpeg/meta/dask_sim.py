@@ -176,6 +176,8 @@ def _validate_type_or_future_of_type(
         return objects
 
 
+# docerator: override=simulations
+# docerator: override=mappings
 class DaskMetaSimulation(MetaSimulation):
     """Dask Distributed version of simulation of simulations.
 
@@ -508,14 +510,21 @@ class DaskSumMetaSimulation(DaskMetaSimulation, SumMetaSimulation):
     Parameters
     ----------
     simulations : (n_sim) list of simpeg.simulation.BaseSimulation or list of dask.distributed.Future
-        The list of unique simulations that each handle a piece
-        of the problem.
-    mappings : (n_sim) list of simpeg.maps.IdentityMap or list of dask.distributed.Future        The map for every simulation. Every map should accept the
-        same length model, and output a model appropriate for its
-        paired simulation.
+        The list of unique simulations (or futures that would return a simulation)
+        that each handle a piece of the problem.
+    mappings : (n_sim) list of simpeg.maps.IdentityMap or list of dask.distributed.Future
+        The map for every simulation (or futures that would return a map). Every
+        map should accept the  same length model, and output a model appropriate
+        for its paired simulation.
     client : dask.distributed.Client, optional
         The dask client to use for communication.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.meta.dask_sim.DaskMetaSimulation: simulations, mappings, client
+
+    # docerator: provenance
+    # docerator: from simpeg.meta.dask_sim.DaskMetaSimulation: simulations, mappings, client
 
     def __init__(self, simulations, mappings, client):
         super().__init__(simulations, mappings, client)
@@ -662,10 +671,18 @@ class DaskRepeatedSimulation(DaskMetaSimulation):
     simulation : simpeg.simulation.BaseSimulation or dask.distributed.Future
         The simulation to use repeatedly with different mappings.
     mappings : (n_sim) list of simpeg.maps.IdentityMap or list of dask.distributed.Future
-        The list of different mappings to use (or futures that each return a mapping).
+        The map for every simulation (or futures that would return a map). Every
+        map should accept the  same length model, and output a model appropriate
+        for its paired simulation.
     client : dask.distributed.Client, optional
         The dask client to use for communication.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.meta.dask_sim.DaskMetaSimulation: mappings, client
+
+    # docerator: provenance
+    # docerator: from simpeg.meta.dask_sim.DaskMetaSimulation: mappings, client
 
     _repeat_sim = True
 

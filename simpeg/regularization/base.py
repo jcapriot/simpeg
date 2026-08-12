@@ -24,9 +24,9 @@ class BaseRegularization(BaseObjectiveFunction):
     active_cells : None, (n_cells, ) numpy.ndarray of bool
         Boolean array defining the set of :py:class:`~.regularization.RegularizationMesh`
         cells that are active in the inversion. If ``None``, all cells are active.
-    mapping : None, simpeg.maps.BaseMap
-        The mapping from the model parameters to the active cells in the inversion.
-        If ``None``, the mapping is set to :obj:`simpeg.maps.IdentityMap`.
+    mapping : simpeg.mapping.BaseMap
+        A SimPEG mapping object that maps from the model space to the
+        quantity evaluated in the objective function.
     reference_model : None, (n_param, ) numpy.ndarray
         Reference model. If ``None``, the reference model in the inversion is set to
         the starting model.
@@ -38,6 +38,12 @@ class BaseRegularization(BaseObjectiveFunction):
         Each value is a numpy.ndarray of shape(:py:property:`~.regularization.RegularizationMesh.n_cells`, ).
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
+
+    # docerator: provenance
+    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
 
     _model = None
     _parent = None
@@ -281,7 +287,7 @@ class BaseRegularization(BaseObjectiveFunction):
 
         Parameters
         ----------
-        **kwargs : key, numpy.ndarray
+        **weights : key, numpy.ndarray
             Each keyword argument is added to the weights used by the regularization.
             They can be accessed with their keyword argument.
 
@@ -383,14 +389,16 @@ class BaseRegularization(BaseObjectiveFunction):
 
         Parameters
         ----------
-        m : (n_param, ) numpy.ndarray
-            The model for which the function is evaluated.
+        m : (nP) numpy.ndarray
+            A vector representing a set of model parameters.
 
         Returns
         -------
         float
             The regularization function evaluated for the model provided.
         """
+        # docerator: provenance
+        # docerator: from simpeg.objective_function.BaseObjectiveFunction: m
         r = self.W * self.f_m(m)
         return r.dot(r)
 
@@ -425,6 +433,8 @@ class BaseRegularization(BaseObjectiveFunction):
         (n_param, ) numpy.ndarray
             The Gradient of the regularization function evaluated for the model provided.
         """
+        # docerator: provenance
+        # docerator: from simpeg.objective_function.BaseObjectiveFunction: m
         r = self.W * self.f_m(m)
         return 2 * self.f_m_deriv(m).T * (self.W.T * r)
 
@@ -447,7 +457,7 @@ class BaseRegularization(BaseObjectiveFunction):
         ----------
         m : (n_param, ) numpy.ndarray
             The model for which the Hessian is evaluated.
-        v : None, (n_param, ) numpy.ndarray (optional)
+        v : None or (n_param, ) numpy.ndarray, optional
             A vector.
 
         Returns
@@ -457,6 +467,8 @@ class BaseRegularization(BaseObjectiveFunction):
             function for the model provided is returned. If *v* is not ``None``,
             the Hessian multiplied by the vector provided is returned.
         """
+        # docerator: provenance
+        # docerator: from simpeg.objective_function.BaseObjectiveFunction: m, v
         f_m_deriv = self.f_m_deriv(m)
         if v is None:
             return 2 * f_m_deriv.T * ((self.W.T * self.W) * f_m_deriv)
@@ -479,16 +491,15 @@ class Smallness(BaseRegularization):
 
     Parameters
     ----------
-    mesh : .regularization.RegularizationMesh
-        Mesh on which the regularization is discretized. Not the mesh used to
-        define the simulation.
+    mesh : simpeg.regularization.RegularizationMesh, discretize.base.BaseMesh
+        Mesh on which the regularization is discretized. This is not necessarily
+        the same as the mesh on which the simulation is defined.
     active_cells : None, (n_cells, ) numpy.ndarray of bool
         Boolean array defining the set of :py:class:`~.regularization.RegularizationMesh`
         cells that are active in the inversion. If ``None``, all cells are active.
-    mapping : None, simpeg.maps.BaseMap
-        The mapping function applied to the model parameters. Use a mapping to
-        get from model parameters to physical properties in active cells in the
-        mesh. If ``None``, the mapping is the identity map.
+    mapping : simpeg.mapping.BaseMap
+        A SimPEG mapping object that maps from the model space to the
+        quantity evaluated in the objective function.
     reference_model : None, (n_param, ) numpy.ndarray
         Reference model. If ``None``, the reference model in the inversion is set to
         the starting model.
@@ -496,9 +507,8 @@ class Smallness(BaseRegularization):
         Units for the model parameters. Some regularization classes behave
         differently depending on the units; e.g. 'radian'.
     weights : None, dict
-        Weight multipliers to customize the least-squares function. Each key points to
-        a (n_cells, ) numpy.ndarray that is defined on the
-        :py:class:`regularization.RegularizationMesh` .
+        Weight multipliers to customize the least-squares function.
+        Each value is a numpy.ndarray of shape(:py:property:`~.regularization.RegularizationMesh.n_cells`, ).
 
     Notes
     -----
@@ -609,6 +619,14 @@ class Smallness(BaseRegularization):
     >>> reg.get_weights('volume')
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units, weights
+    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units, weights
+    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
 
     _multiplier_pair = "alpha_s"
 
@@ -755,6 +773,7 @@ class Smallness(BaseRegularization):
         return self.mapping.deriv(m)
 
 
+# docerator: override=weights
 class SmoothnessFirstOrder(BaseRegularization):
     r"""First-order smoothness least-squares regularization.
 
@@ -769,25 +788,25 @@ class SmoothnessFirstOrder(BaseRegularization):
 
     Parameters
     ----------
-    mesh : discretize.base.BaseMesh mesh
-        The mesh on which the regularization is discretized.
+    mesh : simpeg.regularization.RegularizationMesh, discretize.base.BaseMesh
+        Mesh on which the regularization is discretized. This is not necessarily
+        the same as the mesh on which the simulation is defined.
     orientation : {'x', 'y', 'z'}
         The direction along which smoothness is enforced.
+    reference_model_in_smooth : bool, optional
+        Whether to include the reference model in the smoothness regularization.
     active_cells : None, (n_cells, ) numpy.ndarray of bool
         Boolean array defining the set of :py:class:`~.regularization.RegularizationMesh`
         cells that are active in the inversion. If ``None``, all cells are active.
-    mapping : None, simpeg.maps.BaseMap
-        The mapping from the model parameters to the active cells in the inversion.
-        If ``None``, the mapping is the identity map.
+    mapping : simpeg.mapping.BaseMap
+        A SimPEG mapping object that maps from the model space to the
+        quantity evaluated in the objective function.
     reference_model : None, (n_param, ) numpy.ndarray
         Reference model. If ``None``, the reference model in the inversion is set to
-        the starting model. To include the reference model in the regularization, the
-        `reference_model_in_smooth` property must be set to ``True``.
-    reference_model_in_smooth : bool, optional
-        Whether to include the reference model in the smoothness regularization.
+        the starting model.
     units : None, str
-        Units for the model parameters. Some regularization classes behave differently
-        depending on the units; e.g. 'radian'.
+        Units for the model parameters. Some regularization classes behave
+        differently depending on the units; e.g. 'radian'.
     weights : None, dict
         Custom weights for the least-squares function. Each ``key`` points to
         a ``numpy.ndarray`` that is defined on the :py:class:`regularization.RegularizationMesh`.
@@ -933,6 +952,14 @@ class SmoothnessFirstOrder(BaseRegularization):
     >>> reg.get_weights('volume')
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units
+    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units
+    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
 
     def __init__(
         self, mesh, orientation="x", reference_model_in_smooth=False, **kwargs
@@ -1423,6 +1450,8 @@ class SmoothnessSecondOrder(SmoothnessFirstOrder):
 
             \phi_m(\mathbf{m}) = \lVert \mathbf{W \, f_m} \rVert^2.
         """
+        # docerator: provenance
+        # docerator: from simpeg.regularization.base.SmoothnessFirstOrder: m
         dfm_dl = (
             self.mapping * m - self.mapping * self.reference_model
             if self.reference_model is not None and self.reference_model_in_smooth
@@ -1504,6 +1533,8 @@ class SmoothnessSecondOrder(SmoothnessFirstOrder):
             \frac{\partial \mathbf{f_m}}{\partial \mathbf{m}}
             = \mathbf{L_x} \frac{\partial \mu(\mathbf{m})}{\partial \mathbf{m}}
         """
+        # docerator: provenance
+        # docerator: from simpeg.regularization.base.SmoothnessFirstOrder: m
         return self.cell_gradient.T @ self.cell_gradient @ self.mapping.deriv(m)
 
     @property
@@ -1561,20 +1592,6 @@ class WeightedLeastSquares(ComboObjectiveFunction):
     active_cells : None, (n_cells, ) numpy.ndarray of bool
         Boolean array defining the set of :py:class:`~.regularization.RegularizationMesh`
         cells that are active in the inversion. If ``None``, all cells are active.
-    mapping : None, simpeg.maps.BaseMap
-        The mapping from the model parameters to the active cells in the inversion.
-        If ``None``, the mapping is the identity map.
-    reference_model : None, (n_param, ) numpy.ndarray
-        Reference model. If ``None``, the reference model in the inversion is set to
-        the starting model.
-    reference_model_in_smooth : bool, optional
-        Whether to include the reference model in the smoothness terms.
-    units : None, str
-        Units for the model parameters. Some regularization classes behave
-        differently depending on the units; e.g. 'radian'.
-    weights : None, dict
-        Weight multipliers to customize the least-squares function. Each key points to a (n_cells, )
-        numpy.ndarray that is defined on the :py:class:`~.regularization.RegularizationMesh`.
     alpha_s : float, optional
         Scaling constant for the smallness regularization term.
     alpha_x, alpha_y, alpha_z : float or None, optional
@@ -1587,6 +1604,20 @@ class WeightedLeastSquares(ComboObjectiveFunction):
         value of the `length_scale` parameter.
     length_scale_x, length_scale_y, length_scale_z : float, optional
         First order smoothness length scales for the respective dimensions.
+    mapping : simpeg.mapping.BaseMap
+        A SimPEG mapping object that maps from the model space to the
+        quantity evaluated in the objective function.
+    reference_model : None, (n_param, ) numpy.ndarray
+        Reference model. If ``None``, the reference model in the inversion is set to
+        the starting model.
+    reference_model_in_smooth : bool, optional
+        Whether to include the reference model in the smoothness terms.
+    weights : None, dict
+        Weight multipliers to customize the least-squares function. Each key points to a (n_cells, )
+        numpy.ndarray that is defined on the :py:class:`~.regularization.RegularizationMesh`.
+    units : None, str
+        Units for the model parameters. Some regularization classes behave
+        differently depending on the units; e.g. 'radian'.
 
     Notes
     -----
@@ -1715,6 +1746,12 @@ class WeightedLeastSquares(ComboObjectiveFunction):
 
     >>> reg.set_weights(weights_1=array_1, weights_2=array_2})
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
+
+    # docerator: provenance
+    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
 
     _model = None
 
@@ -2378,13 +2415,19 @@ class BaseSimilarityMeasure(BaseRegularization):
 
     Parameters
     ----------
-    mesh : simpeg.regularization.RegularizationMesh
-        Mesh on which the regularization is discretized. This is not necessarily the same as
-        the mesh on which the simulation is defined.
+    mesh : simpeg.regularization.RegularizationMesh, discretize.base.BaseMesh
+        Mesh on which the regularization is discretized. This is not necessarily
+        the same as the mesh on which the simulation is defined.
     wire_map : simpeg.maps.WireMap
         Wire map connecting physical properties defined on active cells of the
         :class:`RegularizationMesh` to the entire model.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.BaseRegularization: mesh
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.BaseRegularization: mesh
 
     def __init__(self, mesh, wire_map, **kwargs):
         super().__init__(mesh, **kwargs)
@@ -2434,7 +2477,14 @@ class BaseSimilarityMeasure(BaseRegularization):
         )
 
     def deriv2(self, model, v=None):
-        """Not implemented for ``BaseSimilarityMeasure`` class."""
+        """Not implemented for ``BaseSimilarityMeasure`` class.
+        Parameters
+        ----------
+        v : None or (n_param, ) numpy.ndarray, optional
+            A vector.
+        """
+        # docerator: provenance
+        # docerator: from simpeg.objective_function.BaseObjectiveFunction: v
         raise NotImplementedError(
             "The method _deriv2 has not been implemented for {}".format(
                 self.__class__.__name__

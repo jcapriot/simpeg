@@ -17,6 +17,7 @@ from ..utils import (
 from ._base import IdentityMap
 
 
+# docerator: override=mesh
 class SurjectFull(IdentityMap):
     r"""Mapping a single property value to all mesh cells.
 
@@ -84,12 +85,15 @@ class SurjectFull(IdentityMap):
         v : (nP) numpy.ndarray
             If not ``None``, the method returns the derivative times the vector *v*
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
         deriv = sp.csr_matrix(np.ones([self.mesh.nC, 1]))
         if v is not None:
             return deriv * v
         return deriv
 
 
+# docerator: override=mesh
 class SurjectVertical1D(IdentityMap):
     r"""Map 1D layered Earth model to 2D or 3D tensor mesh.
 
@@ -210,6 +214,8 @@ class SurjectVertical1D(IdentityMap):
             input argument *v* is not ``None``, the method returns the derivative times
             the vector *v*.
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
         repNum = np.prod(self.mesh.vnC[: self.mesh.dim - 1])
         repVec = sp.csr_matrix(
             (np.ones(repNum), (range(repNum), np.zeros(repNum))), shape=(repNum, 1)
@@ -220,6 +226,7 @@ class SurjectVertical1D(IdentityMap):
         return deriv
 
 
+# docerator: override=mesh
 class Surject2Dto3D(IdentityMap):
     r"""Map 2D tensor model to 3D tensor mesh.
 
@@ -387,6 +394,8 @@ class Surject2Dto3D(IdentityMap):
             input argument *v* is not ``None``, the method returns the derivative times
             the vector *v*.
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
         inds = self * np.arange(self.nP)
         nC, nP = self.mesh.nC, self.nP
         P = sp.csr_matrix((np.ones(nC), (range(nC), inds)), shape=(nC, nP))
@@ -562,6 +571,8 @@ class SurjectUnits(IdentityMap):
             If the input argument *v* is not ``None``, the method returns
             the derivative times the vector *v*.
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
 
         if v is not None:
             return self.P * v

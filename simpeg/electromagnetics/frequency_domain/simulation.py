@@ -18,6 +18,7 @@ from .fields import (
 import warnings
 
 
+# docerator: override=survey
 class BaseFDEMSimulation(BaseEMSimulation):
     r"""Base finite volume FDEM simulation class.
 
@@ -47,7 +48,7 @@ class BaseFDEMSimulation(BaseEMSimulation):
     Parameters
     ----------
     mesh : discretize.base.BaseMesh
-        The mesh.
+        Mesh on which the forward problem is discretized.
     survey : .frequency_domain.survey.Survey
         The frequency-domain EM survey.
     forward_only : bool, optional
@@ -61,6 +62,12 @@ class BaseFDEMSimulation(BaseEMSimulation):
     storeJ : bool, optional
         Whether to compute and store the sensitivity matrix.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
 
     fieldsPair = FieldsFDEM
     permittivity = props.PhysicalProperty("Dielectric permittivity (F/m)")
@@ -173,13 +180,15 @@ class BaseFDEMSimulation(BaseEMSimulation):
         Parameters
         ----------
         m : (n_param,) numpy.ndarray
-            The model.
+            The model parameters.
 
         Returns
         -------
         .frequency_domain.fields.FieldsFDEM
             The FDEM fields object.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m
 
         if m is not None:
             self.model = m
@@ -204,6 +213,7 @@ class BaseFDEMSimulation(BaseEMSimulation):
         return f
 
     # @profile
+    # docerator: override=f
     def Jvec(self, m, v, f=None):
         r"""Compute the sensitivity matrix times a vector.
 
@@ -222,18 +232,21 @@ class BaseFDEMSimulation(BaseEMSimulation):
 
         Parameters
         ----------
-        m : (n_param,) numpy.ndarray
+        m : (n_param, ) numpy.ndarray
             The model parameters.
-        v : (n_param,) numpy.ndarray
-            The vector.
+        v : (n_param, ) numpy.ndarray
+            Vector we are multiplying.
         f : .frequency_domain.fields.FieldsFDEM, optional
-            Fields solved for all sources.
+            If provided, fields will not need to be recomputed for the
+            current model to compute `Jvec`.
 
         Returns
         -------
         (n_data,) numpy.ndarray
             The sensitivity matrix times a vector.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m, v
 
         if f is None:
             f = self.fields(m)
@@ -257,6 +270,7 @@ class BaseFDEMSimulation(BaseEMSimulation):
 
         return Jv
 
+    # docerator: override=f
     def Jtvec(self, m, v, f=None):
         r"""Compute the adjoint sensitivity matrix times a vector.
 
@@ -275,18 +289,21 @@ class BaseFDEMSimulation(BaseEMSimulation):
 
         Parameters
         ----------
-        m : (n_param,) numpy.ndarray
+        m : (n_param, ) numpy.ndarray
             The model parameters.
-        v : (n_data,) numpy.ndarray
-            The vector.
+        v : (n_data, ) numpy.ndarray
+            Vector we are multiplying.
         f : .frequency_domain.fields.FieldsFDEM, optional
-            Fields solved for all sources.
+            If provided, fields will not need to be recomputed for the
+            current model to compute `Jtvec`.
 
         Returns
         -------
         (n_param,) numpy.ndarray
             The adjoint sensitivity matrix times a vector.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m, v
 
         if f is None:
             f = self.fields(m)
@@ -339,7 +356,7 @@ class BaseFDEMSimulation(BaseEMSimulation):
         ----------
         m : (n_param,) numpy.ndarray
             The model parameters.
-        f : .static.resistivity.fields.FieldsDC, optional
+        f : .frequency_domain.fields.FieldsFDEM, optional
             Fields solved for all sources.
 
         Returns
@@ -1356,7 +1373,7 @@ class Simulation3DCurrentDensity(BaseFDEMSimulation):
     Parameters
     ----------
     mesh : discretize.base.BaseMesh
-        The mesh.
+        Mesh on which the forward problem is discretized.
     survey : .frequency_domain.survey.Survey
         The frequency-domain EM survey.
     forward_only : bool, optional
@@ -1440,6 +1457,14 @@ class Simulation3DCurrentDensity(BaseFDEMSimulation):
     * :math:`\mathbf{q} = - i \omega \mathbf{s_e} - i \omega \mathbf{C M_{e\mu}^{-1} s_m}`
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.frequency_domain.simulation.BaseFDEMSimulation: survey, forward_only, permittivity, storeJ
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.frequency_domain.simulation.BaseFDEMSimulation: survey, forward_only, permittivity, storeJ
 
     _solutionType = "jSolution"
     _formulation = "HJ"

@@ -19,16 +19,16 @@ class LinearCorrespondence(BaseSimilarityMeasure):
     mesh : simpeg.regularization.RegularizationMesh, discretize.base.BaseMesh
         Mesh on which the regularization is discretized. This is not necessarily
         the same as the mesh on which the simulation is defined.
-    active_cells : None, (n_cells, ) numpy.ndarray of bool
-        Boolean array defining the set of :py:class:`~.regularization.RegularizationMesh`
-        cells that are active in the inversion. If ``None``, all cells are active.
-    wire_map : simpeg.maps.Wires
+    wire_map : simpeg.maps.WireMap
         Wire map connecting physical properties defined on active cells of the
-        :class:`RegularizationMesh`` to the entire model.
+        :class:`RegularizationMesh` to the entire model.
     coefficients : None, (3) numpy.ndarray of float
         Coefficients :math:`\{ \lambda_1, \lambda_2, \lambda_3 \}` for the linear relationship
         between model parameters. If ``None``, the coefficients are set to
         :math:`\{ 1, -1, 0 \}`.
+    active_cells : None, (n_cells, ) numpy.ndarray of bool
+        Boolean array defining the set of :py:class:`~.regularization.RegularizationMesh`
+        cells that are active in the inversion. If ``None``, all cells are active.
 
     Notes
     -----
@@ -50,6 +50,14 @@ class LinearCorrespondence(BaseSimilarityMeasure):
     :math:`\{ \lambda_1 , \lambda_2 , \lambda_3 \}` to :math:`\{ 1, -1, 0 \}`.
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells
+    # docerator: from simpeg.regularization.base.BaseSimilarityMeasure: wire_map
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells
+    # docerator: from simpeg.regularization.base.BaseSimilarityMeasure: wire_map
 
     def __init__(self, mesh, wire_map, coefficients=None, **kwargs):
         super().__init__(mesh, wire_map, **kwargs)
@@ -199,10 +207,9 @@ class LinearCorrespondence(BaseSimilarityMeasure):
 
         Parameters
         ----------
-        model : (n_param, ) numpy.ndarray
-            The model; a vector array containing all physical properties.
-        v : None, (n_param, ) numpy.ndarray (optional)
-            A numpy array to model the Hessian by.
+        model
+        v : None or (n_param, ) numpy.ndarray, optional
+            A vector.
 
         Returns
         -------
@@ -211,6 +218,8 @@ class LinearCorrespondence(BaseSimilarityMeasure):
             for the models provided is returned. If *v* is not ``None``,
             the Hessian multiplied by the vector provided is returned.
         """
+        # docerator: provenance
+        # docerator: from simpeg.objective_function.BaseObjectiveFunction: v
 
         k1, k2, k3 = self.coefficients
         if v is not None:

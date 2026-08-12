@@ -36,6 +36,9 @@ class BaseDataMisfit(L2ObjectiveFunction):
         Assign a SimPEG ``Counter`` object to store iterations and run-times.
     """
 
+    # docerator: provenance
+    # docerator: from simpeg.objective_function.BaseObjectiveFunction: debug, counter
+
     def __init__(self, data, simulation, debug=False, counter=None, **kwargs):
         super().__init__(has_fields=True, debug=debug, counter=counter, **kwargs)
 
@@ -268,7 +271,17 @@ class L2DataMisfit(BaseDataMisfit):
 
     @timeIt
     def __call__(self, m, f=None):
-        """Evaluate the residual for a given model."""
+        """Evaluate the residual for a given model.
+
+        Parameters
+        ----------
+        m : (nP) numpy.ndarray
+            A vector representing a set of model parameters.
+        f : simpeg.fields.Fields, optional
+            Field object (if applicable).
+        """
+        # docerator: provenance
+        # docerator: from simpeg.objective_function.BaseObjectiveFunction: m, f
 
         R = self.W * self.residual(m, f=f)
         # Imaginary part is always zero, even for complex data, as it takes the
@@ -297,6 +310,8 @@ class L2DataMisfit(BaseDataMisfit):
         (n_param, ) numpy.ndarray
             The gradient of the data misfit function evaluated for the model provided.
         """
+        # docerator: provenance
+        # docerator: from simpeg.objective_function.BaseObjectiveFunction: m
 
         if f is None:
             f = self.simulation.fields(m)
@@ -334,6 +349,8 @@ class L2DataMisfit(BaseDataMisfit):
             function for the model provided is returned. If *v* is not ``None``,
             the Hessian multiplied by the vector provided is returned.
         """
+        # docerator: provenance
+        # docerator: from simpeg.objective_function.BaseObjectiveFunction: m, v
 
         if f is None:
             f = self.simulation.fields(m)

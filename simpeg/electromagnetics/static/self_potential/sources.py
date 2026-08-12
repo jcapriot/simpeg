@@ -4,6 +4,7 @@ from simpeg import survey
 from simpeg.utils import validate_list_of_types
 
 
+# docerator: override=receiver_list
 class StreamingCurrents(survey.BaseSrc):
     """A streaming current source.
 

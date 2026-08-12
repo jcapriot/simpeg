@@ -521,6 +521,8 @@ class ComboMap(IdentityMap):
             \frac{\partial \mathbf{f_2}}{\partial \mathbf{f_{1}}}
             \frac{\partial \mathbf{f_1}}{\partial \mathbf{m}}
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
 
         if v is not None:
             deriv = v
@@ -623,6 +625,7 @@ class LinearMap(IdentityMap):
         return self.A @ v
 
 
+# docerator: override=nP
 class Projection(IdentityMap):
     r"""Projection mapping.
 
@@ -734,12 +737,15 @@ class Projection(IdentityMap):
             input argument *v* is not ``None``, the method returns the derivative times
             the vector *v*.
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
 
         if v is not None:
             return self.P * v
         return self.P
 
 
+# docerator: override=maps
 class SumMap(ComboMap):
     """Combination map constructed by summing multiple mappings
     to the same vector space.
@@ -754,7 +760,7 @@ class SumMap(ComboMap):
 
     Parameters
     ----------
-    maps : list
+    maps : list of simpeg.maps.IdentityMap
         A list of SimPEG mapping objects that are being summed.
         Each mapping object in the list must act on the same number
         of model parameters and must map to the same vector space!
@@ -843,6 +849,8 @@ class SumMap(ComboMap):
             input argument *v* is not ``None``, the method returns the derivative times
             the vector *v*.
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
 
         for ii, map_i in enumerate(self.maps):
             m0 = m.copy()
@@ -861,6 +869,8 @@ class SumMap(ComboMap):
         return sumDeriv
 
 
+# docerator: override=mesh
+# docerator: override=nP
 class SphericalSystem(IdentityMap):
     r"""Mapping vectors from spherical to Cartesian coordinates.
 
@@ -888,6 +898,16 @@ class SphericalSystem(IdentityMap):
     mapping operator is arbitrary and can act on any vector whose length
     is a multiple of 3; i.e. has shape (``*``, ``*``).
 
+    Parameters
+    ----------
+    mesh : discretize.BaseMesh
+        The number of parameters accepted by the mapping is set to equal
+        *3\*mesh.nC* .
+    nP : int
+        Set the number of parameters accepted by the mapping directly. Used if the
+        number of parameters is known. Used generally when the number of parameters
+        is not equal to the number of cells in a mesh.
+
     Notes
     -----
 
@@ -906,16 +926,6 @@ class SphericalSystem(IdentityMap):
         - :math:`a` is the amplitude of the vector
         - :math:`t` is the azimuthal angle defined positive from vertical
         - :math:`p` is the radial angle defined positive CCW from Easting
-
-    Parameters
-    ----------
-    mesh : discretize.BaseMesh
-        The number of parameters accepted by the mapping is set to equal
-        *3\*mesh.nC* .
-    nP : int
-        Set the number of parameters accepted by the mapping directly. Used if the
-        number of parameters is known. Used generally when the number of parameters
-        is not equal to the number of cells in a mesh.
     """
 
     def __init__(self, mesh=None, nP=None, **kwargs):
@@ -1055,6 +1065,8 @@ class SphericalSystem(IdentityMap):
             input argument *v* is not ``None``, the method returns the derivative times
             the vector *v*.
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
 
         if v is not None:
             return self.sphericalDeriv(m) * v
@@ -1322,11 +1334,6 @@ class TileMap(IdentityMap):
         return self.P.shape
 
     def deriv(self, m, v=None):
-        """
-        :param numpy.ndarray m: model
-        :rtype: scipy.sparse.csr_matrix
-        :return: derivative of transformed model
-        """
         if v is not None:
             return self.P * v
         return self.P

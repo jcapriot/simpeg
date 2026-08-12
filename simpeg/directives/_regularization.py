@@ -63,9 +63,12 @@ class UpdateIRLS(InversionDirective):
         Tolerance for the target misfit.
     percentile: float
         Percentile of the function values used to determine the initial IRLS threshold.
-    verbose: bool
-        Print information to the screen.
+    verbose : bool
+        Whether or not to print debugging information.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.directives._directives.InversionDirective: verbose
 
     def __init__(
         self,
@@ -439,9 +442,12 @@ class SphericalUnitsWeights(InversionDirective):
         Map to the model parameters for the amplitude of the vector
     angles: list[WeightedLeastSquares]
         List of WeightedLeastSquares for the angles.
-    verbose: bool
-        Print information to the screen.
+    verbose : bool
+        Whether or not to print debugging information.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.directives._directives.InversionDirective: verbose
 
     def __init__(
         self,

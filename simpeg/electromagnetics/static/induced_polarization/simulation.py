@@ -105,7 +105,17 @@ class BaseIPSimulation(BasePDESimulation):
 
             d_\text{pred} = Pf(m)
 
+        Parameters
+        ----------
+        m : (n_param,) numpy.ndarray
+            The model parameters.
+        f : simpeg.fields.Fields, optional
+            If provided, will be used to compute the predicted data
+            without recalculating the fields.
+
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m, f
         # return self.Jvec(m, m, f=f)
         if f is None:
             f = self.fields(m)

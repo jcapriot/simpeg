@@ -35,11 +35,17 @@ class ExpMap(IdentityMap):
     mesh : discretize.BaseMesh
         The number of parameters accepted by the mapping is set to equal the number
         of mesh cells.
-    nP : int
+    nP : int, or '*'
         Set the number of parameters accepted by the mapping directly. Used if the
         number of parameters is known. Used generally when the number of parameters
         is not equal to the number of cells in a mesh.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
     def __init__(self, mesh=None, nP=None, **kwargs):
         super().__init__(mesh=mesh, nP=nP, **kwargs)
@@ -102,6 +108,8 @@ class ExpMap(IdentityMap):
             input argument *v* is not ``None``, the method returns the derivative times
             the vector *v*.
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
         deriv = sdiag(np.exp(mkvc(m)))
         if v is not None:
             return deriv * v
@@ -128,11 +136,17 @@ class ReciprocalMap(IdentityMap):
     mesh : discretize.BaseMesh
         The number of parameters accepted by the mapping is set to equal the number
         of mesh cells.
-    nP : int
+    nP : int, or '*'
         Set the number of parameters accepted by the mapping directly. Used if the
         number of parameters is known. Used generally when the number of parameters
         is not equal to the number of cells in a mesh.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
     def __init__(self, mesh=None, nP=None, **kwargs):
         super().__init__(mesh=mesh, nP=nP, **kwargs)
@@ -194,6 +208,8 @@ class ReciprocalMap(IdentityMap):
             input argument *v* is not ``None``, the method returns the derivative times
             the vector *v*.
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
         deriv = sdiag(-mkvc(m) ** (-2))
         if v is not None:
             return deriv * v
@@ -220,11 +236,17 @@ class LogMap(IdentityMap):
     mesh : discretize.BaseMesh
         The number of parameters accepted by the mapping is set to equal the number
         of mesh cells.
-    nP : int
+    nP : int, or '*'
         Set the number of parameters accepted by the mapping directly. Used if the
         number of parameters is known. Used generally when the number of parameters
         is not equal to the number of cells in a mesh.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
     def __init__(self, mesh=None, nP=None, **kwargs):
         super().__init__(mesh=mesh, nP=nP, **kwargs)
@@ -263,6 +285,8 @@ class LogMap(IdentityMap):
             input argument *v* is not ``None``, the method returns the derivative times
             the vector *v*.
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
         mod = mkvc(m)
         deriv = np.zeros(mod.shape)
         tol = 1e-16  # zero
@@ -323,7 +347,7 @@ class LogisticSigmoidMap(IdentityMap):
     mesh : discretize.BaseMesh
         The number of parameters accepted by the mapping is set to equal the number
         of mesh cells.
-    nP : int
+    nP : int, or '*'
         Set the number of parameters accepted by the mapping directly. Used if the
         number of parameters is known. Used generally when the number of parameters
         is not equal to the number of cells in a mesh.
@@ -333,6 +357,12 @@ class LogisticSigmoidMap(IdentityMap):
         upper bound (b) for the transform. Default 1. Defined \in \mathbf{u} space.
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
     def __init__(self, mesh=None, nP=None, lower_bound=0, upper_bound=1, **kwargs):
         super().__init__(mesh=mesh, nP=nP, **kwargs)
@@ -448,6 +478,8 @@ class LogisticSigmoidMap(IdentityMap):
             input argument *v* is not ``None``, the method returns the derivative times
             the vector *v*.
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
         sigmoid = expit(mkvc(m))
         deriv = (self.upper_bound - self.lower_bound) * sigmoid * (1.0 - sigmoid)
         if v is not None:
@@ -477,11 +509,17 @@ class ChiMap(IdentityMap):
     mesh : discretize.BaseMesh
         The number of parameters accepted by the mapping is set to equal the number
         of mesh cells.
-    nP : int
+    nP : int, or '*'
         Set the number of parameters accepted by the mapping directly. Used if the
         number of parameters is known. Used generally when the number of parameters
         is not equal to the number of cells in a mesh.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
     def __init__(self, mesh=None, nP=None, **kwargs):
         super().__init__(mesh=mesh, nP=nP, **kwargs)
@@ -519,6 +557,8 @@ class ChiMap(IdentityMap):
             input argument *v* is not ``None``, the method returns the derivative times
             the vector *v*.
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
         if v is not None:
             return mu_0 * v
         return mu_0 * sp.eye(self.nP)
@@ -557,15 +597,15 @@ class EffectiveSusceptibilityMap(IdentityMap):
 
     Parameters
     ----------
+    ambient_field_magnitude : float
+        The magnitude of the ambient geomagnetic field in nT.
     mesh : discretize.BaseMesh
         The number of parameters accepted by the mapping is set to equal the number
         of mesh cells.
-    nP : int
+    nP : int, or '*'
         Set the number of parameters accepted by the mapping directly. Used if the
         number of parameters is known. Used generally when the number of parameters
         is not equal to the number of cells in a mesh.
-    ambient_field_magnitude : float
-        The magnitude of the ambient geomagnetic field in nT.
 
     Notes
     -----
@@ -578,6 +618,12 @@ class EffectiveSusceptibilityMap(IdentityMap):
     where :math:`\mathbf{M}` is the magnetization vector, and
     :math:`\lVert \mathbf{B}_0 \rVert` is the magnitude of the ambient field in nT.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
     def __init__(self, ambient_field_magnitude, mesh=None, nP=None, **kwargs):
         super().__init__(mesh=mesh, nP=nP, **kwargs)
@@ -617,11 +663,17 @@ class MuRelative(IdentityMap):
     mesh : discretize.BaseMesh
         The number of parameters accepted by the mapping is set to equal the number
         of mesh cells.
-    nP : int
+    nP : int, or '*'
         Set the number of parameters accepted by the mapping directly. Used if the
         number of parameters is known. Used generally when the number of parameters
         is not equal to the number of cells in a mesh.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
     def __init__(self, mesh=None, nP=None, **kwargs):
         super().__init__(mesh=mesh, nP=nP, **kwargs)
@@ -658,6 +710,8 @@ class MuRelative(IdentityMap):
             input argument *v* is not ``None``, the method returns the derivative times
             the vector *v*.
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
         if v is not None:
             return mu_0 * v
         return mu_0 * sp.eye(self.nP)
@@ -712,7 +766,7 @@ class Weighting(IdentityMap):
     mesh : discretize.BaseMesh
         The number of parameters accepted by the mapping is set to equal the number
         of mesh cells.
-    nP : int
+    nP : int, or '*'
         Set the number of parameters accepted by the mapping directly. Used if the
         number of parameters is known. Used generally when the number of parameters
         is not equal to the number of cells in a mesh.
@@ -720,6 +774,12 @@ class Weighting(IdentityMap):
         A set of independent model weights. If ``None``, all model weights are set
         to *1*.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
     def __init__(self, mesh=None, nP=None, weights=None, **kwargs):
         if "nC" in kwargs:
@@ -831,6 +891,8 @@ class Weighting(IdentityMap):
             input argument *v* is not ``None``, the method returns the derivative times
             the vector *v*.
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
         if v is not None:
             return self.weights * v
         return self.P
@@ -853,15 +915,12 @@ class ComplexMap(IdentityMap):
     Parameters
     ----------
     mesh : discretize.BaseMesh
-        If a mesh is used to construct the mapping, the number of input model
-        parameters is *2\*mesh.nC* and the number of complex values output from
-        the mapping is equal to *mesh.nC*. If *mesh* is ``None``, the dimensions
-        of the mapping are set using the *nP* input argument.
-    nP : int
-        Defines the number of input model parameters directly. Must be an even number!!!
-        In this case, the number of complex values output from the mapping is *nP/2*.
-        If *nP* = ``None``, the dimensions of the mapping are set using the *mesh*
-        input argument.
+        The number of parameters accepted by the mapping is set to equal the number
+        of mesh cells.
+    nP : int, or '*'
+        Set the number of parameters accepted by the mapping directly. Used if the
+        number of parameters is known. Used generally when the number of parameters
+        is not equal to the number of cells in a mesh.
 
     Examples
     --------
@@ -889,6 +948,12 @@ class ComplexMap(IdentityMap):
     array([1.+2.j, 1.+2.j, 1.+2.j, 1.+2.j])
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
     def __init__(self, mesh=None, nP=None, **kwargs):
         super().__init__(mesh=mesh, nP=nP, **kwargs)
@@ -1009,6 +1074,8 @@ class ComplexMap(IdentityMap):
         array([0., 1., 2., 3., 4., 5., 6., 7.])
 
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
         nC = self.shape[0]
         if v is not None:
             return v[:nC] + v[nC:] * 1j
@@ -1017,89 +1084,106 @@ class ComplexMap(IdentityMap):
 
 class SelfConsistentEffectiveMedium(IdentityMap):
     r"""
-        Two phase self-consistent effective medium theory mapping for
-        ellipsoidal inclusions. The inversion model is the concentration
-        (volume fraction) of the phase 2 material.
+    Two phase self-consistent effective medium theory mapping for
+    ellipsoidal inclusions. The inversion model is the concentration
+    (volume fraction) of the phase 2 material.
 
-        The inversion model is :math:`\varphi`. We solve for :math:`\sigma`
-        given :math:`\sigma_0`, :math:`\sigma_1` and :math:`\varphi` . Each of
-        the following are implicit expressions of the effective conductivity.
-        They are solved using a fixed point iteration.
+    Parameters
+    ----------
+    mesh : discretize.BaseMesh
+        The number of parameters accepted by the mapping is set to equal the number
+        of mesh cells.
+    nP : int, or '*'
+        Set the number of parameters accepted by the mapping directly. Used if the
+        number of parameters is known. Used generally when the number of parameters
+        is not equal to the number of cells in a mesh.
 
-        **Spherical Inclusions**
+    Notes
+    -----
 
-        If the shape of the inclusions are spheres, we use
+    The inversion model is :math:`\varphi`. We solve for :math:`\sigma`
+    given :math:`\sigma_0`, :math:`\sigma_1` and :math:`\varphi` . Each of
+    the following are implicit expressions of the effective conductivity.
+    They are solved using a fixed point iteration.
 
-        .. math::
+    **Spherical Inclusions**
 
-            \sum_{j=1}^N (\sigma^* - \sigma_j)R^{j} = 0
+    If the shape of the inclusions are spheres, we use
 
-        where :math:`j=[1,N]` is the each material phase, and N is the number
-        of phases. Currently, the implementation is only set up for 2 phase
-        materials, so we solve
+    .. math::
 
-        .. math::
+        \sum_{j=1}^N (\sigma^* - \sigma_j)R^{j} = 0
 
-            (1-\\varphi)(\sigma - \sigma_0)R^{(0)} + \varphi(\sigma - \sigma_1)R^{(1)} = 0.
+    where :math:`j=[1,N]` is the each material phase, and N is the number
+    of phases. Currently, the implementation is only set up for 2 phase
+    materials, so we solve
 
-        Where :math:`R^{(j)}` is given by
+    .. math::
 
-        .. math::
+        (1-\\varphi)(\sigma - \sigma_0)R^{(0)} + \varphi(\sigma - \sigma_1)R^{(1)} = 0.
 
-            R^{(j)} = \left[1 + \frac{1}{3}\frac{\sigma_j - \sigma}{\sigma} \right]^{-1}.
+    Where :math:`R^{(j)}` is given by
 
-        **Ellipsoids**
+    .. math::
 
-        .. todo::
+        R^{(j)} = \left[1 + \frac{1}{3}\frac{\sigma_j - \sigma}{\sigma} \right]^{-1}.
 
-            Aligned Ellipsoids have not yet been implemented, only randomly
-            oriented ellipsoids
+    **Ellipsoids**
 
-        If the inclusions are aligned ellipsoids, we solve
+    .. todo::
 
-        .. math::
+        Aligned Ellipsoids have not yet been implemented, only randomly
+        oriented ellipsoids
 
-            \sum_{j=1}^N \varphi_j (\Sigma^* - \sigma_j\mathbf{I}) \mathbf{R}^{j, *} = 0
+    If the inclusions are aligned ellipsoids, we solve
 
-        where
+    .. math::
 
-        .. math::
+        \sum_{j=1}^N \varphi_j (\Sigma^* - \sigma_j\mathbf{I}) \mathbf{R}^{j, *} = 0
 
-            \mathbf{R}^{(j, *)} = \left[ \mathbf{I} + \mathbf{A}_j {\Sigma^{*}}^{-1}(\sigma_j \mathbf{I} - \Sigma^*) \\right]^{-1}
+    where
 
-        and the depolarization tensor :math:`\mathbf{A}_j` is given by
+    .. math::
 
-        .. math::
+        \mathbf{R}^{(j, *)} = \left[ \mathbf{I} + \mathbf{A}_j {\Sigma^{*}}^{-1}(\sigma_j \mathbf{I} - \Sigma^*) \\right]^{-1}
 
-            \mathbf{A}^* = \left[\begin{array}{ccc}
-                Q & 0 & 0 \\
-                0 & Q & 0 \\
-                0 & 0 & 1-2Q
-            \end{array}\right]
+    and the depolarization tensor :math:`\mathbf{A}_j` is given by
 
-        for a spheroid aligned along the z-axis. For an oblate spheroid
-        (:math:`\alpha < 1`, pancake-like)
+    .. math::
 
-        .. math::
+        \mathbf{A}^* = \left[\begin{array}{ccc}
+            Q & 0 & 0 \\
+            0 & Q & 0 \\
+            0 & 0 & 1-2Q
+        \end{array}\right]
 
-            Q = \frac{1}{2}\left(
-                1 + \frac{1}{\alpha^2 - 1} \left[
-                    1 - \frac{1}{\chi}\tan^{-1}(\chi)
-                \right]
-            \right)
+    for a spheroid aligned along the z-axis. For an oblate spheroid
+    (:math:`\alpha < 1`, pancake-like)
 
-        where
+    .. math::
 
-        .. math::
+        Q = \frac{1}{2}\left(
+            1 + \frac{1}{\alpha^2 - 1} \left[
+                1 - \frac{1}{\chi}\tan^{-1}(\chi)
+            \right]
+        \right)
 
-            \chi = \sqrt{\frac{1}{\alpha^2} - 1}
+    where
+
+    .. math::
+
+        \chi = \sqrt{\frac{1}{\alpha^2} - 1}
 
 
-        For reference, see
-        `Torquato (2002), Random Heterogeneous Materials <https://link.springer.com/book/10.1007/978-1-4757-6355-3>`_
-
-
+    For reference, see
+    `Torquato (2002), Random Heterogeneous Materials <https://link.springer.com/book/10.1007/978-1-4757-6355-3>`_
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
     def __init__(
         self,
@@ -1508,7 +1592,17 @@ class SelfConsistentEffectiveMedium(IdentityMap):
         """
         Derivative of the effective conductivity with respect to the
         volume fraction of phase 2 material
+
+        Parameters
+        ----------
+        m : (nP) numpy.ndarray
+            A vector representing a set of model parameters
+        v : (nP) numpy.ndarray
+            If not ``None``, the method returns the derivative times the vector *v*
+
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
         sige = self._transform(m)
         derivative = self._sc2phaseEMTSpheroidstransformDeriv(sige, m)
         if v is not None:

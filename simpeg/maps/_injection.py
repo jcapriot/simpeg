@@ -127,6 +127,7 @@ class Mesh2Mesh(IdentityMap):
         return self.P
 
 
+# docerator: override=mesh
 class InjectActiveCells(IdentityMap):
     r"""Map active cells model to all cell of a mesh.
 
@@ -337,6 +338,8 @@ class InjectActiveCells(IdentityMap):
             input argument *v* is not ``None``, the method returns the derivative times
             the vector *v*.
         """
+        # docerator: provenance
+        # docerator: from simpeg.maps._base.IdentityMap: m, v
         if v is not None:
             return self.P * v
         return self.P

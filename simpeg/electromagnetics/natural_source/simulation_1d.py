@@ -33,8 +33,19 @@ class Simulation1DRecursive(BaseSimulation):
 
         Z_N = - \frac{\alpha_N}{\sigma_N}
 
+    Parameters
+    ----------
+    survey : simpeg.survey.BaseSurvey, optional
+        The survey for the simulation.
+
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.simulation.BaseSimulation: survey
+
+    # docerator: provenance
+    # docerator: from simpeg.simulation.BaseSimulation: survey
 
     sigma, sigmaMap, sigmaDeriv = props.Invertible("Electrical conductivity (S/m)")
     rho, rhoMap, rhoDeriv = props.Invertible("Electrical resistivity (Ohm m)")
@@ -223,9 +234,20 @@ class Simulation1DRecursive(BaseSimulation):
         """
         Computes the data for a given 1D model.
 
-        :param np.array m: inversion model (nP,)
-        :return np.array f: data (nD,)
+        Parameters
+        ----------
+        m : (n_param,) numpy.ndarray
+            The model parameters.
+        f : simpeg.fields.Fields, optional
+            If provided, will be used to compute the predicted data
+            without recalculating the fields.
+
+        Returns
+        -------
+        numpy.ndarray
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m, f
         self.model = m
 
         # Compute complex impedances for each frequency=

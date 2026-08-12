@@ -152,7 +152,7 @@ class StepOffWaveform(BaseWaveform):
     Parameters
     ----------
     off_time : float, default: 0.0
-        time at which the transmitter is turned off in units of seconds (default is 0s)
+        Time when the transmitter current is zero in units of seconds.
 
     Examples
     --------
@@ -169,6 +169,12 @@ class StepOffWaveform(BaseWaveform):
     >>> plt.show()
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.time_domain.sources.BaseWaveform: off_time
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.time_domain.sources.BaseWaveform: off_time
 
     def __init__(self, off_time=0.0, **kwargs):
         super().__init__(off_time=off_time, has_initial_fields=True, **kwargs)
@@ -345,7 +351,7 @@ class RawWaveform(BaseWaveform):
     Parameters
     ----------
     off_time : float, default: 0.0
-        time at which the transmitter is turned off in units of seconds (default is 0s)
+        Time when the transmitter current is zero in units of seconds.
 
     waveform_function: function
 
@@ -376,6 +382,12 @@ class RawWaveform(BaseWaveform):
 
     """
 
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.time_domain.sources.BaseWaveform: off_time
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.time_domain.sources.BaseWaveform: off_time
+
     def __init__(self, off_time=0.0, waveform_function=None, **kwargs):
         if waveform_function is not None:
             self.waveform_function = waveform_function
@@ -401,6 +413,7 @@ class RawWaveform(BaseWaveform):
         return self.waveform_function(time)
 
 
+# docerator: override=off_time
 class VTEMWaveform(BaseWaveform):
     """
     A VTEM style waveform
@@ -408,7 +421,7 @@ class VTEMWaveform(BaseWaveform):
     Parameters
     ----------
     off_time : float, default: 4.2e-3
-        time at which the transmitter is turned off in units of seconds
+        Time when the transmitter current is zero in units of seconds.
     peak_time : float, default: 2.73e-3
         the peak time for the waveform
     ramp_on_rate : float, default: 3.0
@@ -505,6 +518,7 @@ class VTEMWaveform(BaseWaveform):
         return np.r_[0, self.peak_time, self.off_time]
 
 
+# docerator: override=off_time
 class TrapezoidWaveform(BaseWaveform):
     """
     A waveform that has a linear ramp-on and a linear ramp-off.
@@ -516,7 +530,7 @@ class TrapezoidWaveform(BaseWaveform):
     ramp_off : (2) array_like of float
         time when of the ramp_off starts and stops
     off_time : float
-        time when the transmitter_current returns to zero
+        Time when the transmitter current is zero in units of seconds.
 
     Examples
     --------
@@ -620,7 +634,7 @@ class TriangularWaveform(TrapezoidWaveform):
     Parameters
     ----------
     off_time : float
-        time when the transmitter current returns to zero
+        Time when the transmitter current is zero in units of seconds.
     peak_time : float
         time when the transmitter waveform is at a peak
 
@@ -637,6 +651,12 @@ class TriangularWaveform(TrapezoidWaveform):
     >>> plt.show()
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.time_domain.sources.TrapezoidWaveform: off_time
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.time_domain.sources.TrapezoidWaveform: off_time
 
     def __init__(self, start_time, off_time, peak_time, **kwargs):
 
@@ -676,11 +696,11 @@ class QuarterSineRampOnWaveform(TrapezoidWaveform):
 
     Parameters
     ----------
-    ramp_on: tuple
-        times during which the transmitter ramps on
+    ramp_on : (2) array_like of float
+        time when the linear ramp_on starts and stops
 
-    ramp_off: tuple
-        times between which there is a linear ramp-off
+    ramp_off : (2) array_like of float
+        time when of the ramp_off starts and stops
 
     Examples
     --------
@@ -694,6 +714,12 @@ class QuarterSineRampOnWaveform(TrapezoidWaveform):
     >>> plt.plot(times, [waveform.eval(t) for t in times])
     >>> plt.show()
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.time_domain.sources.TrapezoidWaveform: ramp_on, ramp_off
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.time_domain.sources.TrapezoidWaveform: ramp_on, ramp_off
 
     def __init__(self, ramp_on, ramp_off, **kwargs):
         super().__init__(ramp_on=ramp_on, ramp_off=ramp_off, **kwargs)
@@ -751,12 +777,18 @@ class HalfSineWaveform(TrapezoidWaveform):
 
     Parameters
     ----------
-    ramp_on: tuple
-        times during which there is a quarter-sine ramp-on
+    ramp_on : (2) array_like of float
+        time when the linear ramp_on starts and stops
 
-    ramp_off: tuple
-        times between which there is a quarter-cosine ramp-off.
+    ramp_off : (2) array_like of float
+        time when of the ramp_off starts and stops
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.time_domain.sources.TrapezoidWaveform: ramp_on, ramp_off
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.time_domain.sources.TrapezoidWaveform: ramp_on, ramp_off
 
     def __init__(self, ramp_on, ramp_off, **kwargs):
         super().__init__(ramp_on=ramp_on, ramp_off=ramp_off, **kwargs)
@@ -920,6 +952,8 @@ class ExponentialWaveform(BaseWaveform):
         the peak time for the waveform in units of seconds
     ramp_on_tau : float, default: 1e-3
         time constant tau in units of seconds controlling how quickly the waveform ramps on (formula: 1-e^(-t/tau))
+    off_time : float, default: 0.0
+        Time when the transmitter current is zero in units of seconds.
 
     Examples
     --------
@@ -934,6 +968,12 @@ class ExponentialWaveform(BaseWaveform):
     >>> plt.show()
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.time_domain.sources.BaseWaveform: off_time
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.time_domain.sources.BaseWaveform: off_time
 
     def __init__(
         self,
@@ -1048,20 +1088,27 @@ class ExponentialWaveform(BaseWaveform):
 ###############################################################################
 
 
+# docerator: override=receiver_list
 class BaseTDEMSrc(BaseEMSrc):
     """Base TDEM source class
 
     Parameters
     ----------
-    receiver_list : list of simpeg.electromagnetics.frequency_domain.receivers.BaseRx
-        A list of FDEM receivers
-    location : (dim) numpy.ndarray
-        Source locations
+    receiver_list : list of simpeg.electromagnetics.time_domain.receivers.BaseRx
+        A list of TDEM receivers
+    location : (n_dim) array_like
+        Location of the source
     waveform : BaseWaveform, default=StepOffWaveform
         A SimPEG waveform object
     source_type : {'inductive','galvanic'}
         Implement as an inductive or galvanic source
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseSrc: location
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseSrc: location
 
     def __init__(
         self,
@@ -1116,8 +1163,8 @@ class BaseTDEMSrc(BaseEMSrc):
 
         Parameters
         ----------
-        simulation : BaseTDEMSrc
-            TDEM source
+        simulation : .time_domain.simulation.BaseTDEMSimulation
+            An instance of a time-domain electromagnetic simulation
 
         Returns
         -------
@@ -1154,12 +1201,13 @@ class BaseTDEMSrc(BaseEMSrc):
         """Returns :class:`Zero` for ``BaseTDEMSrc``"""
         return Zero()
 
+    # docerator: override=simulation
     def eval(self, simulation, time):  # noqa: A003
         """Return magnetic and electric source terms at a given time
 
         Parameters
         ----------
-        simulation : simpeg.electromagnetics.base.BaseTDEMSimulation
+        simulation : .time_domain.simulation.BaseTDEMSimulation
             An instance of a time-domain electromagnetic simulation
         time : float
             The time at which you want to compute the source terms
@@ -1174,16 +1222,17 @@ class BaseTDEMSrc(BaseEMSrc):
         s_e = self.s_e(simulation, time)
         return s_m, s_e
 
+    # docerator: override=simulation
     def evalDeriv(self, simulation, time, v=None, adjoint=False):
         """Derivative of magnetic and electric source terms time a vector at a given time
 
         Parameters
         ----------
-        simulation : simpeg.electromagnetics.base.BaseTDEMSimulation
+        simulation : .time_domain.simulation.BaseTDEMSimulation
             An instance of a time-domain electromagnetic simulation
         time :
             The time at which you want to compute the derivative
-        v : numpy.ndarray
+        v : np.ndarray
             A vector
         adjoint : bool
             If ``True``, return the adjoint operation
@@ -1196,6 +1245,8 @@ class BaseTDEMSrc(BaseEMSrc):
             If `v` is ``None``, the method returns the functions for multiplying the
             derivatives with a vector.
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.base.BaseEMSrc: v, adjoint
         if v is not None:
             return (
                 self.s_mDeriv(simulation, time, v, adjoint),
@@ -1207,23 +1258,70 @@ class BaseTDEMSrc(BaseEMSrc):
                 lambda v: self.s_eDeriv(simulation, time, v, adjoint),
             )
 
+    # docerator: override=simulation
     def s_m(self, simulation, time):
-        """Returns :class:`Zero` for ``BaseTDEMSrc``"""
+        """Magnetic source term for the TDEM source at a given time
+
+        Is :class:`Zero` for ``BaseTDEMSrc``
+
+        Parameters
+        ----------
+        simulation : .time_domain.simulation.BaseTDEMSimulation
+            An instance of a time-domain electromagnetic simulation
+        """
         return Zero()
 
+    # docerator: override=simulation
     def s_e(self, simulation, time):
-        """Returns :class:`Zero` for ``BaseTDEMSrc``"""
+        """Electric source term for the TDEM source at a given time
+
+        Is :class:`Zero` for ``BaseTDEMSrc``
+
+        Parameters
+        ----------
+        simulation : .time_domain.simulation.BaseTDEMSimulation
+            An instance of a time-domain electromagnetic simulation
+        """
         return Zero()
 
+    # docerator: override=simulation
     def s_mDeriv(self, simulation, time, v=None, adjoint=False):
-        """Returns :class:`Zero` for ``BaseTDEMSrc``"""
+        """Derivative of magnetic source term for the TDEM source at a given time
+
+        Is :class:`Zero` for ``BaseTDEMSrc``
+
+        Parameters
+        ----------
+        simulation : .time_domain.simulation.BaseTDEMSimulation
+            An instance of a time-domain electromagnetic simulation
+        v : numpy.ndarray
+            A vector to take the dot product with
+        adjoint : bool, default==Fasel
+            If ``True``, return the adjoint operation"""
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.base.BaseEMSrc: v, adjoint
         return Zero()
 
+    # docerator: override=simulation
     def s_eDeriv(self, simulation, time, v=None, adjoint=False):
-        """Returns :class:`Zero` for ``BaseTDEMSrc``"""
+        """Derivative of electric source term for the TDEM source at a given time
+
+        Is :class:`Zero` for ``BaseTDEMSrc``
+
+        Parameters
+        ----------
+        simulation : .time_domain.simulation.BaseTDEMSimulation
+            An instance of a time-domain electromagnetic simulation
+        v : numpy.ndarray
+            A vector to take the dot product with
+        adjoint : bool, default==Fasel
+            If ``True``, return the adjoint operation"""
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.base.BaseEMSrc: v, adjoint
         return Zero()
 
 
+# docerator: override=location
 class MagDipole(BaseTDEMSrc):
     r"""
     Point magnetic dipole source calculated by taking the curl of a magnetic
@@ -1234,17 +1332,23 @@ class MagDipole(BaseTDEMSrc):
     ----------
     receiver_list : list of simpeg.electromagnetics.time_domain.receivers.BaseRx
         A list of TDEM receivers
-    location : (dim) numpy.ndarray, default = np.r_[0., 0., 0.]
-        Source location.
+    location : (n_dim) array_like, optional
+        Location of the source, default is [0, 0, 0]
     moment : float
         Magnetic dipole moment amplitude
     orientation : {"z", "x", "y"} or (3) numpy.ndarray
         Orientation of the magnetic dipole.
     mu : float
         Background magnetic permeability
-    source_type : {'inductive', 'galvanic'}
+    source_type : {'inductive','galvanic'}
         Implement as an inductive or galvanic source
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.time_domain.sources.BaseTDEMSrc: receiver_list, source_type
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.time_domain.sources.BaseTDEMSrc: receiver_list, source_type
 
     def __init__(
         self,
@@ -1450,14 +1554,16 @@ class MagDipole(BaseTDEMSrc):
 
         Parameters
         ----------
-        simulation : BaseTDEMSimulation
-            A SimPEG TDEM simulation
+        simulation : .time_domain.simulation.BaseTDEMSimulation
+            An instance of a time-domain electromagnetic simulation
 
         Returns
         -------
         numpy.ndarray
             Initial magnetic flux density
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.time_domain.sources.BaseTDEMSrc: simulation
 
         if self.waveform.has_initial_fields is False:
             return Zero()
@@ -1499,8 +1605,8 @@ class MagDipole(BaseTDEMSrc):
 
         Parameters
         ----------
-        simulation : BaseTDEMSimulation
-            SimPEG TDEM simulation
+        simulation : .time_domain.simulation.BaseTDEMSimulation
+            An instance of a time-domain electromagnetic simulation
         time : float
             Evaluation time
 
@@ -1509,6 +1615,8 @@ class MagDipole(BaseTDEMSrc):
         numpy.ndarray
             magnetic source term on mesh.
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.time_domain.sources.BaseTDEMSrc: simulation
         if self.waveform.has_initial_fields is False:
             return Zero()
         return Zero()
@@ -1518,8 +1626,8 @@ class MagDipole(BaseTDEMSrc):
 
         Parameters
         ----------
-        simulation : BaseTDEMSimulation
-            SimPEG TDEM simulation
+        simulation : .time_domain.simulation.BaseTDEMSimulation
+            An instance of a time-domain electromagnetic simulation
         time : float
             Evaluation time
 
@@ -1528,6 +1636,8 @@ class MagDipole(BaseTDEMSrc):
         numpy.ndarray
             Electric source term on mesh.
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.time_domain.sources.BaseTDEMSrc: simulation
         C = simulation.mesh.edge_curl
         b = self._bSrc(simulation)
 
@@ -1564,10 +1674,10 @@ class CircularLoop(MagDipole):
     ----------
     receiver_list : list of simpeg.electromagnetics.time_domain.receivers.BaseRx
         A list of TDEM receivers
-    location : (dim) np.ndarray, default = np.r_[0., 0., 0.]
-        Source location.
-    orientation : {'z', 'x', 'y'} or (3) numpy.ndarray
-        Loop orientation.
+    location : (n_dim) array_like, optional
+        Location of the source, default is [0, 0, 0]
+    orientation : {"z", "x", "y"} or (3) numpy.ndarray
+        Orientation of the magnetic dipole.
     radius : float, default = 1.
         Loop radius
     current : float, default = 1.
@@ -1580,6 +1690,14 @@ class CircularLoop(MagDipole):
     N : int, default = 1
         Number of turns in the loop
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.time_domain.sources.BaseTDEMSrc: receiver_list
+    # docerator: from simpeg.electromagnetics.time_domain.sources.MagDipole: location, orientation, mu
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.time_domain.sources.BaseTDEMSrc: receiver_list
+    # docerator: from simpeg.electromagnetics.time_domain.sources.MagDipole: location, orientation, mu
 
     # def __init__(self, receiver_list=None, **kwargs):
     #     super(CircularLoop, self).__init__(receiver_list, **kwargs)
@@ -1700,6 +1818,7 @@ class CircularLoop(MagDipole):
         return self.n_turns * out
 
 
+# docerator: override=location
 class LineCurrent(BaseTDEMSrc):
     """Line current source.
 
@@ -1710,7 +1829,7 @@ class LineCurrent(BaseTDEMSrc):
     Parameters
     ----------
     receiver_list : list of simpeg.electromagnetics.time_domain.receivers.BaseRx
-        List of TDEM receivers
+        A list of TDEM receivers
     location : (n, 3) numpy.ndarray
         Array defining the node locations for the wire path. For inductive sources,
         you must close the loop, (i.e. provide the same point as the first and last
@@ -1720,6 +1839,12 @@ class LineCurrent(BaseTDEMSrc):
     mu : float, optional
         Magnetic permeability to use.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.time_domain.sources.BaseTDEMSrc: receiver_list
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.time_domain.sources.BaseTDEMSrc: receiver_list
 
     def __init__(
         self,
@@ -2137,14 +2262,16 @@ class LineCurrent(BaseTDEMSrc):
 
         Parameters
         ----------
-        simulation : BaseTDEMSimulation
-            A SimPEG TDEM simulation
+        simulation : .time_domain.simulation.BaseTDEMSimulation
+            An instance of a time-domain electromagnetic simulation
 
         Returns
         -------
         numpy.ndarray
             Initial magnetic flux density
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.time_domain.sources.BaseTDEMSrc: simulation
 
         if self.waveform.has_initial_fields is False:
             return Zero()
@@ -2183,7 +2310,19 @@ class LineCurrent(BaseTDEMSrc):
         return simulation.mesh.edge_curl.T * self._aInitialDeriv(simulation, v)
 
     def s_m(self, simulation, time):
-        """Returns :class:`Zero` for ``LineCurrent``"""
+        """Magnetic source term (s_m) at the time provided.
+
+        Is :class:`Zero` for ``LineCurrent``
+
+        Parameters
+        ----------
+        simulation : .time_domain.simulation.BaseTDEMSimulation
+            An instance of a time-domain electromagnetic simulation
+        time : float
+            Time
+        """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.time_domain.sources.BaseTDEMSrc: simulation
         return Zero()
 
     def s_e(self, simulation, time):
@@ -2191,8 +2330,8 @@ class LineCurrent(BaseTDEMSrc):
 
         Parameters
         ----------
-        simulation : BaseTDEMSimulation
-            SimPEG TDEM simulation
+        simulation : .time_domain.simulation.BaseTDEMSimulation
+            An instance of a time-domain electromagnetic simulation
         time : float
             Time
 
@@ -2201,6 +2340,8 @@ class LineCurrent(BaseTDEMSrc):
         numpy.ndarray
             electric source term on mesh.
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.time_domain.sources.BaseTDEMSrc: simulation
         if simulation._formulation == "EB":
             return self.Mejs(simulation) * self.waveform.eval(time)
         elif simulation._formulation == "HJ":

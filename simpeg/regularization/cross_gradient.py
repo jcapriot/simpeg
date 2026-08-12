@@ -26,12 +26,14 @@ class CrossGradient(BaseSimilarityMeasure):
     mesh : simpeg.regularization.RegularizationMesh, discretize.base.BaseMesh
         Mesh on which the regularization is discretized. This is not necessarily
         the same as the mesh on which the simulation is defined.
+    wire_map : simpeg.maps.WireMap
+        Wire map connecting physical properties defined on active cells of the
+        :class:`RegularizationMesh` to the entire model.
+    approx_hessian : bool
+        Whether to use the semi-positive definate approximation for the Hessian.
     active_cells : None, (n_cells, ) numpy.ndarray of bool
         Boolean array defining the set of :py:class:`~.regularization.RegularizationMesh`
         cells that are active in the inversion. If ``None``, all cells are active.
-    wire_map : simpeg.maps.Wires
-        Wire map connecting physical properties defined on active cells of the
-        :class:`RegularizationMesh`` to the entire model.
     reference_model : None, (n_param, ) numpy.ndarray
         Reference model. If ``None``, the reference model in the inversion is set to
         the starting model.
@@ -39,10 +41,8 @@ class CrossGradient(BaseSimilarityMeasure):
         Units for the model parameters. Some regularization classes behave
         differently depending on the units; e.g. 'radian'.
     weights : None, dict
-        Weight multipliers to customize the least-squares function. Each key points to a (n_cells, )
-        numpy.ndarray that is defined on the :py:class:`~.regularization.RegularizationMesh`.
-    approx_hessian : bool
-        Whether to use the semi-positive definate approximation for the Hessian.
+        Weight multipliers to customize the least-squares function.
+        Each value is a numpy.ndarray of shape(:py:property:`~.regularization.RegularizationMesh.n_cells`, ).
 
     Notes
     -----
@@ -129,6 +129,14 @@ class CrossGradient(BaseSimilarityMeasure):
     >>> reg.get_weights('volume')
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units, weights
+    # docerator: from simpeg.regularization.base.BaseSimilarityMeasure: wire_map
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units, weights
+    # docerator: from simpeg.regularization.base.BaseSimilarityMeasure: wire_map
 
     def __init__(self, mesh, wire_map, approx_hessian=True, **kwargs):
         super().__init__(mesh, wire_map=wire_map, **kwargs)
@@ -235,14 +243,16 @@ class CrossGradient(BaseSimilarityMeasure):
 
         Parameters
         ----------
-        m : (n_param, ) numpy.ndarray
-            The model; a vector array containing all physical properties.
+        m : (nP) numpy.ndarray
+            A vector representing a set of model parameters.
 
         Returns
         -------
         float
             The regularization function evaluated for the model provided.
         """
+        # docerator: provenance
+        # docerator: from simpeg.objective_function.BaseObjectiveFunction: m
 
         m1, m2 = self.wire_map * model
         Av = self._Av
@@ -325,10 +335,9 @@ class CrossGradient(BaseSimilarityMeasure):
 
         Parameters
         ----------
-        model : (n_param, ) numpy.ndarray
-            The model; a vector array containing all physical properties.
-        v : None, (n_param, ) numpy.ndarray (optional)
-            A numpy array to model the Hessian by.
+        model
+        v : None or (n_param, ) numpy.ndarray, optional
+            A vector.
 
         Returns
         -------
@@ -337,6 +346,8 @@ class CrossGradient(BaseSimilarityMeasure):
             for the models provided is returned. If *v* is not ``None``,
             the Hessian multiplied by the vector provided is returned.
         """
+        # docerator: provenance
+        # docerator: from simpeg.objective_function.BaseObjectiveFunction: v
         m1, m2 = self.wire_map * model
 
         Av = self._Av

@@ -5,6 +5,7 @@ from ....utils import Zero, mkvc, validate_list_of_types, validate_float
 from .receivers import BaseRx
 
 
+# docerator: override=receiver_list
 class BaseSrc(survey.BaseSrc):
     """Base spectral IP source
 
@@ -12,11 +13,17 @@ class BaseSrc(survey.BaseSrc):
     ----------
     receiver_list : list of simpeg.electromagnetics.static.resistivity.receivers.BaseRx
         A list of DC/IP receivers
-    location : (dim) numpy.ndarray
-        Source location
+    location : (n_dim) array_like
+        Location of the source
     current : float, default=1.0
         Current amplitude [A]
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseSrc: location
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseSrc: location
 
     def __init__(self, receiver_list, location, current=1.0, **kwargs):
         super(BaseSrc, self).__init__(
@@ -90,6 +97,8 @@ class BaseSrc(survey.BaseSrc):
         return np.array([rx.nD * len(rx.times) for rx in self.receiver_list])
 
 
+# docerator: override=receiver_list
+# docerator: override=location
 class Dipole(BaseSrc):
     """Spectral IP dipole source
 
@@ -101,12 +110,18 @@ class Dipole(BaseSrc):
         A electrode location; remember to set 'location_b' keyword argument to define N electrode locations.
     location_b : (dim) numpy.ndarray
         B electrode location; remember to set 'location_a' keyword argument to define M electrode locations.
-    location : list or tuple of length 2 of numpy.ndarray
+    location : list or tuple of length 2 of (dim) numpy.ndarray
         A and B electrode locations. In this case, do not set the 'location_a' and 'location_b'
         keyword arguments. And we supply a list or tuple of the form [location_a, location_b].
     current : float, default=1.0
         Current amplitude [A]
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.static.spectral_induced_polarization.sources.BaseSrc: current
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.static.spectral_induced_polarization.sources.BaseSrc: current
 
     def __init__(
         self,
@@ -233,6 +248,7 @@ class Dipole(BaseSrc):
         return q
 
 
+# docerator: override=receiver_list
 class Pole(BaseSrc):
     """Spectral IP pole source
 
@@ -240,11 +256,19 @@ class Pole(BaseSrc):
     ----------
     receiver_list : list of simpeg.electromagnetics.static.spectral_induced_polarization.receivers.BaseRx
         list of spectral IP receivers
-    location : (dim) array_like
-        Electrode location
+    location : (n_dim) array_like
+        Location of the source
     current : float, default=1.0
         Current amplitude [A]
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseSrc: location
+    # docerator: from simpeg.electromagnetics.static.spectral_induced_polarization.sources.BaseSrc: current
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseSrc: location
+    # docerator: from simpeg.electromagnetics.static.spectral_induced_polarization.sources.BaseSrc: current
 
     def __init__(self, receiver_list=None, location=None, **kwargs):
         super(Pole, self).__init__(receiver_list, location=location, **kwargs)

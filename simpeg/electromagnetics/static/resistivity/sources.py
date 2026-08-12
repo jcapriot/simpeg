@@ -3,6 +3,8 @@ from .... import survey
 from ....utils import Zero, validate_ndarray_with_shape
 
 
+# docerator: override=receiver_list
+# docerator: override=location
 class BaseSrc(survey.BaseSrc):
     """Base DC/IP source
 
@@ -10,7 +12,7 @@ class BaseSrc(survey.BaseSrc):
     ----------
     receiver_list : list of simpeg.electromagnetics.static.resistivity.receivers.BaseRx
         A list of DC/IP receivers
-    location : (n_source, dim) numpy.ndarray
+    location : (n_source, n_dim) numpy.ndarray
         Source locations
     current : float or numpy.ndarray, default: 1.0
         Current amplitude [A]
@@ -132,6 +134,7 @@ class Multipole(BaseSrc):
         return np.full_like(self.location, np.nan)
 
 
+# docerator: override=location
 class Dipole(BaseSrc):
     """Dipole source
 
@@ -145,13 +148,17 @@ class Dipole(BaseSrc):
     location_b : (dim) array_like
         B electrode locations; remember to set ``location_a`` keyword argument
         to define A electrode location.
-    location : tuple of array_like, optional
+    location : tuple of (n_source, dim) array_like, optional
         A and B electrode locations. If ``location_a`` and ``location_b`` are
-        provided, don't pass values to this argument. Otherwise, provide
-        a tuple of the form ``(location_a, location_b)``.
-    current : float, optional
-        Current amplitude in :math:`A` that goes through each electrode.
+    current : float or numpy.ndarray, default: 1.0
+        Current amplitude [A]
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.static.resistivity.sources.BaseSrc: receiver_list, current
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.static.resistivity.sources.BaseSrc: receiver_list, current
 
     def __init__(
         self,
@@ -236,9 +243,15 @@ class Pole(BaseSrc):
     ----------
     receiver_list : list of simpeg.electromagnetics.static.resistivity.receivers.BaseRx
         A list of DC/IP receivers
-    location : (n_source, dim) numpy.ndarray
-        Electrode locations
+    location : (n_source, n_dim) numpy.ndarray
+        Source locations
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.static.resistivity.sources.BaseSrc: receiver_list, location
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.static.resistivity.sources.BaseSrc: receiver_list, location
 
     def __init__(self, receiver_list, location=None, **kwargs):
         super().__init__(receiver_list=receiver_list, location=location, **kwargs)

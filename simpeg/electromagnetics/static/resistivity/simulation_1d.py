@@ -102,9 +102,15 @@ def _dphi_tilde(rho, thicknesses, lambdas):
     return J_rho.T, J_h.T
 
 
+# docerator: override=survey
 class Simulation1DLayers(BaseSimulation):
     """
     1D DC Simulation
+
+    Parameters
+    ----------
+    survey : .resistivity.survey.Survey
+        The resistivity survey for the simulation.
     """
 
     sigma, sigmaMap, sigmaDeriv = props.Invertible("Electrical conductivity (S/m)")
@@ -296,7 +302,17 @@ class Simulation1DLayers(BaseSimulation):
         :param Fields u: fields object
         :rtype: numpy.ndarray
         :return: data
+
+        Parameters
+        ----------
+        m : (n_param,) numpy.ndarray
+            The model parameters.
+        f : simpeg.fields.Fields, optional
+            If provided, will be used to compute the predicted data
+            without recalculating the fields.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m, f
         if self.verbose:
             print("Calculating predicted data")
 
@@ -330,13 +346,37 @@ class Simulation1DLayers(BaseSimulation):
     def Jvec(self, m, v, f=None):
         """
         Compute sensitivity matrix (J) and vector (v) product.
+
+        Parameters
+        ----------
+        m : (n_param, ) numpy.ndarray
+            The model parameters.
+        v : (n_param, ) numpy.ndarray
+            Vector we are multiplying.
+        f : simpeg.field.Fields, optional
+            If provided, fields will not need to be recomputed for the
+            current model to compute `Jvec`.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m, v, f
         return self.getJ(m, f=f) @ v
 
     def Jtvec(self, m, v, f=None):
         """
         Compute adjoint sensitivity matrix (J^T) and vector (v) product.
+
+        Parameters
+        ----------
+        m : (n_param, ) numpy.ndarray
+            The model parameters.
+        v : (n_data, ) numpy.ndarray
+            Vector we are multiplying.
+        f : simpeg.field.Fields, optional
+            If provided, fields will not need to be recomputed for the
+            current model to compute `Jtvec`.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m, v, f
         return self.getJ(m, f=f).T @ v
 
     @property

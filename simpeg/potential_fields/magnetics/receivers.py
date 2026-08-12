@@ -7,8 +7,8 @@ class Point(survey.BaseRx):
 
     Parameters
     ----------
-    locations : (n, 3) numpy.ndarray
-        Receiver locations.
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
     components : str or list of str, default: 'tmi'
         Use a ``str`` for a single component or a ``list`` of ``str`` if multiple
         components are simulated at each location. Component choices are:
@@ -33,6 +33,12 @@ class Point(survey.BaseRx):
     set `is_amplitude_data` in the `magnetics.Simulation3DIntegral` to `True`.
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
 
     def __init__(self, locations, components="tmi", **kwargs):
         super().__init__(locations, **kwargs)

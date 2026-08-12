@@ -12,18 +12,19 @@ from ...utils import (
 #########################################
 
 
+# docerator: override=locations
 class Point(BaseRx):
     """Point receiver for viscous remanent magnetization simulations
 
     Parameters
     ----------
-    locations : (n, 3) numpy.ndarray
-        Receiver locations
+    locations : (n_loc, 3) array_like
+        Locations assocated with a given receiver
     times : numpy.ndarray
         Time channels
     field_type : {'h', 'b', 'dhdt', 'dbdt'}
         Fields being measured.
-    orientation : {'z', 'y', 'z'}
+    orientation : {'z', 'x', 'y'}
         Receiver orientation.
     """
 
@@ -136,6 +137,7 @@ class Point(BaseRx):
             return self.locations.shape[0] * len(self.times)
 
 
+# docerator: override=locations
 class SquareLoop(Point):
     """Square loop receiver
 
@@ -146,7 +148,7 @@ class SquareLoop(Point):
 
     Parameters
     ----------
-    locations : (n, 3) numpy.ndarray
+    locations : (n_loc, 3) array_like
         Center location of the square loop
     times : numpy.ndarray
         Time channels
@@ -162,6 +164,12 @@ class SquareLoop(Point):
         Order of numerical quadrature for approximating the magnetic flux through
         the receiver coil.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.receivers.Point: times, field_type, orientation
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.receivers.Point: times, field_type, orientation
 
     def __init__(
         self,

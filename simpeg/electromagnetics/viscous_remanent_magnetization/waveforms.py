@@ -27,7 +27,7 @@ class StepOff(BaseVRMWaveform):
 
     Parameters
     ----------
-    t0 : float
+    t0 : float, optional
         Beginning of the off-time
     """
 
@@ -171,9 +171,15 @@ class SquarePulse(StepOff):
     ----------
     delt : float
         Pulse width
-    t0 : float
+    t0 : float, optional
         Beginning of the off-time
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.waveforms.StepOff: t0
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.waveforms.StepOff: t0
 
     def __init__(self, delt, t0=0.0):
         super(SquarePulse, self).__init__(t0=t0)
@@ -195,6 +201,7 @@ class SquarePulse(StepOff):
     def delt(self, value):
         self._delt = validate_float("delt", value, min_val=0.0, inclusive_min=False)
 
+    # docerator: override=fieldType
     def getCharDecay(self, fieldType, times):
         """Compute characteristic decay for a square-pulse waveform.
 
@@ -215,6 +222,8 @@ class SquarePulse(StepOff):
         eta : (n_times) numpy.ndarray
             Characteristic decay evaluated at all specified times.
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.waveforms.StepOff: times
         fieldType = validate_string("fieldType", fieldType, ["h", "b", "dhdt", "dbdt"])
 
         if self.t0 >= np.min(times):
@@ -238,6 +247,7 @@ class SquarePulse(StepOff):
 
         return eta
 
+    # docerator: override=fieldType
     def getLogUniformDecay(self, fieldType, times, chi0, dchi, tau1, tau2):
         """Characteristic decay for a square-pulse waveform for log-uniform distribution of time-relaxation constants.
 
@@ -268,6 +278,8 @@ class SquarePulse(StepOff):
         eta : (n_times) numpy.ndarray
             Characteristic decay evaluated at all specified times.
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.waveforms.StepOff: times, chi0, dchi, tau1, tau2
         fieldType = validate_string("fieldType", fieldType, ["h", "b", "dhdt", "dbdt"])
 
         nT = len(times)
@@ -487,6 +499,12 @@ class ArbitraryPiecewise(ArbitraryDiscrete):
         Waveform on-time currents
     """
 
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.waveforms.ArbitraryDiscrete: t_wave, I_wave
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.waveforms.ArbitraryDiscrete: t_wave, I_wave
+
     def __init__(self, t_wave, I_wave):
         super(ArbitraryPiecewise, self).__init__(t_wave=t_wave, I_wave=I_wave)
 
@@ -509,6 +527,8 @@ class ArbitraryPiecewise(ArbitraryDiscrete):
         eta : (n_times) numpy.ndarray
             Characteristic decay evaluated at all specified times.
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.waveforms.ArbitraryDiscrete: fieldType, times
         fieldType = validate_string("fieldType", fieldType, ["h", "b", "dhdt", "dbdt"])
 
         if np.max(self.t_wave) >= np.min(times):

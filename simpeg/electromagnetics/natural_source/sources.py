@@ -17,6 +17,7 @@ from discretize.utils import volume_average
 
 
 # Rename to BasePlanewave
+# docerator: override=receiver_list
 class Planewave(BaseFDEMSrc):
     """
     Source class for the 1D and pseudo-3D problems.
@@ -29,8 +30,14 @@ class Planewave(BaseFDEMSrc):
         Source frequency
     """
 
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: frequency
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: frequency
     # This class is only provided to have a uniquely identifiable "Planewave" class
-    pass
+    def __init__(self, receiver_list, frequency, **kwargs):
+        super(Planewave, self).__init__(receiver_list, frequency, **kwargs)
 
 
 # Need to implement such that it works for all dims.
@@ -49,6 +56,14 @@ class PlanewaveXYPrimary(Planewave):
     sigma_primary : float, default: ``None``
         Wholespace conductivity for primary field
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.natural_source.sources.Planewave: receiver_list
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: frequency
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.natural_source.sources.Planewave: receiver_list
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: frequency
 
     _fields_per_source = 2
 
@@ -100,14 +115,16 @@ class PlanewaveXYPrimary(Planewave):
 
         Parameters
         ----------
-        simulation : simpeg.electromagnetics.natural_source_simulation.BaseNSEMSimulation
-            A NSEM simulation
+        simulation : BaseFDEMSimulation
+            A SimPEG FDEM simulation
 
         Returns
         -------
         numpy.ndarray
             Primary electric field
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: simulation
         if self._ePrimary is None:
             sigma_1d, _ = self._get_sigmas(simulation)
             e_1d = primary_e_1d_solution(simulation.mesh, sigma_1d, self.frequency)
@@ -125,14 +142,16 @@ class PlanewaveXYPrimary(Planewave):
 
         Parameters
         ----------
-        simulation : simpeg.electromagnetics.frequency_domain.simulation.BaseFDEMSimulation
-            A NSEM simulation
+        simulation : BaseFDEMSimulation
+            A SimPEG FDEM simulation
 
         Returns
         -------
         numpy.ndarray
             Primary magnetic field
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: simulation
         # Project ePrimary to bPrimary
         # Satisfies the primary(background) field conditions
         if simulation.mesh.dim == 1:
@@ -147,14 +166,16 @@ class PlanewaveXYPrimary(Planewave):
 
         Parameters
         ----------
-        simulation : simpeg.electromagnetics.frequency_domain.simulation.BaseFDEMSimulation
-            A NSEM simulation
+        simulation : BaseFDEMSimulation
+            SimPEG FDEM simulation
 
         Returns
         -------
         numpy.ndarray
             Electric source term on mesh.
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: simulation
         e_p = self.ePrimary(simulation)
         # Make mass matrix
         # Note: M(sig) - M(sig_p) = M(sig - sig_p)
@@ -177,18 +198,21 @@ class PlanewaveXYPrimary(Planewave):
 
         Parameters
         ----------
-        simulation : simpeg.electromagnetics.frequency_domain.simulation.BaseFDEMSimulation
-            A NSEM simulation
+        simulation : BaseFDEMSimulation
+            An FDEM Simulation object
         v : numpy.ndarray
-            A vector
-        adjoint : bool, default: ``False``
-            If ``True``, perform the adjoint operation
+            A vector to take the dot product with
+        adjoint : bool, default==Fasel
+            If ``True``, return the adjoint operation
 
         Returns
         -------
         numpy.ndarray
             Derivative of electric source term on mesh.
         """
+        # docerator: provenance
+        # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: simulation
+        # docerator: from simpeg.electromagnetics.base.BaseEMSrc: v, adjoint
 
         return self.s_eDeriv_m(simulation, v, adjoint)
 

@@ -1030,15 +1030,15 @@ class InexactCG(object):
     cg_maxiter : int, optional
         Maximum number of CG iterations to perform
 
+    See Also
+    --------
+    scipy.sparse.linalg.cg
+
     Notes
     -----
 
     The convergence check for CG is:
     >>> norm(A @ x_k - b) <= max(cg_rtol * norm(A @ x_0 - b), cg_atol)
-
-    See Also
-    --------
-    scipy.sparse.linalg.cg
 
     """
 
@@ -1357,7 +1357,22 @@ class InexactGaussNewton(InexactCG, BFGS):
     To set the initial H0 to be used in BFGS, set *bfgsH0* to be a
     simpeg.Solver
 
+    Parameters
+    ----------
+    cg_rtol : float, optional
+        Relative tolerance stopping condition on the CG residual
+    cg_atol : float, optional
+        Absolute tolerance stopping condition on the CG residual
+    cg_maxiter : int, optional
+        Maximum number of CG iterations to perform
+
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.optimization.InexactCG: cg_rtol, cg_atol, cg_maxiter
+
+    # docerator: provenance
+    # docerator: from simpeg.optimization.InexactCG: cg_rtol, cg_atol, cg_maxiter
 
     def __init__(
         self,

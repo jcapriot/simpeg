@@ -443,7 +443,7 @@ class BetaEstimateMaxDerivative(BaseBetaEstimator):
 
     Parameters
     ----------
-    beta0_ratio: float
+    beta0_ratio : float
         Desired ratio between data misfit and model objective function at initial beta iteration.
     random_seed : None or :class:`~simpeg.typing.RandomSeed`, optional
         Random seed used for random sampling. It can either be an int,
@@ -477,6 +477,9 @@ class BetaEstimateMaxDerivative(BaseBetaEstimator):
     continuous uniform distribution between 0 and 1.
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.directives._directives.BaseBetaEstimator: beta0_ratio, random_seed
 
     def __init__(
         self, beta0_ratio=1.0, random_seed: RandomSeed | None = None, **kwargs
@@ -515,7 +518,7 @@ class BetaEstimate_ByEig(BaseBetaEstimator):
 
     Parameters
     ----------
-    beta0_ratio: float
+    beta0_ratio : float
         Desired ratio between data misfit and model objective function at initial beta iteration.
     n_pw_iter : int
         Number of power iterations used to estimate largest eigenvalues.
@@ -550,6 +553,9 @@ class BetaEstimate_ByEig(BaseBetaEstimator):
     see :func:`simpeg.utils.eigenvalue_by_power_iteration`.
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.directives._directives.BaseBetaEstimator: beta0_ratio, random_seed
 
     def __init__(
         self,
@@ -1792,7 +1798,8 @@ class SaveModelEveryIteration(SaveEveryIteration):
     directory : pathlib.Path or str, optional
         The directory to store output information to, defaults to current directory.
     name : str, optional
-        Root of the filename to be saved, defaults to ``'InversionModel'``
+        Root of the filename to be saved, commonly this will get iteration specific
+        details appended to it.
 
     Notes
     -----
@@ -1801,6 +1808,9 @@ class SaveModelEveryIteration(SaveEveryIteration):
     default directory is the current directory and the models are saved as
     `name` + ``'_YYYY-MM-DD-HH-MM_iter.npy'``
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.directives._directives.SaveEveryIteration: directory, name
 
     def __init__(self, **kwargs):
         if "on_disk" in kwargs:
@@ -1853,12 +1863,16 @@ class SaveOutputEveryIteration(SaveEveryIteration):
     Parameters
     ----------
     on_disk : bool, optional
-        Whether this directive additionally stores the log to a text file.
-    directory : pathlib.Path, optional
-        The directory to store output information to if `on_disk`, defaults to current directory.
+        Whether this directive will save a log file to disk.
+    directory : pathlib.Path or str, optional
+        The directory to store output information to, defaults to current directory.
     name : str, optional
-        The root name of the file to save to, will append the inversion start time to this value.
+        Root of the filename to be saved, commonly this will get iteration specific
+        details appended to it.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.directives._directives.SaveEveryIteration: on_disk, directory, name
 
     def __init__(self, on_disk=True, **kwargs):
         if (save_txt := kwargs.pop("save_txt", None)) is not None:
@@ -2100,12 +2114,16 @@ class SaveOutputDictEveryIteration(SaveEveryIteration):
     Parameters
     ----------
     on_disk : bool, optional
-        Whether to also save the parameters to an `npz` file at the end of each iteration.
+        Whether this directive will save a log file to disk.
     directory : pathlib.Path or str, optional
-        Directory to save inversion parameters to if `on_disk`, defaults to current directory.
+        The directory to store output information to, defaults to current directory.
     name : str, optional
-        Root name of the output file. The inversion start time and the iteration are appended to this.
+        Root of the filename to be saved, commonly this will get iteration specific
+        details appended to it.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.directives._directives.SaveEveryIteration: on_disk, directory, name
 
     # Initialize the output dict
     def __init__(self, on_disk=False, **kwargs):

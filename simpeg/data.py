@@ -334,19 +334,22 @@ class SyntheticData(Data):
     survey : simpeg.survey.BaseSurvey
         A SimPEG survey object. For each geophysical method, the survey object defines
         the survey geometry; i.e. sources, receivers, data type.
-    dobs : numpy.ndarray
+    dobs : (n) numpy.ndarray
         Observed data.
     dclean : (nD) numpy.ndarray
         Noiseless data.
-    relative_error : float or np.ndarray
+    relative_error : None or float or numpy.ndarray, optional
         Assign relative uncertainties to the data using relative error; sometimes
         referred to as percent uncertainties. For each datum, we assume the
         standard deviation of Gaussian noise is the relative error times the
         absolute value of the datum; i.e. :math:`C_{err} \times |d|`.
-    noise_floor : float or np.ndarray
+    noise_floor : None or float or numpy.ndarray, optional
         Assign floor/absolute uncertainties to the data. For each datum, we assume
         standard deviation of Gaussian noise is equal to *noise_floor*.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.data.Data: survey, dobs, relative_error, noise_floor
 
     def __init__(
         self, survey, dobs=None, dclean=None, relative_error=None, noise_floor=None

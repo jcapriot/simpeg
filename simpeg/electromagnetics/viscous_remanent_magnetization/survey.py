@@ -11,6 +11,7 @@ from ...utils import validate_list_of_types, validate_ndarray_with_shape
 ############################################
 
 
+# docerator: override=source_list
 class SurveyVRM(BaseSurvey):
     """Base VRM survey
 

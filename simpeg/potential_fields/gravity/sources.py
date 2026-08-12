@@ -1,13 +1,14 @@
 from ...survey import BaseSrc
 
 
+# docerator: override=receiver_list
 class SourceField(BaseSrc):
     """Source field for gravity integral formulation
 
     Parameters
     ----------
-    receivers_list : list of simpeg.potential_fields.receivers.Point
-        List of magnetics receivers
+    receiver_list : list of simpeg.potential_fields.gravity.receivers.Point
+        List of gravity receivers
     """
 
     def __init__(self, receiver_list=None, **kwargs):

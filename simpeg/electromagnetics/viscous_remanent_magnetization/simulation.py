@@ -23,7 +23,22 @@ from ...utils.code_utils import deprecate_property
 
 
 class BaseVRMSimulation(BaseSimulation):
-    """"""
+    """
+    Base class for viscous remanent magnetization (VRM) simulations.
+
+    Parameters
+    ----------
+    mesh : discretize.BaseMesh
+        3D Mesh on which the forward problem is discretized.
+    survey : simpeg.survey.BaseSurvey, optional
+        The survey for the simulation.
+    """
+
+    # docerator: provenance
+    # docerator: from simpeg.simulation.BaseSimulation: survey
+
+    # docerator: provenance
+    # docerator: from simpeg.simulation.BaseSimulation: survey
 
     _AisSet = False
 
@@ -811,7 +826,6 @@ class BaseVRMSimulation(BaseSimulation):
         return Acols
 
     def dpred(self, m=None, f=None):
-        """"""
         if f is None:
             f = self.fields(m)
 
@@ -824,7 +838,22 @@ class BaseVRMSimulation(BaseSimulation):
 
 
 class Simulation3DLinear(BaseVRMSimulation):
-    """"""
+    """
+
+    A 3D linear simulation of viscous remanent magnetization (VRM) in a
+    discretized volume.
+
+    Parameters
+    ----------
+    mesh : discretize.BaseMesh
+        3D Mesh on which the forward problem is discretized.
+    """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.simulation.BaseVRMSimulation: mesh
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.simulation.BaseVRMSimulation: mesh
 
     _A = None
     _T = None
@@ -917,7 +946,15 @@ class Simulation3DLinear(BaseVRMSimulation):
             return self._T
 
     def fields(self, m):
-        """Computes the fields d = T*A*m"""
+        """Computes the fields d = T*A*m
+
+        Parameters
+        ----------
+        m : (n_param,) numpy.ndarray
+            The model parameters.
+        """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m
 
         if self.survey is None:
             AssertionError("A survey must be set to generate A matrix")
@@ -931,7 +968,20 @@ class Simulation3DLinear(BaseVRMSimulation):
         return mkvc(sp.coo_matrix.dot(self.T, np.dot(self.A, m)))
 
     def Jvec(self, m, v, f=None):
-        """Compute Pd*T*A*dxidm*v"""
+        """Compute Pd*T*A*dxidm*v
+
+        Parameters
+        ----------
+        m : (n_param, ) numpy.ndarray
+            The model parameters.
+        v : (n_param, ) numpy.ndarray
+            Vector we are multiplying.
+        f : simpeg.field.Fields, optional
+            If provided, fields will not need to be recomputed for the
+            current model to compute `Jvec`.
+        """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m, v, f
 
         if self.survey is None:
             AssertionError("A survey must be set to generate A matrix")
@@ -952,7 +1002,20 @@ class Simulation3DLinear(BaseVRMSimulation):
         return mkvc(sp.csr_matrix.dot(T, v))
 
     def Jtvec(self, m, v, f=None):
-        """Compute (Pd*T*A*dxidm)^T * v"""
+        """Compute (Pd*T*A*dxidm)^T * v
+
+        Parameters
+        ----------
+        m : (n_param, ) numpy.ndarray
+            The model parameters.
+        v : (n_data, ) numpy.ndarray
+            Vector we are multiplying.
+        f : simpeg.field.Fields, optional
+            If provided, fields will not need to be recomputed for the
+            current model to compute `Jtvec`.
+        """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m, v, f
 
         if self.survey is None:
             AssertionError("A survey must be set to generate A matrix")
@@ -975,7 +1038,22 @@ class Simulation3DLinear(BaseVRMSimulation):
 
 
 class Simulation3DLogUniform(BaseVRMSimulation):
-    """"""
+    """
+    Parameters
+    ----------
+    mesh : discretize.BaseMesh
+        3D Mesh on which the forward problem is discretized.
+    survey : simpeg.survey.BaseSurvey, optional
+        The survey for the simulation.
+    """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.simulation.BaseVRMSimulation: mesh
+    # docerator: from simpeg.simulation.BaseSimulation: survey
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.simulation.BaseVRMSimulation: mesh
+    # docerator: from simpeg.simulation.BaseSimulation: survey
 
     _A = None
     _T = None
@@ -1024,7 +1102,15 @@ class Simulation3DLogUniform(BaseVRMSimulation):
             return self._A
 
     def fields(self, m=None):
-        """Computes the fields at every time d(t) = G*M(t)"""
+        """Computes the fields at every time d(t) = G*M(t)
+
+        Parameters
+        ----------
+        m : (n_param,) numpy.ndarray
+            The model parameters.
+        """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m
 
         if self.survey is None:
             AssertionError("A survey must be set to generate A matrix")

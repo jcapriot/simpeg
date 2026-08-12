@@ -13,7 +13,18 @@ __all__ = ["BaseEMSimulation", "BaseEMSrc"]
 
 
 class BaseEMSimulation(BaseElectricalPDESimulation, BaseMagneticPDESimulation):
-    """Base electromagnetic simulation class"""
+    """Base electromagnetic simulation class
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
+    storeInnerProduct : bool
+        Whether to cache inner product matrices.
+    """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
 
     def __init__(self, mesh, storeInnerProduct=True, **kwargs):
         super().__init__(mesh=mesh, **kwargs)
@@ -55,15 +66,18 @@ class BaseEMSrc(BaseSrc):
 
     Parameters
     ----------
-    location : (n_dim) numpy.ndarray
-        Location of the source
     receiver_list : list of simpeg.survey.BaseRx objects
         Sets the receivers associated with the source
-    uid : uuid.UUID
-        A universally unique identifier
+    location : (n_dim) array_like
+        Location of the source
     integrate : bool
         If ``True``, we integrate the source term
+    uid : uuid.UUID
+        A universally unique identifier
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseSrc: receiver_list, location
 
     def __init__(self, receiver_list=None, location=None, integrate=False, **kwargs):
         super(BaseEMSrc, self).__init__(

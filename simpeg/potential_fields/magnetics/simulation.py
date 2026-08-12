@@ -120,12 +120,8 @@ class Simulation3DIntegral(BasePFSimulation):
 
     Parameters
     ----------
-    mesh : discretize.TreeMesh or discretize.TensorMesh
-        Mesh use to run the magnetic simulation.
-    survey : simpeg.potential_fields.magnetics.Survey
-        Magnetic survey with information of the receivers.
-    active_cells : (n_cells) numpy.ndarray, optional
-        Array that indicates which cells in ``mesh`` are active cells.
+    mesh : discretize.TensorMesh or discretize.TreeMesh
+        A 3D tensor or tree mesh.
     chi : numpy.ndarray, optional
         Susceptibility array for the active cells in the mesh.
     chiMap : Mapping, optional
@@ -136,26 +132,36 @@ class Simulation3DIntegral(BasePFSimulation):
     is_amplitude_data : bool, optional
         If True, the returned fields will be the amplitude of the magnetic
         field. If False, the fields will be returned unmodified.
-    sensitivity_dtype : numpy.dtype, optional
-        Data type that will be used to build the sensitivity matrix.
-    store_sensitivities : {"ram", "disk", "forward_only"}
-        Options for storing sensitivity matrix. There are 3 options
-
-        - 'ram': sensitivities are stored in the computer's RAM
-        - 'disk': sensitivities are written to a directory
-        - 'forward_only': you intend only do perform a forward simulation and
-          sensitivities do not need to be stored
-
-    sensitivity_path : str, optional
-        Path to store the sensitivity matrix if ``store_sensitivities`` is set
-        to ``"disk"``. Default to "./sensitivities".
     engine : {"geoana", "choclo"}, optional
        Choose which engine should be used to run the forward model.
     numba_parallel : bool, optional
         If True, the simulation will run in parallel. If False, it will
         run in serial. If ``engine`` is not ``"choclo"`` this argument will be
         ignored.
+    survey : simpeg.survey.BaseSurvey, optional
+        The survey for the simulation.
+    active_cells : np.ndarray of int or bool
+        Indices array denoting the active topography cells.
+    sensitivity_dtype : numpy.dtype, optional
+        Data type that will be used to build the sensitivity matrix.
+    store_sensitivities : {'ram', 'disk', 'forward_only'}
+        Options for storing sensitivities. There are 3 options
+
+        - 'ram': sensitivities are stored in the computer's RAM
+        - 'disk': sensitivities are written to a directory
+        - 'forward_only': you intend only do perform a forward simulation and sensitivities do not need to be stored
+
+    sensitivity_path : str, optional
+        Path to directory where sensitivity file is stored.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.potential_fields.base.BasePFSimulation: mesh, engine, numba_parallel, active_cells, store_sensitivities
+    # docerator: from simpeg.simulation.BaseSimulation: survey, sensitivity_path
+
+    # docerator: provenance
+    # docerator: from simpeg.potential_fields.base.BasePFSimulation: mesh, engine, numba_parallel, active_cells, store_sensitivities
+    # docerator: from simpeg.simulation.BaseSimulation: survey, sensitivity_path
 
     chi, chiMap, chiDeriv = props.Invertible("Magnetic Susceptibility (SI)")
 
@@ -303,10 +309,11 @@ class Simulation3DIntegral(BasePFSimulation):
 
         Parameters
         ----------
-        m : (n_param,) numpy.ndarray
-            The model parameters.
-        f : Ignored
-            Not used, present here for API consistency by convention.
+        m : numpy.ndarray
+            The model vector.
+        f : None
+            Precomputed fields are not used to speed up the computation of the
+            Jacobian for linear problems.
 
         Returns
         -------
@@ -326,6 +333,8 @@ class Simulation3DIntegral(BasePFSimulation):
         operations like ``J @ m`` or ``J.T @ v`` without allocating the full
         ``J`` matrix in memory.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.LinearSimulation: m, f
         if self.is_amplitude_data:
             msg = (
                 "The `getJ` method is not yet implemented to work with "
@@ -462,13 +471,13 @@ class Simulation3DIntegral(BasePFSimulation):
 
         Parameters
         ----------
-        m : (n_param,) numpy.ndarray
-            The model parameters. This array is used to compute the ``J``
-            matrix.
-        v : (n_param,) numpy.ndarray
-            Vector used in the matrix-vector multiplication.
-        f : Ignored
-            Not used, present here for API consistency by convention.
+        m : (n_param, ) numpy.ndarray
+            The model parameters.
+        v : (n_param, ) numpy.ndarray
+            Vector we are multiplying.
+        f : simpeg.field.Fields, optional
+            If provided, fields will not need to be recomputed for the
+            current model to compute `Jvec`.
 
         Returns
         -------
@@ -482,6 +491,8 @@ class Simulation3DIntegral(BasePFSimulation):
         the full matrix ``G`` is constructed and stored either in memory or
         disk.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m, v, f
         # Need to assign the model, so the chiDeriv can be computed (if the
         # model is None, the chiDeriv is going to be Zero).
         self.model = m
@@ -502,13 +513,13 @@ class Simulation3DIntegral(BasePFSimulation):
 
         Parameters
         ----------
-        m : (n_param,) numpy.ndarray
-            The model parameters. This array is used to compute the ``J``
-            matrix.
-        v : (nD,) numpy.ndarray
-            Vector used in the matrix-vector multiplication.
-        f : Ignored
-            Not used, present here for API consistency by convention.
+        m : (n_param, ) numpy.ndarray
+            The model parameters.
+        v : (n_data, ) numpy.ndarray
+            Vector we are multiplying.
+        f : simpeg.field.Fields, optional
+            If provided, fields will not need to be recomputed for the
+            current model to compute `Jtvec`.
 
         Returns
         -------
@@ -522,6 +533,8 @@ class Simulation3DIntegral(BasePFSimulation):
         the full matrix ``G`` is constructed and stored either in memory or
         disk.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m, v, f
         # Need to assign the model, so the chiDeriv can be computed (if the
         # model is None, the chiDeriv is going to be Zero).
         self.model = m
@@ -1145,7 +1158,7 @@ class Simulation3DIntegral(BasePFSimulation):
         Compute the diagonal of ``G.T @ G`` without building the ``G`` matrix.
 
         Parameters
-        -----------
+        ----------
         weights : (nD,) array
             Array with data weights. It should be the diagonal of the ``W``
             matrix, squared.
@@ -1243,19 +1256,27 @@ class SimulationEquivalentSourceLayer(
     mesh : discretize.BaseMesh
         A 2D tensor or tree mesh defining discretization along the x and y directions
     cell_z_top : numpy.ndarray or float
-        Define the elevations for the top face of all cells in the layer.
-        If an array it should be the same size as the active cell set.
+        Define the elevations for the top face of all cells in the layer. If an array,
+        it should be the same size as the active cell set.
     cell_z_bottom : numpy.ndarray or float
-        Define the elevations for the bottom face of all cells in the layer.
-        If an array it should be the same size as the active cell set.
+        Define the elevations for the bottom face of all cells in the layer. If an array,
+        it should be the same size as the active cell set.
     engine : {"geoana", "choclo"}, optional
-        Choose which engine should be used to run the forward model.
+       Choose which engine should be used to run the forward model.
     numba_parallel : bool, optional
         If True, the simulation will run in parallel. If False, it will
         run in serial. If ``engine`` is not ``"choclo"`` this argument will be
         ignored.
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.potential_fields.base.BaseEquivalentSourceLayerSimulation: mesh, cell_z_top, cell_z_bottom
+    # docerator: from simpeg.potential_fields.base.BasePFSimulation: engine, numba_parallel
+
+    # docerator: provenance
+    # docerator: from simpeg.potential_fields.base.BaseEquivalentSourceLayerSimulation: mesh, cell_z_top, cell_z_bottom
+    # docerator: from simpeg.potential_fields.base.BasePFSimulation: engine, numba_parallel
 
     def __init__(
         self,
@@ -1565,7 +1586,7 @@ class SimulationEquivalentSourceLayer(
         Compute the diagonal of ``G.T @ G`` without building the ``G`` matrix.
 
         Parameters
-        -----------
+        ----------
         weights : (nD,) array
             Array with data weights. It should be the diagonal of the ``W``
             matrix, squared.
@@ -1653,12 +1674,14 @@ class SimulationEquivalentSourceLayer(
         return diagonal
 
 
+# docerator: override=survey
 class Simulation3DDifferential(BaseMagneticPDESimulation):
     r"""A secondary field simulation for magnetic data.
 
     Parameters
     ----------
     mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
     survey : magnetics.survey.Survey
     mu : float, array_like
         Magnetic Permeability Model (H/ m). Set this for forward
@@ -1698,6 +1721,12 @@ class Simulation3DDifferential(BaseMagneticPDESimulation):
     where :math:`\mathbf{M_r}` is a fixed magnetization unaffected by the inducing field
     and :math:`\mu\mathbf{H}` is the induced magnetization.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
 
     _Ainv = None
 

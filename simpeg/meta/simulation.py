@@ -198,8 +198,8 @@ class MetaSimulation(BaseSimulation):
 
         Parameters
         ----------
-        m : array_like
-            The full model vector.
+        m : (n_param,) numpy.ndarray
+            The model parameters.
 
         Returns
         -------
@@ -207,6 +207,8 @@ class MetaSimulation(BaseSimulation):
             The type of each item of the list is determined by the internal
             simulation that created it.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m
         self.model = m
         # The above should pass the model to all the internal simulations.
         f = []
@@ -341,8 +343,19 @@ class SumMetaSimulation(MetaSimulation):
     Parameters
     ----------
     simulations : (n_sim) list of simpeg.simulation.BaseSimulation
+        The list of unique simulations that each handle a piece
+        of the problem.
     mappings : (n_sim) list of simpeg.maps.IdentityMap
+        The map for every simulation. Every map should accept the
+        same length model, and output a model appropriate for its
+        paired simulation.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.meta.simulation.MetaSimulation: simulations, mappings
+
+    # docerator: provenance
+    # docerator: from simpeg.meta.simulation.MetaSimulation: simulations, mappings
 
     _repeat_sim = False
 
@@ -435,8 +448,16 @@ class RepeatedSimulation(MetaSimulation):
     simulation : simpeg.simulation.BaseSimulation
         The simulation to use repeatedly with different mappings.
     mappings : (n_sim) list of simpeg.maps.IdentityMap
-        The list of different mappings to use.
+        The map for every simulation. Every map should accept the
+        same length model, and output a model appropriate for its
+        paired simulation.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.meta.simulation.MetaSimulation: mappings
+
+    # docerator: provenance
+    # docerator: from simpeg.meta.simulation.MetaSimulation: mappings
 
     _repeat_sim = True
 

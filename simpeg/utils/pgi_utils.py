@@ -490,8 +490,8 @@ class WeightedGaussianMixture(GaussianMixture if sklearn else object):
         Parameters
         ----------
         X : array-like, shape (n_samples, n_features)
-        means : array-like, shape (n_components, n_features)
         sensW: array-like, Sensitvity or Depth Weighting, shape(n_samples, n_features)
+        means : array-like, shape (n_components, n_features)
         precisions_chol : array-like,
             Cholesky decompositions of the precision matrices.
             'full' : shape of (n_components, n_features, n_features)
@@ -1303,9 +1303,17 @@ class GaussianMixtureWithNonlinearRelationships(WeightedGaussianMixture):
 
     Parameters
     ----------
+    mesh : discretize.base.BaseMesh
+        :class:`discretize.TensorMesh` or :class:`discretize.TreeMesh` mesh. The volume
+        of the cells give each sample/observations its weight in the fitting process.
+    n_components : int
+        Number of components
     cluster_mapping : (n_components) list
         List of mapping describing a nonlinear relationships between physical properties; one per cluster/unit.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.utils.pgi_utils.WeightedGaussianMixture: mesh, n_components
 
     @requires({"sklearn": sklearn})
     def __init__(
@@ -1468,7 +1476,20 @@ class GaussianMixtureWithNonlinearRelationships(WeightedGaussianMixture):
     ):
         """
         [modified from Scikit-Learn.mixture.gaussian_mixture]
+
+        Parameters
+        ----------
+        X : array-like, shape (n_samples, n_features)
+            The input data array.
+        resp : array-like, shape (n_samples, n_components)
+            The responsibilities for each data sample in X.
+        reg_covar : float
+            The regularization added to the diagonal of the covariance matrices.
+        covariance_type : {'full', 'tied', 'diag', 'spherical'}
+            The type of precision matrices.
         """
+        # docerator: provenance
+        # docerator: from simpeg.utils.pgi_utils.WeightedGaussianMixture: X, resp, reg_covar, covariance_type
         self._warn_xp_not_numpy(xp)
 
         respVol = self.cell_volumes.reshape(-1, 1) * resp
@@ -1580,6 +1601,8 @@ class GaussianMixtureWithNonlinearRelationships(WeightedGaussianMixture):
             Logarithm of the posterior probabilities (or responsibilities) of
             the point of each sample in X.
         """
+        # docerator: provenance
+        # docerator: from simpeg.utils.pgi_utils.WeightedGaussianMixture: X, log_resp
         self._warn_xp_not_numpy(xp)
 
         n_samples, _ = X.shape
@@ -1630,10 +1653,33 @@ class GaussianMixtureWithNonlinearRelationshipsWithPrior(GaussianMixtureWithPrio
 
     Parameters
     ----------
+    kappa : array
+        Strength of the confidence in the prior means
+    nu : array
+        Strength of the confidence in the prior covariances
+    zeta : array
+        Strength of the confidence in the prior proportions
+    prior_type : str
+        Choose from one of the following:
+        - "semi": semi-conjugate prior, the means and covariances priors are independent
+        - "full": conjugate prior, the means and covariances priors are inter-dependent
     cluster_mapping : (n_components) list
         List of mapping describing a nonlinear relationships between physical
         properties; one per cluster/unit.
+    update_covariances : bool
+        Choose from two options:
+        - ``True``: semi or conjugate prior by averaging the covariances
+        - ``False``: alternative (not conjugate) prior: average the precisions instead
+    fixed_membership : array of int, optional
+        A 2D :class:`numpy.ndarray` to fix the membership to a chosen lithology of
+        particular cells.
+        The first column contains the numeric index of the cells, the second column the
+        respective lithology index.
+        Shape is ``(index of the fixed cell, lithology index)``.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.utils.pgi_utils.GaussianMixtureWithPrior: kappa, nu, zeta, prior_type, update_covariances, fixed_membership
 
     @requires({"sklearn": sklearn})
     def __init__(
@@ -1733,6 +1779,7 @@ class GaussianMixtureWithNonlinearRelationshipsWithPrior(GaussianMixtureWithPrio
         """
         [modified from Scikit-Learn.mixture.gaussian_mixture]
         Estimate the log Gaussian probability.
+
         Parameters
         ----------
         X : array-like, shape (n_samples, n_features)
@@ -1745,6 +1792,7 @@ class GaussianMixtureWithNonlinearRelationshipsWithPrior(GaussianMixtureWithPrio
             'spherical' : shape of (n_components,)
         covariance_type : {'full', 'tied', 'diag', 'spherical'}
         cluster_mapping: list of mapping of length (n_components,)
+
         Returns
         -------
         log_prob : array, shape (n_samples, n_components)
@@ -1795,7 +1843,20 @@ class GaussianMixtureWithNonlinearRelationshipsWithPrior(GaussianMixtureWithPrio
     def _estimate_gaussian_parameters(self, X, resp, reg_covar, covariance_type):
         """
         [modified from Scikit-Learn.mixture.gaussian_mixture]
+
+        Parameters
+        ----------
+        X : array-like, shape (n_samples, n_features)
+            The input data array.
+        resp : array-like, shape (n_samples, n_components)
+            The responsibilities for each data sample in X.
+        reg_covar : float
+            The regularization added to the diagonal of the covariance matrices.
+        covariance_type : {'full', 'tied', 'diag', 'spherical'}
+            The type of precision matrices.
         """
+        # docerator: provenance
+        # docerator: from simpeg.utils.pgi_utils.WeightedGaussianMixture: X, resp, reg_covar, covariance_type
         respVol = self.cell_volumes.reshape(-1, 1) * resp
         nk = respVol.sum(axis=0) + 10 * np.finfo(resp.dtype).eps
         # stupid lazy piece of junk code to get the shapes right
@@ -1835,6 +1896,8 @@ class GaussianMixtureWithNonlinearRelationshipsWithPrior(GaussianMixtureWithPrio
             Logarithm of the posterior probabilities (or responsibilities) of
             the point of each sample in X.
         """
+        # docerator: provenance
+        # docerator: from simpeg.utils.pgi_utils.WeightedGaussianMixture: X, log_resp
         self._warn_xp_not_numpy(xp)
 
         n_samples, _ = X.shape

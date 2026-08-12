@@ -25,7 +25,20 @@ class PolynomialPetroClusterMap(IdentityMap):
         Coefficients for the yx component. Default is [0]
     coeffyy : array_like, optional
         Coefficients for the yy component. Default is [0, 1]
+    mesh : discretize.BaseMesh
+        The number of parameters accepted by the mapping is set to equal the number
+        of mesh cells.
+    nP : int, or '*'
+        Set the number of parameters accepted by the mapping directly. Used if the
+        number of parameters is known. Used generally when the number of parameters
+        is not equal to the number of cells in a mesh.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
     def __init__(
         self,
@@ -139,7 +152,6 @@ class PolynomialPetroClusterMap(IdentityMap):
         ]
 
     def deriv(self, m, v=None):
-        """"""
         if v is None:
             out = self._derivmatrix(m.reshape(-1, 2))
             return out

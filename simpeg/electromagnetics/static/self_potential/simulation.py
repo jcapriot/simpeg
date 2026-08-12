@@ -13,7 +13,9 @@ class Simulation3DCellCentered(dc.Simulation3DCellCentered):
     Parameters
     ----------
     mesh : discretize.base.BaseMesh
-    survey : simpeg.electromagnetics.static.self_potential.Survey
+        Mesh on which the forward problem is discretized.
+    survey : .resistivity.survey.Survey
+        The resistivity survey for the simulation.
     sigma, rho : float or array_like
         The conductivity/resistivity model of the subsurface.
     q : float, array_like, optional
@@ -42,6 +44,14 @@ class Simulation3DCellCentered(dc.Simulation3DCellCentered):
     boundaries, and a zero Nuemann boundary at the top. For more details on the
     boundary conditions, check out the resistivity simulations.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.static.resistivity.simulation.BaseDCSimulation: survey
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.static.resistivity.simulation.BaseDCSimulation: survey
 
     q, qMap, qDeriv = props.Invertible("Charge density accumulation rate (C/(s m^3))")
 
@@ -92,7 +102,9 @@ class CurrentDensityMap(maps.LinearMap):
 
     Parameters
     ----------
-    mesh : discretize.base.BaseMesh
+    mesh : discretize.BaseMesh
+        The number of parameters accepted by the mapping is set to equal the number
+        of mesh cells.
     active_cells : index_array, optional
         Defaults to all cells being active. This is used to apply a
         0 Nuemann boundary condition at topographic faces.
@@ -107,6 +119,12 @@ class CurrentDensityMap(maps.LinearMap):
 
         q = -\nabla \cdot \vec{j}_s
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh
 
     def __init__(self, mesh, active_cells=None):
         cv_to_f = mesh.average_cell_vector_to_face
@@ -134,7 +152,9 @@ class HydraulicHeadMap(maps.LinearMap):
 
     Parameters
     ----------
-    mesh : discretize.base.BaseMesh
+    mesh : discretize.BaseMesh
+        The number of parameters accepted by the mapping is set to equal the number
+        of mesh cells.
     L : float or (mesh.n_cells,) array_like
         Cross coupling property model (`A/m^2`).
 
@@ -153,6 +173,12 @@ class HydraulicHeadMap(maps.LinearMap):
 
         q = \nabla \cdot L \nabla h
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._base.IdentityMap: mesh
 
     def __init__(self, mesh, L):
         div = mesh.face_divergence

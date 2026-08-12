@@ -13,22 +13,33 @@ from .utils.plot_utils import DataNSEMPlotMethods
 #########
 
 
+# docerator: override=survey
 class Data(BaseData, DataNSEMPlotMethods):
-    """Data class for NSEMdata.
+    r"""Data class for NSEMdata.
 
     Stores the data vector indexed by the survey.
 
     Parameters
     ----------
-    survey : simpeg.survey.Survey
-        Natural source EM survey
-    dobs : numpy.ndarray
-        Observed data
-    relative_error : numpy.ndarray, optional
-        Relative error
-    noise_floor : numpy.ndarray, optional
-        Noise floor
+    survey : simpeg.electromagnetics.frequency_domain.survey.Survey
+        A SimPEG NSEM survey object.
+    dobs : (n) numpy.ndarray
+        Observed data.
+    relative_error : None or float or numpy.ndarray, optional
+        Assign relative uncertainties to the data using relative error; sometimes
+        referred to as percent uncertainties. For each datum, we assume the
+        standard deviation of Gaussian noise is the relative error times the
+        absolute value of the datum; i.e. :math:`C_{err} \times |d|`.
+    noise_floor : None or float or numpy.ndarray, optional
+        Assign floor/absolute uncertainties to the data. For each datum, we assume
+        standard deviation of Gaussian noise is equal to *noise_floor*.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.data.Data: dobs, relative_error, noise_floor
+
+    # docerator: provenance
+    # docerator: from simpeg.data.Data: dobs, relative_error, noise_floor
 
     def __init__(self, survey, dobs=None, relative_error=None, noise_floor=None):
         BaseData.__init__(self, survey, dobs, relative_error, noise_floor)

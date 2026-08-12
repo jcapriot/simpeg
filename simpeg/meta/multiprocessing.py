@@ -225,6 +225,12 @@ class MultiprocessingMetaSimulation(MetaSimulation):
     >>> mp.set_start_method("spawn")
     """
 
+    # docerator: provenance
+    # docerator: from simpeg.meta.simulation.MetaSimulation: simulations, mappings
+
+    # docerator: provenance
+    # docerator: from simpeg.meta.simulation.MetaSimulation: simulations, mappings
+
     def __init__(self, simulations, mappings, n_processes=None):
         super().__init__(simulations, mappings)
 
@@ -273,14 +279,16 @@ class MultiprocessingMetaSimulation(MetaSimulation):
 
         Parameters
         ----------
-        m : array_like
-            The full model vector.
+        m : (n_param,) numpy.ndarray
+            The model parameters.
 
         Returns
         -------
         (n_sim) list of SimpleFuture
             The list of references to the fields stored on the separate processes.
         """
+        # docerator: provenance
+        # docerator: from simpeg.simulation.BaseSimulation: m
         self.model = m
         # The above should pass the model to all the internal simulations.
         f = []
@@ -439,12 +447,22 @@ class MultiprocessingRepeatedSimulation(
     simulation : simpeg.simulation.BaseSimulation
         The simulation to use repeatedly with different mappings.
     mappings : (n_sim) list of simpeg.maps.IdentityMap
-        The list of different mappings to use.
+        The map for every simulation. Every map should accept the
+        same length model, and output a model appropriate for its
+        paired simulation.
     n_processes : optional
         The number of processes to spawn internally. This will default
         to `multiprocessing.cpu_count()`. The number of processes spawned
         will be the minimum of this number and the number of simulations.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.meta.simulation.MetaSimulation: mappings
+    # docerator: from simpeg.meta.multiprocessing.MultiprocessingMetaSimulation: n_processes
+
+    # docerator: provenance
+    # docerator: from simpeg.meta.simulation.MetaSimulation: mappings
+    # docerator: from simpeg.meta.multiprocessing.MultiprocessingMetaSimulation: n_processes
 
     def __init__(self, simulation, mappings, n_processes=None):
         # do this to call the initializer of the Repeated Sim

@@ -10,6 +10,7 @@ from . import sources as Src
 from ..utils import static_utils
 
 
+# docerator: override=source_list
 class Survey(BaseSurvey):
     """DC/IP survey class.
 
@@ -258,6 +259,13 @@ class Survey(BaseSurvey):
         shift_horizontal : bool, optional
             When True, locations are shifted horizontally to lie vertically over cell
             centers. When False, the original horizontal locations are preserved.
+        option : {"top", "center"}
+            Define topography at tops of cells or cell centers.
+
+            .. deprecated:: 0.25.0
+
+               Argument ``option`` is deprecated in favor of ``topo_cell_cutoff``
+               and will be removed in SimPEG v0.27.0.
         topography : (n, dim) numpy.ndarray, default = ``None``
             Surface topography
 
@@ -273,14 +281,6 @@ class Survey(BaseSurvey):
 
                 The ``force`` argument is not used in this function. It will be removed
                 in SimPEG v0.27.0.
-        option : {"top", "center"}
-            Define topography at tops of cells or cell centers.
-
-            .. deprecated:: 0.25.0
-
-               Argument ``option`` is deprecated in favor of ``topo_cell_cutoff``
-               and will be removed in SimPEG v0.27.0.
-
         See also
         --------
         :func:`simpeg.utils.shift_to_discrete_topography`
