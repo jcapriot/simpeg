@@ -802,6 +802,8 @@ class SimulationEquivalentSourceLayer(
         (nD,) numpy.ndarray
             Always return a ``np.float64`` array.
         """
+        # docerator: provenance
+        # docerator: from simpeg.potential_fields.gravity.simulation.Simulation3DIntegral: densities
         # Get Numba function
         forward_func = NUMBA_FUNCTIONS_2D["forward"][self.numba_parallel]
         # Get cells in the 2D mesh and keep only active cells
@@ -892,6 +894,8 @@ class SimulationEquivalentSourceLayer(
         -------
         (n_active_cells) numpy.ndarray
         """
+        # docerator: provenance
+        # docerator: from simpeg.potential_fields.gravity.simulation.Simulation3DIntegral: vector
         # Get Numba function
         g_t_dot_v_func = NUMBA_FUNCTIONS_2D["gt_dot_v"][self.numba_parallel]
         # Get cells in the 2D mesh and keep only active cells
@@ -936,6 +940,8 @@ class SimulationEquivalentSourceLayer(
         -------
         (n_active_cells) numpy.ndarray
         """
+        # docerator: provenance
+        # docerator: from simpeg.potential_fields.gravity.simulation.Simulation3DIntegral: weights
         # Get Numba function
         diagonal_gtg_func = NUMBA_FUNCTIONS_2D["diagonal_gtg"][self.numba_parallel]
         # Get cells in the 2D mesh and keep only active cells

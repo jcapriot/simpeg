@@ -45,12 +45,15 @@ class BaseTDEMSimulation(BaseTimeSimulation, BaseEMSimulation):
     Parameters
     ----------
     mesh : discretize.base.BaseMesh
-        The mesh.
+        Mesh on which the forward problem is discretized.
     survey : .time_domain.survey.Survey
         The time-domain EM survey.
     dt_threshold : float
         Threshold used when determining the unique time-step lengths.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
 
     def __init__(self, mesh, survey=None, dt_threshold=1e-8, **kwargs):
         super().__init__(mesh=mesh, survey=survey, **kwargs)

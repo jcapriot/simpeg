@@ -1317,6 +1317,8 @@ class SimulationEquivalentSourceLayer(
         (nD, ) array
             Always return a ``np.float64`` array.
         """
+        # docerator: provenance
+        # docerator: from simpeg.potential_fields.magnetics.simulation.Simulation3DIntegral: model
         # Get cells in the 2D mesh and keep only active cells
         cells_bounds_active = self.mesh.cell_bounds[self.active_cells]
         # Get regional field
@@ -1502,6 +1504,8 @@ class SimulationEquivalentSourceLayer(
         -------
         (n_active_cells) or (3 * n_active_cells) numpy.ndarray
         """
+        # docerator: provenance
+        # docerator: from simpeg.potential_fields.magnetics.simulation.Simulation3DIntegral: vector
         # Get regional field
         regional_field = self.survey.source_field.b0
         # Get cells in the 2D mesh and keep only active cells
@@ -1595,6 +1599,8 @@ class SimulationEquivalentSourceLayer(
         -------
         (n_active_cells) numpy.ndarray
         """
+        # docerator: provenance
+        # docerator: from simpeg.potential_fields.magnetics.simulation.Simulation3DIntegral: weights
         # Get regional field
         regional_field = self.survey.source_field.b0
         # Get cells in the 2D mesh and keep only active cells

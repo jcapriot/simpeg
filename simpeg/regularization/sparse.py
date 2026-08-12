@@ -424,8 +424,8 @@ class SparseSmoothness(BaseSparse, SmoothnessFirstOrder):
     mesh : simpeg.regularization.RegularizationMesh, discretize.base.BaseMesh
         Mesh on which the regularization is discretized. This is not necessarily
         the same as the mesh on which the simulation is defined.
-    orientation : {'x','y','z'}
-        The direction along which sparse smoothness is applied.
+    orientation : {'x', 'y', 'z'}
+        The direction along which smoothness is enforced.
     gradient_type : {"total", "component"}
         Gradient measure used in the IRLS re-weighting. Whether to re-weight using the total
         gradient or components of the gradient.
@@ -447,7 +447,7 @@ class SparseSmoothness(BaseSparse, SmoothnessFirstOrder):
         Reference model. If ``None``, the reference model in the inversion is set to
         the starting model.
     reference_model_in_smooth : bool, optional
-        Whether to include the reference model in the smoothness terms.
+        Whether to include the reference model in the smoothness regularization.
     units : None, str
         Units for the model parameters. Some regularization classes behave
         differently depending on the units; e.g. 'radian'.
@@ -584,6 +584,7 @@ class SparseSmoothness(BaseSparse, SmoothnessFirstOrder):
 
     # docerator: provenance
     # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units
+    # docerator: from simpeg.regularization.base.SmoothnessFirstOrder: orientation, reference_model_in_smooth
     # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
     # docerator: from simpeg.regularization.sparse.BaseSparse: irls_scaled, irls_threshold
 

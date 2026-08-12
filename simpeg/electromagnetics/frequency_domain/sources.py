@@ -380,7 +380,7 @@ class RawVec(RawVec_e, RawVec_m):
         A list of FDEM receivers
     frequency : float
         Source frequency
-    s_m: numpy.ndarray
+    s_m : numpy.ndarray
         Magnetic source term
     s_e : numpy.ndarray
         Electric source term
@@ -390,6 +390,7 @@ class RawVec(RawVec_e, RawVec_m):
 
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.RawVec_m: s_m
     # docerator: from simpeg.electromagnetics.frequency_domain.sources.RawVec_e: s_e
     # docerator: from simpeg.electromagnetics.base.BaseEMSrc: integrate
 

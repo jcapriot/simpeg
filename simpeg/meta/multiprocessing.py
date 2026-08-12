@@ -457,6 +457,7 @@ class MultiprocessingRepeatedSimulation(
     """
 
     # docerator: provenance
+    # docerator: from simpeg.meta.simulation.RepeatedSimulation: simulation
     # docerator: from simpeg.meta.simulation.MetaSimulation: mappings
     # docerator: from simpeg.meta.multiprocessing.MultiprocessingMetaSimulation: n_processes
 

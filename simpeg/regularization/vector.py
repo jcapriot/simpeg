@@ -672,6 +672,8 @@ class AmplitudeSmallness(SparseSmallness, BaseAmplitude):
             The regularization kernel function evaluated at the model provided.
 
         """
+        # docerator: provenance
+        # docerator: from simpeg.regularization.base.Smallness: m
 
         return self.amplitude(m)
 
@@ -942,6 +944,8 @@ class AmplitudeSmoothnessFirstOrder(SparseSmoothness, BaseAmplitude):
         numpy.ndarray
             The regularization kernel function evaluated for the model provided.
         """
+        # docerator: provenance
+        # docerator: from simpeg.regularization.base.SmoothnessFirstOrder: m
         fm = self.cell_gradient * (self.mapping * self._delta_m(m)).reshape(
             (self.regularization_mesh.nC, self.n_comp), order="F"
         )
@@ -971,6 +975,8 @@ class AmplitudeSmoothnessFirstOrder(SparseSmoothness, BaseAmplitude):
         scipy.sparse.csr_matrix
             The derivative of the regularization kernel function.
         """
+        # docerator: provenance
+        # docerator: from simpeg.regularization.base.SmoothnessFirstOrder: m
         return sp.block_diag([self.cell_gradient] * self.n_comp) @ self.mapping.deriv(
             self._delta_m(m)
         )

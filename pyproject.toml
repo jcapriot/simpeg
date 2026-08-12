@@ -259,6 +259,7 @@ xfail_strict = true
 
 [tool.docerator]
 provenance = "comment"
+merge_shared_parameters = true
 
 [tool.docerator.rules]
 DOC001 = "off"
