@@ -587,7 +587,7 @@ class BaseSurvey:
         KeyError
             If the given ``source`` or ``receiver`` do not belong to this survey.
 
-        See also
+        See Also
         --------
         .get_all_slices
         """
@@ -632,7 +632,7 @@ class BaseSurvey:
             a single receiver, and the values are the corresponding slice for
             each one of them.
 
-        See also
+        See Also
         --------
         .get_slice
         """

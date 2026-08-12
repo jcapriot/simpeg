@@ -44,9 +44,6 @@ class Simulation1DRecursive(BaseSimulation):
     # docerator: provenance
     # docerator: from simpeg.simulation.BaseSimulation: survey
 
-    # docerator: provenance
-    # docerator: from simpeg.simulation.BaseSimulation: survey
-
     sigma, sigmaMap, sigmaDeriv = props.Invertible("Electrical conductivity (S/m)")
     rho, rhoMap, rhoDeriv = props.Invertible("Electrical resistivity (Ohm m)")
     props.Reciprocal(sigma, rho)

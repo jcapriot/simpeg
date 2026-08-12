@@ -42,9 +42,6 @@ class BaseRegularization(BaseObjectiveFunction):
     # docerator: provenance
     # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
 
-    # docerator: provenance
-    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
-
     _model = None
     _parent = None
     _W = None
@@ -624,10 +621,6 @@ class Smallness(BaseRegularization):
     # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units, weights
     # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
 
-    # docerator: provenance
-    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units, weights
-    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
-
     _multiplier_pair = "alpha_s"
 
     def __init__(self, mesh, **kwargs):
@@ -952,10 +945,6 @@ class SmoothnessFirstOrder(BaseRegularization):
     >>> reg.get_weights('volume')
 
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units
-    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
 
     # docerator: provenance
     # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units
@@ -1750,9 +1739,6 @@ class WeightedLeastSquares(ComboObjectiveFunction):
     # docerator: provenance
     # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
 
-    # docerator: provenance
-    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
-
     _model = None
 
     def __init__(
@@ -2422,9 +2408,6 @@ class BaseSimilarityMeasure(BaseRegularization):
         Wire map connecting physical properties defined on active cells of the
         :class:`RegularizationMesh` to the entire model.
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.regularization.base.BaseRegularization: mesh
 
     # docerator: provenance
     # docerator: from simpeg.regularization.base.BaseRegularization: mesh

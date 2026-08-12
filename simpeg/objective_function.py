@@ -600,9 +600,6 @@ class L2ObjectiveFunction(BaseObjectiveFunction):
     # docerator: provenance
     # docerator: from simpeg.objective_function.BaseObjectiveFunction: nP, mapping, has_fields, counter, debug
 
-    # docerator: provenance
-    # docerator: from simpeg.objective_function.BaseObjectiveFunction: nP, mapping, has_fields, counter, debug
-
     def __init__(
         self,
         nP=None,

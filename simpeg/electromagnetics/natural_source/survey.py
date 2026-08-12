@@ -38,9 +38,6 @@ class Data(BaseData, DataNSEMPlotMethods):
     # docerator: provenance
     # docerator: from simpeg.data.Data: dobs, relative_error, noise_floor
 
-    # docerator: provenance
-    # docerator: from simpeg.data.Data: dobs, relative_error, noise_floor
-
     def __init__(self, survey, dobs=None, relative_error=None, noise_floor=None):
         BaseData.__init__(self, survey, dobs, relative_error, noise_floor)
 

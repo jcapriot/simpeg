@@ -281,7 +281,8 @@ class Survey(BaseSurvey):
 
                 The ``force`` argument is not used in this function. It will be removed
                 in SimPEG v0.27.0.
-        See also
+
+        See Also
         --------
         :func:`simpeg.utils.shift_to_discrete_topography`
         """

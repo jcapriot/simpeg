@@ -347,6 +347,7 @@ class Fields:
         return self._fields.__contains__(other)
 
 
+# docerator: override=simulation
 class TimeFields(Fields):
     r"""Base class for storing TDEM fields.
 

@@ -44,9 +44,6 @@ class ExpMap(IdentityMap):
     # docerator: provenance
     # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
-    # docerator: provenance
-    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
-
     def __init__(self, mesh=None, nP=None, **kwargs):
         super().__init__(mesh=mesh, nP=nP, **kwargs)
 
@@ -145,9 +142,6 @@ class ReciprocalMap(IdentityMap):
     # docerator: provenance
     # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
-    # docerator: provenance
-    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
-
     def __init__(self, mesh=None, nP=None, **kwargs):
         super().__init__(mesh=mesh, nP=nP, **kwargs)
 
@@ -241,9 +235,6 @@ class LogMap(IdentityMap):
         number of parameters is known. Used generally when the number of parameters
         is not equal to the number of cells in a mesh.
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
     # docerator: provenance
     # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
@@ -357,9 +348,6 @@ class LogisticSigmoidMap(IdentityMap):
         upper bound (b) for the transform. Default 1. Defined \in \mathbf{u} space.
 
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
     # docerator: provenance
     # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
@@ -518,9 +506,6 @@ class ChiMap(IdentityMap):
     # docerator: provenance
     # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
-    # docerator: provenance
-    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
-
     def __init__(self, mesh=None, nP=None, **kwargs):
         super().__init__(mesh=mesh, nP=nP, **kwargs)
 
@@ -622,9 +607,6 @@ class EffectiveSusceptibilityMap(IdentityMap):
     # docerator: provenance
     # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
-    # docerator: provenance
-    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
-
     def __init__(self, ambient_field_magnitude, mesh=None, nP=None, **kwargs):
         super().__init__(mesh=mesh, nP=nP, **kwargs)
         if not isinstance(ambient_field_magnitude, Real):
@@ -668,9 +650,6 @@ class MuRelative(IdentityMap):
         number of parameters is known. Used generally when the number of parameters
         is not equal to the number of cells in a mesh.
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
     # docerator: provenance
     # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
@@ -774,9 +753,6 @@ class Weighting(IdentityMap):
         A set of independent model weights. If ``None``, all model weights are set
         to *1*.
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
     # docerator: provenance
     # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
@@ -948,9 +924,6 @@ class ComplexMap(IdentityMap):
     array([1.+2.j, 1.+2.j, 1.+2.j, 1.+2.j])
 
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
     # docerator: provenance
     # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
@@ -1178,9 +1151,6 @@ class SelfConsistentEffectiveMedium(IdentityMap):
     For reference, see
     `Torquato (2002), Random Heterogeneous Materials <https://link.springer.com/book/10.1007/978-1-4757-6355-3>`_
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
     # docerator: provenance
     # docerator: from simpeg.maps._base.IdentityMap: mesh, nP

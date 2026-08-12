@@ -22,10 +22,6 @@ class BaseRx(BaseTimeRx):
     # docerator: from simpeg.survey.BaseRx: locations
     # docerator: from simpeg.survey.BaseTimeRx: times
 
-    # docerator: provenance
-    # docerator: from simpeg.survey.BaseRx: locations
-    # docerator: from simpeg.survey.BaseTimeRx: times
-
     def __init__(
         self,
         locations,
@@ -240,11 +236,6 @@ class PointElectricField(BaseRx):
     # docerator: from simpeg.survey.BaseTimeRx: times
     # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
 
-    # docerator: provenance
-    # docerator: from simpeg.survey.BaseRx: locations
-    # docerator: from simpeg.survey.BaseTimeRx: times
-    # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
-
     def __init__(self, locations=None, times=None, orientation="z", **kwargs):
         self.projField = "e"
         super(PointElectricField, self).__init__(
@@ -270,11 +261,6 @@ class PointMagneticFluxDensity(BaseRx):
     # docerator: from simpeg.survey.BaseTimeRx: times
     # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
 
-    # docerator: provenance
-    # docerator: from simpeg.survey.BaseRx: locations
-    # docerator: from simpeg.survey.BaseTimeRx: times
-    # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
-
     def __init__(self, locations=None, times=None, orientation="z", **kwargs):
         self.projField = "b"
         super(PointMagneticFluxDensity, self).__init__(
@@ -294,11 +280,6 @@ class PointMagneticFluxTimeDerivative(BaseRx):
     orientation : {'z', 'x', 'y'} or numpy.ndarray
         Receiver orientation.
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.survey.BaseRx: locations
-    # docerator: from simpeg.survey.BaseTimeRx: times
-    # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
 
     # docerator: provenance
     # docerator: from simpeg.survey.BaseRx: locations
@@ -388,11 +369,6 @@ class PointMagneticField(BaseRx):
     # docerator: from simpeg.survey.BaseTimeRx: times
     # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
 
-    # docerator: provenance
-    # docerator: from simpeg.survey.BaseRx: locations
-    # docerator: from simpeg.survey.BaseTimeRx: times
-    # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
-
     def __init__(self, locations=None, times=None, orientation="x", **kwargs):
         self.projField = "h"
         super(PointMagneticField, self).__init__(
@@ -418,11 +394,6 @@ class PointCurrentDensity(BaseRx):
     # docerator: from simpeg.survey.BaseTimeRx: times
     # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
 
-    # docerator: provenance
-    # docerator: from simpeg.survey.BaseRx: locations
-    # docerator: from simpeg.survey.BaseTimeRx: times
-    # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
-
     def __init__(self, locations=None, times=None, orientation="x", **kwargs):
         self.projField = "j"
         super(PointCurrentDensity, self).__init__(
@@ -442,11 +413,6 @@ class PointMagneticFieldTimeDerivative(BaseRx):
     orientation : {'z', 'x', 'y'} or numpy.ndarray
         Receiver orientation.
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.survey.BaseRx: locations
-    # docerator: from simpeg.survey.BaseTimeRx: times
-    # docerator: from simpeg.electromagnetics.time_domain.receivers.BaseRx: orientation
 
     # docerator: provenance
     # docerator: from simpeg.survey.BaseRx: locations

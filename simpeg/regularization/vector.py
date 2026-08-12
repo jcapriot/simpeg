@@ -178,10 +178,6 @@ class CrossReferenceRegularization(Smallness, BaseVectorRegularization):
     # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells
     # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
 
-    # docerator: provenance
-    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells
-    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
-
     def __init__(
         self, mesh, ref_dir, active_cells=None, mapping=None, weights=None, **kwargs
     ):

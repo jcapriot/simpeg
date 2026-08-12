@@ -159,10 +159,6 @@ class Simulation3DIntegral(BasePFSimulation):
     # docerator: from simpeg.potential_fields.base.BasePFSimulation: mesh, engine, numba_parallel, active_cells, store_sensitivities
     # docerator: from simpeg.simulation.BaseSimulation: survey, sensitivity_path
 
-    # docerator: provenance
-    # docerator: from simpeg.potential_fields.base.BasePFSimulation: mesh, engine, numba_parallel, active_cells, store_sensitivities
-    # docerator: from simpeg.simulation.BaseSimulation: survey, sensitivity_path
-
     chi, chiMap, chiDeriv = props.Invertible("Magnetic Susceptibility (SI)")
 
     def __init__(
@@ -1274,10 +1270,6 @@ class SimulationEquivalentSourceLayer(
     # docerator: from simpeg.potential_fields.base.BaseEquivalentSourceLayerSimulation: mesh, cell_z_top, cell_z_bottom
     # docerator: from simpeg.potential_fields.base.BasePFSimulation: engine, numba_parallel
 
-    # docerator: provenance
-    # docerator: from simpeg.potential_fields.base.BaseEquivalentSourceLayerSimulation: mesh, cell_z_top, cell_z_bottom
-    # docerator: from simpeg.potential_fields.base.BasePFSimulation: engine, numba_parallel
-
     def __init__(
         self,
         mesh,
@@ -1727,9 +1719,6 @@ class Simulation3DDifferential(BaseMagneticPDESimulation):
     where :math:`\mathbf{M_r}` is a fixed magnetization unaffected by the inducing field
     and :math:`\mu\mathbf{H}` is the induced magnetization.
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
 
     # docerator: provenance
     # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh

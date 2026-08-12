@@ -66,9 +66,6 @@ class BaseFDEMSimulation(BaseEMSimulation):
     # docerator: provenance
     # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
 
-    # docerator: provenance
-    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
-
     fieldsPair = FieldsFDEM
     permittivity = props.PhysicalProperty("Dielectric permittivity (F/m)")
 
@@ -1457,10 +1454,6 @@ class Simulation3DCurrentDensity(BaseFDEMSimulation):
     * :math:`\mathbf{q} = - i \omega \mathbf{s_e} - i \omega \mathbf{C M_{e\mu}^{-1} s_m}`
 
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
-    # docerator: from simpeg.electromagnetics.frequency_domain.simulation.BaseFDEMSimulation: survey, forward_only, permittivity, storeJ
 
     # docerator: provenance
     # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh

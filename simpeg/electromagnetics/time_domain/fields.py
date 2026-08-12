@@ -5,6 +5,7 @@ from ...fields import TimeFields
 from ...utils import mkvc, sdiag, Zero
 
 
+# docerator: override=simulation
 class FieldsTDEM(TimeFields):
     r"""Base class for storing TDEM fields.
 
@@ -20,8 +21,8 @@ class FieldsTDEM(TimeFields):
     simulation : .time_domain.BaseTDEMSimulation
         The TDEM simulation object used to compute the discrete field solution.
 
-    Example
-    -------
+    Examples
+    --------
     We want to access the fields for a discrete solution with :math:`\mathbf{e}` discretized
     to edges and :math:`\mathbf{b}` discretized to faces. To extract the fields for all sources
     and all time steps:
@@ -107,13 +108,13 @@ class FieldsDerivativesEB(FieldsTDEM):
 
     Parameters
     ----------
-    simulation : simpeg.simulation.BaseSimulation
-        The simulation object used to compute the discrete field solution.
+    simulation : .time_domain.BaseTDEMSimulation
+        The TDEM simulation object used to compute the discrete field solution.
 
     """
 
     # docerator: provenance
-    # docerator: from simpeg.fields.Fields: simulation
+    # docerator: from simpeg.electromagnetics.time_domain.fields.FieldsTDEM: simulation
 
     def __init__(self, simulation):
         super().__init__(simulation=simulation)
@@ -132,13 +133,13 @@ class FieldsDerivativesHJ(FieldsTDEM):
 
     Parameters
     ----------
-    simulation : simpeg.simulation.BaseSimulation
-        The simulation object used to compute the discrete field solution.
+    simulation : .time_domain.BaseTDEMSimulation
+        The TDEM simulation object used to compute the discrete field solution.
 
     """
 
     # docerator: provenance
-    # docerator: from simpeg.fields.Fields: simulation
+    # docerator: from simpeg.electromagnetics.time_domain.fields.FieldsTDEM: simulation
 
     def __init__(self, simulation):
         super().__init__(simulation=simulation)
@@ -152,6 +153,7 @@ class FieldsDerivativesHJ(FieldsTDEM):
         }
 
 
+# docerator: override=simulation
 class Fields3DMagneticFluxDensity(FieldsTDEM):
     r"""Fields class for storing 3D total magnetic flux density solutions.
 
@@ -170,8 +172,8 @@ class Fields3DMagneticFluxDensity(FieldsTDEM):
     simulation : .time_domain.Simulation3DMagneticFluxDensity
         The TDEM simulation object associated with the fields.
 
-    Example
-    -------
+    Examples
+    --------
     The ``Fields3DMagneticFluxDensity`` object stores the total magnetic flux density solution
     on mesh faces. To extract the discrete electric fields and magnetic flux
     densities for all sources and time-steps:
@@ -351,6 +353,7 @@ class Fields3DMagneticFluxDensity(FieldsTDEM):
         return self.simulation.MfI * (self._MfMui * self._dbdtDeriv_m(tInd, src, v))
 
 
+# docerator: override=simulation
 class Fields3DElectricField(FieldsTDEM):
     r"""Fields class for storing 3D total electric field solutions.
 
@@ -369,8 +372,8 @@ class Fields3DElectricField(FieldsTDEM):
     simulation : .time_domain.Simulation3DElectricField
         The TDEM simulation object associated with the fields.
 
-    Example
-    -------
+    Examples
+    --------
     The ``Fields3DElectricField`` object stores the total electric field solution
     on mesh edges. To extract the discrete electric fields and db/dt
     for all sources and time-steps:
@@ -512,6 +515,7 @@ class Fields3DElectricField(FieldsTDEM):
         return self.simulation.MfI * (self._MfMui * self._dbdtDeriv_m(tInd, src, v))
 
 
+# docerator: override=simulation
 class Fields3DMagneticField(FieldsTDEM):
     r"""Fields class for storing 3D total magnetic field solutions.
 
@@ -531,8 +535,8 @@ class Fields3DMagneticField(FieldsTDEM):
     simulation : .time_domain.Simulation3DMagneticField
         The TDEM simulation object associated with the fields.
 
-    Example
-    -------
+    Examples
+    --------
     The ``Fields3DMagneticField`` object stores the total magnetic field solution
     on mesh edges. To extract the discrete magnetic fields and current density
     for all sources and time-steps:
@@ -722,6 +726,7 @@ class Fields3DMagneticField(FieldsTDEM):
         )
 
 
+# docerator: override=simulation
 class Fields3DCurrentDensity(FieldsTDEM):
     r"""Fields class for storing 3D current density solutions.
 
@@ -741,8 +746,8 @@ class Fields3DCurrentDensity(FieldsTDEM):
     simulation : .time_domain.Simulation3DCurrentDensity
         The TDEM simulation object associated with the fields.
 
-    Example
-    -------
+    Examples
+    --------
     The ``Fields3DCurrentDensity`` object stores the total current density solution
     on mesh faces. To extract the discrete current densities and magnetic fields
     for all sources and time-steps:

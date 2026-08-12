@@ -134,10 +134,6 @@ class CrossGradient(BaseSimilarityMeasure):
     # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units, weights
     # docerator: from simpeg.regularization.base.BaseSimilarityMeasure: wire_map
 
-    # docerator: provenance
-    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units, weights
-    # docerator: from simpeg.regularization.base.BaseSimilarityMeasure: wire_map
-
     def __init__(self, mesh, wire_map, approx_hessian=True, **kwargs):
         super().__init__(mesh, wire_map=wire_map, **kwargs)
         self.approx_hessian = approx_hessian

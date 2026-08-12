@@ -1588,9 +1588,6 @@ class ParametricBlock(BaseParametric):
     # docerator: provenance
     # docerator: from simpeg.maps._parametric.BaseParametric: mesh, active_cells, slope, slopeFact
 
-    # docerator: provenance
-    # docerator: from simpeg.maps._parametric.BaseParametric: mesh, active_cells, slope, slopeFact
-
     def __init__(self, mesh, epsilon=1e-6, p=10, **kwargs):
         self.epsilon = epsilon
         self.p = p
@@ -1943,10 +1940,6 @@ class ParametricEllipsoid(ParametricBlock):
     # docerator: from simpeg.maps._parametric.BaseParametric: mesh, active_cells, slope, slopeFact
     # docerator: from simpeg.maps._parametric.ParametricBlock: epsilon
 
-    # docerator: provenance
-    # docerator: from simpeg.maps._parametric.BaseParametric: mesh, active_cells, slope, slopeFact
-    # docerator: from simpeg.maps._parametric.ParametricBlock: epsilon
-
     def __init__(self, mesh, **kwargs):
         super(ParametricEllipsoid, self).__init__(mesh, p=2, **kwargs)
 
@@ -1976,9 +1969,6 @@ class ParametricCasingAndLayer(ParametricLayer):
     ...     ]
 
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.maps._parametric.BaseParametric: mesh
 
     # docerator: provenance
     # docerator: from simpeg.maps._parametric.BaseParametric: mesh
@@ -2328,9 +2318,6 @@ class ParametricBlockInLayer(ParametricLayer):
     :param numpy.ndarray active_cells: bool vector with
 
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.maps._parametric.BaseParametric: mesh
 
     # docerator: provenance
     # docerator: from simpeg.maps._parametric.BaseParametric: mesh

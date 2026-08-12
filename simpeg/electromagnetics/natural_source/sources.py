@@ -33,12 +33,6 @@ class Planewave(BaseFDEMSrc):
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: frequency
 
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: frequency
-    # This class is only provided to have a uniquely identifiable "Planewave" class
-    def __init__(self, receiver_list, frequency, **kwargs):
-        super(Planewave, self).__init__(receiver_list, frequency, **kwargs)
-
 
 # Need to implement such that it works for all dims.
 # Rename to be more descriptive (I suggest PlanewavePrimarySecondary)
@@ -50,7 +44,7 @@ class PlanewaveXYPrimary(Planewave):
     Parameters
     ----------
     receiver_list : list of simpeg.electromagnetics.frequency_domain.receivers.BaseRx
-        A list of NSEM receivers
+        A list of FDEM receivers
     frequency : float
         Source frequency
     sigma_primary : float, default: ``None``
@@ -58,12 +52,7 @@ class PlanewaveXYPrimary(Planewave):
     """
 
     # docerator: provenance
-    # docerator: from simpeg.electromagnetics.natural_source.sources.Planewave: receiver_list
-    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: frequency
-
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.natural_source.sources.Planewave: receiver_list
-    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: frequency
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
 
     _fields_per_source = 2
 

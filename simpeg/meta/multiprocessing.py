@@ -228,9 +228,6 @@ class MultiprocessingMetaSimulation(MetaSimulation):
     # docerator: provenance
     # docerator: from simpeg.meta.simulation.MetaSimulation: simulations, mappings
 
-    # docerator: provenance
-    # docerator: from simpeg.meta.simulation.MetaSimulation: simulations, mappings
-
     def __init__(self, simulations, mappings, n_processes=None):
         super().__init__(simulations, mappings)
 
@@ -458,10 +455,6 @@ class MultiprocessingRepeatedSimulation(
 
     # docerator: provenance
     # docerator: from simpeg.meta.simulation.RepeatedSimulation: simulation
-    # docerator: from simpeg.meta.simulation.MetaSimulation: mappings
-    # docerator: from simpeg.meta.multiprocessing.MultiprocessingMetaSimulation: n_processes
-
-    # docerator: provenance
     # docerator: from simpeg.meta.simulation.MetaSimulation: mappings
     # docerator: from simpeg.meta.multiprocessing.MultiprocessingMetaSimulation: n_processes
 

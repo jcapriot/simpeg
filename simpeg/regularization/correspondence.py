@@ -55,10 +55,6 @@ class LinearCorrespondence(BaseSimilarityMeasure):
     # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells
     # docerator: from simpeg.regularization.base.BaseSimilarityMeasure: wire_map
 
-    # docerator: provenance
-    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells
-    # docerator: from simpeg.regularization.base.BaseSimilarityMeasure: wire_map
-
     def __init__(self, mesh, wire_map, coefficients=None, **kwargs):
         super().__init__(mesh, wire_map, **kwargs)
         if coefficients is None:

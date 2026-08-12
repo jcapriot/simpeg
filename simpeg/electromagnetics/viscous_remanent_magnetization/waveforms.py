@@ -178,9 +178,6 @@ class SquarePulse(StepOff):
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.waveforms.StepOff: t0
 
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.waveforms.StepOff: t0
-
     def __init__(self, delt, t0=0.0):
         super(SquarePulse, self).__init__(t0=t0)
 
@@ -498,9 +495,6 @@ class ArbitraryPiecewise(ArbitraryDiscrete):
     I_wave : numpy.ndarray
         Waveform on-time currents
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.waveforms.ArbitraryDiscrete: t_wave, I_wave
 
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.waveforms.ArbitraryDiscrete: t_wave, I_wave

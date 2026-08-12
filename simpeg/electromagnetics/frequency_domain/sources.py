@@ -37,9 +37,6 @@ class BaseFDEMSrc(BaseEMSrc):
     # docerator: provenance
     # docerator: from simpeg.survey.BaseSrc: location
 
-    # docerator: provenance
-    # docerator: from simpeg.survey.BaseSrc: location
-
     _ePrimary = None
     _bPrimary = None
     _hPrimary = None
@@ -309,10 +306,6 @@ class RawVec_e(BaseFDEMSrc):
     # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
     # docerator: from simpeg.electromagnetics.base.BaseEMSrc: integrate
 
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
-    # docerator: from simpeg.electromagnetics.base.BaseEMSrc: integrate
-
     def __init__(self, receiver_list, frequency, s_e, **kwargs):
         self._s_e = np.asarray(s_e, dtype=complex)
 
@@ -338,10 +331,6 @@ class RawVec_m(BaseFDEMSrc):
     integrate : bool
         If ``True``, we integrate the source term
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
-    # docerator: from simpeg.electromagnetics.base.BaseEMSrc: integrate
 
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
@@ -391,11 +380,6 @@ class RawVec(RawVec_e, RawVec_m):
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
     # docerator: from simpeg.electromagnetics.frequency_domain.sources.RawVec_m: s_m
-    # docerator: from simpeg.electromagnetics.frequency_domain.sources.RawVec_e: s_e
-    # docerator: from simpeg.electromagnetics.base.BaseEMSrc: integrate
-
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
     # docerator: from simpeg.electromagnetics.frequency_domain.sources.RawVec_e: s_e
     # docerator: from simpeg.electromagnetics.base.BaseEMSrc: integrate
 
@@ -488,9 +472,6 @@ class MagDipole(BaseFDEMSrc):
 
         \vec{B}^P = \nabla \times \vec{A}
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
 
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
@@ -823,10 +804,6 @@ class MagDipole_Bfield(MagDipole):
     # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
     # docerator: from simpeg.electromagnetics.frequency_domain.sources.MagDipole: location, moment, orientation, mu
 
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
-    # docerator: from simpeg.electromagnetics.frequency_domain.sources.MagDipole: location, moment, orientation, mu
-
     def __init__(self, receiver_list, frequency, location=None, **kwargs):
         super().__init__(
             receiver_list=receiver_list,
@@ -1084,9 +1061,6 @@ class PrimSecMappedSigma(BaseFDEMSrc):
     map2meshSecondary : maps.BaseMap
         Mapping current model to act as primary model on the secondary mesh
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
 
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
@@ -1390,10 +1364,6 @@ class LineCurrent(BaseFDEMSrc):
     mu : float, optional
         Magnetic permeability to use.
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
-    # docerator: from simpeg.survey.BaseSrc: location
 
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency

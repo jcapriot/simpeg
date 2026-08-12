@@ -127,10 +127,6 @@ class JointTotalVariation(BaseSimilarityMeasure):
     # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units, weights
     # docerator: from simpeg.regularization.base.BaseSimilarityMeasure: wire_map
 
-    # docerator: provenance
-    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units, weights
-    # docerator: from simpeg.regularization.base.BaseSimilarityMeasure: wire_map
-
     def __init__(self, mesh, wire_map, eps=1e-8, **kwargs):
         super().__init__(mesh, wire_map=wire_map, **kwargs)
         self.set_weights(volume=self.regularization_mesh.vol)

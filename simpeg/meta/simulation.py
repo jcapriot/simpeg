@@ -354,9 +354,6 @@ class SumMetaSimulation(MetaSimulation):
     # docerator: provenance
     # docerator: from simpeg.meta.simulation.MetaSimulation: simulations, mappings
 
-    # docerator: provenance
-    # docerator: from simpeg.meta.simulation.MetaSimulation: simulations, mappings
-
     _repeat_sim = False
 
     def __init__(self, simulations, mappings):
@@ -452,9 +449,6 @@ class RepeatedSimulation(MetaSimulation):
         same length model, and output a model appropriate for its
         paired simulation.
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.meta.simulation.MetaSimulation: mappings
 
     # docerator: provenance
     # docerator: from simpeg.meta.simulation.MetaSimulation: mappings

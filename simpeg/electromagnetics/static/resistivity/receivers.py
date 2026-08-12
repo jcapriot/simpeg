@@ -25,9 +25,6 @@ class BaseRx(BaseSimPEGRx):
     # docerator: provenance
     # docerator: from simpeg.survey.BaseRx: locations
 
-    # docerator: provenance
-    # docerator: from simpeg.survey.BaseRx: locations
-
     def __init__(
         self,
         locations,
@@ -271,9 +268,6 @@ class Dipole(BaseRx):
     Either pass both `locations_m` and `locations_n` arguments, or pass only `locations`
     argument.
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.static.resistivity.receivers.BaseRx: data_type
 
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.static.resistivity.receivers.BaseRx: data_type

@@ -39,9 +39,6 @@ class BaseDCSimulation(BaseElectricalPDESimulation):
     # docerator: provenance
     # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
 
-    # docerator: provenance
-    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
-
     _mini_survey = None
 
     Ainv = None
@@ -406,11 +403,6 @@ class Simulation3DCellCentered(BaseDCSimulation):
     # docerator: from simpeg.electromagnetics.static.resistivity.simulation.BaseDCSimulation: survey, storeJ, miniaturize, surface_faces
     # docerator: from simpeg.simulation.BaseSimulation: sensitivity_path, counter, verbose
 
-    # docerator: provenance
-    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh, solver, solver_opts
-    # docerator: from simpeg.electromagnetics.static.resistivity.simulation.BaseDCSimulation: survey, storeJ, miniaturize, surface_faces
-    # docerator: from simpeg.simulation.BaseSimulation: sensitivity_path, counter, verbose
-
     _solutionType = "phiSolution"
     _formulation = "HJ"  # CC potentials means J is on faces
     fieldsPair = Fields3DCellCentered
@@ -607,11 +599,6 @@ class Simulation3DNodal(BaseDCSimulation):
         Array defining which boundary faces to interpret as surfaces of Neumann boundary.
 
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh, solver, solver_opts
-    # docerator: from simpeg.electromagnetics.static.resistivity.simulation.BaseDCSimulation: survey, storeJ, miniaturize, surface_faces
-    # docerator: from simpeg.simulation.BaseSimulation: sensitivity_path, counter, verbose
 
     # docerator: provenance
     # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh, solver, solver_opts

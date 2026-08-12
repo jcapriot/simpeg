@@ -27,10 +27,6 @@ class BaseRx(BaseTimeRx):
     # docerator: from simpeg.survey.BaseRx: locations
     # docerator: from simpeg.survey.BaseTimeRx: times
 
-    # docerator: provenance
-    # docerator: from simpeg.survey.BaseRx: locations
-    # docerator: from simpeg.survey.BaseTimeRx: times
-
     def __init__(
         self,
         locations=None,
@@ -229,10 +225,6 @@ class Dipole(BaseRx):
     data_type : {"volt", "apparent_chargeability"}
         Data type.
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.survey.BaseTimeRx: times
-    # docerator: from simpeg.electromagnetics.static.spectral_induced_polarization.receivers.BaseRx: orientation, data_type
 
     # docerator: provenance
     # docerator: from simpeg.survey.BaseTimeRx: times

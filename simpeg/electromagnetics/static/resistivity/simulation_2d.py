@@ -41,9 +41,6 @@ class BaseDCSimulation2D(BaseElectricalPDESimulation):
     # docerator: provenance
     # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
 
-    # docerator: provenance
-    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
-
     fieldsPair = Fields2D  # simpeg.EM.Static.Fields_2D
     fieldsPair_fwd = FieldsDC
     # there's actually nT+1 fields, so we don't need to store the last one
@@ -543,10 +540,6 @@ class Simulation2DCellCentered(BaseDCSimulation2D):
     # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
     # docerator: from simpeg.electromagnetics.static.resistivity.simulation_2d.BaseDCSimulation2D: survey
 
-    # docerator: provenance
-    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
-    # docerator: from simpeg.electromagnetics.static.resistivity.simulation_2d.BaseDCSimulation2D: survey
-
     _solutionType = "phiSolution"
     _formulation = "HJ"  # CC potentials means J is on faces
     fieldsPair = Fields2DCellCentered
@@ -700,10 +693,6 @@ class Simulation2DNodal(BaseDCSimulation2D):
     survey : .resistivity.survey.Survey
         The resistivity survey for the simulation.
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
-    # docerator: from simpeg.electromagnetics.static.resistivity.simulation_2d.BaseDCSimulation2D: survey
 
     # docerator: provenance
     # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh

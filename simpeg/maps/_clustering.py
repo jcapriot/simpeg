@@ -37,9 +37,6 @@ class PolynomialPetroClusterMap(IdentityMap):
     # docerator: provenance
     # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
 
-    # docerator: provenance
-    # docerator: from simpeg.maps._base.IdentityMap: mesh, nP
-
     def __init__(
         self,
         coeffxx=None,

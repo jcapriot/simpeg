@@ -37,9 +37,6 @@ class BaseVRMSimulation(BaseSimulation):
     # docerator: provenance
     # docerator: from simpeg.simulation.BaseSimulation: survey
 
-    # docerator: provenance
-    # docerator: from simpeg.simulation.BaseSimulation: survey
-
     _AisSet = False
 
     def __init__(
@@ -852,9 +849,6 @@ class Simulation3DLinear(BaseVRMSimulation):
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.simulation.BaseVRMSimulation: mesh
 
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.simulation.BaseVRMSimulation: mesh
-
     _A = None
     _T = None
     _TisSet = False
@@ -1046,10 +1040,6 @@ class Simulation3DLogUniform(BaseVRMSimulation):
     survey : simpeg.survey.BaseSurvey, optional
         The survey for the simulation.
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.simulation.BaseVRMSimulation: mesh
-    # docerator: from simpeg.simulation.BaseSimulation: survey
 
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.simulation.BaseVRMSimulation: mesh

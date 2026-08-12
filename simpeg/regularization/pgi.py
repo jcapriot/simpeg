@@ -184,9 +184,6 @@ class PGIsmallness(Smallness):
     # docerator: provenance
     # docerator: from simpeg.regularization.base.BaseRegularization: mesh
 
-    # docerator: provenance
-    # docerator: from simpeg.regularization.base.BaseRegularization: mesh
-
     _multiplier_pair = "alpha_pgi"
     _maplist = None
     _wiresmap = None

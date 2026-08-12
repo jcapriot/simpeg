@@ -173,9 +173,6 @@ class StepOffWaveform(BaseWaveform):
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.time_domain.sources.BaseWaveform: off_time
 
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.time_domain.sources.BaseWaveform: off_time
-
     def __init__(self, off_time=0.0, **kwargs):
         super().__init__(off_time=off_time, has_initial_fields=True, **kwargs)
 
@@ -381,9 +378,6 @@ class RawWaveform(BaseWaveform):
     >>> plt.show()
 
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.time_domain.sources.BaseWaveform: off_time
 
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.time_domain.sources.BaseWaveform: off_time
@@ -655,9 +649,6 @@ class TriangularWaveform(TrapezoidWaveform):
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.time_domain.sources.TrapezoidWaveform: off_time
 
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.time_domain.sources.TrapezoidWaveform: off_time
-
     def __init__(self, start_time, off_time, peak_time, **kwargs):
 
         ramp_on = np.r_[start_time, peak_time]
@@ -714,9 +705,6 @@ class QuarterSineRampOnWaveform(TrapezoidWaveform):
     >>> plt.plot(times, [waveform.eval(t) for t in times])
     >>> plt.show()
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.time_domain.sources.TrapezoidWaveform: ramp_on, ramp_off
 
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.time_domain.sources.TrapezoidWaveform: ramp_on, ramp_off
@@ -783,9 +771,6 @@ class HalfSineWaveform(TrapezoidWaveform):
     ramp_off : (2) array_like of float
         time when of the ramp_off starts and stops
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.time_domain.sources.TrapezoidWaveform: ramp_on, ramp_off
 
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.time_domain.sources.TrapezoidWaveform: ramp_on, ramp_off
@@ -972,9 +957,6 @@ class ExponentialWaveform(BaseWaveform):
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.time_domain.sources.BaseWaveform: off_time
 
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.time_domain.sources.BaseWaveform: off_time
-
     def __init__(
         self,
         start_time=-1e-2,
@@ -1103,9 +1085,6 @@ class BaseTDEMSrc(BaseEMSrc):
     source_type : {'inductive','galvanic'}
         Implement as an inductive or galvanic source
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.survey.BaseSrc: location
 
     # docerator: provenance
     # docerator: from simpeg.survey.BaseSrc: location
@@ -1343,9 +1322,6 @@ class MagDipole(BaseTDEMSrc):
     source_type : {'inductive','galvanic'}
         Implement as an inductive or galvanic source
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.time_domain.sources.BaseTDEMSrc: receiver_list, source_type
 
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.time_domain.sources.BaseTDEMSrc: receiver_list, source_type
@@ -1695,10 +1671,6 @@ class CircularLoop(MagDipole):
     # docerator: from simpeg.electromagnetics.time_domain.sources.BaseTDEMSrc: receiver_list
     # docerator: from simpeg.electromagnetics.time_domain.sources.MagDipole: location, orientation, mu
 
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.time_domain.sources.BaseTDEMSrc: receiver_list
-    # docerator: from simpeg.electromagnetics.time_domain.sources.MagDipole: location, orientation, mu
-
     # def __init__(self, receiver_list=None, **kwargs):
     #     super(CircularLoop, self).__init__(receiver_list, **kwargs)
 
@@ -1839,9 +1811,6 @@ class LineCurrent(BaseTDEMSrc):
     mu : float, optional
         Magnetic permeability to use.
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.time_domain.sources.BaseTDEMSrc: receiver_list
 
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.time_domain.sources.BaseTDEMSrc: receiver_list

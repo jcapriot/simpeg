@@ -218,9 +218,6 @@ class Impedance(_ElectricAndMagneticReceiver):
     # docerator: provenance
     # docerator: from simpeg.survey.BaseRx: storeProjections
 
-    # docerator: provenance
-    # docerator: from simpeg.survey.BaseRx: storeProjections
-
     def __init__(
         self,
         locations_e,
@@ -621,9 +618,6 @@ class Tipper(BaseNaturalSourceRx):
     # docerator: provenance
     # docerator: from simpeg.survey.BaseRx: storeProjections
 
-    # docerator: provenance
-    # docerator: from simpeg.survey.BaseRx: storeProjections
-
     _loc_names = ("Roving magnetic field", "Base station magnetic field")
 
     def __init__(
@@ -920,9 +914,6 @@ class Admittance(_ElectricAndMagneticReceiver):
     # docerator: provenance
     # docerator: from simpeg.survey.BaseRx: storeProjections
 
-    # docerator: provenance
-    # docerator: from simpeg.survey.BaseRx: storeProjections
-
     def __init__(
         self,
         locations_e,
@@ -1188,9 +1179,6 @@ class ApparentConductivity(_ElectricAndMagneticReceiver):
     summing can result in simulated anomalies which do not presented entirely over
     conductive/resistive targets.
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.survey.BaseRx: storeProjections
 
     # docerator: provenance
     # docerator: from simpeg.survey.BaseRx: storeProjections

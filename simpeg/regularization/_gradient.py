@@ -92,9 +92,6 @@ class SmoothnessFullGradient(BaseRegularization):
     # docerator: provenance
     # docerator: from simpeg.regularization.base.BaseRegularization: mesh
 
-    # docerator: provenance
-    # docerator: from simpeg.regularization.base.BaseRegularization: mesh
-
     def __init__(self, mesh, alphas=None, reg_dirs=None, ortho_check=True, **kwargs):
         if mesh.dim < 2:
             raise TypeError("Mesh must have dimension higher than 1")

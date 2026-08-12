@@ -43,13 +43,10 @@ class Point(survey.BaseRx):
         - "gzz"  --> z-derivative of the z-component
         - "guv"  --> UV component, i.e., (gyy - gxx) / 2
 
-    See also
+    See Also
     --------
     simpeg.potential_fields.gravity.Simulation3DIntegral
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.survey.BaseRx: locations
 
     # docerator: provenance
     # docerator: from simpeg.survey.BaseRx: locations

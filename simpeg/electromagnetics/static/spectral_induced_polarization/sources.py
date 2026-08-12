@@ -22,9 +22,6 @@ class BaseSrc(survey.BaseSrc):
     # docerator: provenance
     # docerator: from simpeg.survey.BaseSrc: location
 
-    # docerator: provenance
-    # docerator: from simpeg.survey.BaseSrc: location
-
     def __init__(self, receiver_list, location, current=1.0, **kwargs):
         super(BaseSrc, self).__init__(
             receiver_list=receiver_list, location=location, **kwargs
@@ -116,9 +113,6 @@ class Dipole(BaseSrc):
     current : float, default=1.0
         Current amplitude [A]
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.static.spectral_induced_polarization.sources.BaseSrc: current
 
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.static.spectral_induced_polarization.sources.BaseSrc: current
@@ -261,10 +255,6 @@ class Pole(BaseSrc):
     current : float, default=1.0
         Current amplitude [A]
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.survey.BaseSrc: location
-    # docerator: from simpeg.electromagnetics.static.spectral_induced_polarization.sources.BaseSrc: current
 
     # docerator: provenance
     # docerator: from simpeg.survey.BaseSrc: location

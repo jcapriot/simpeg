@@ -37,9 +37,6 @@ class Point(survey.BaseRx):
     # docerator: provenance
     # docerator: from simpeg.survey.BaseRx: locations
 
-    # docerator: provenance
-    # docerator: from simpeg.survey.BaseRx: locations
-
     def __init__(self, locations, components="tmi", **kwargs):
         super().__init__(locations, **kwargs)
 

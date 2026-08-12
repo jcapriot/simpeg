@@ -1371,9 +1371,6 @@ class InexactGaussNewton(InexactCG, BFGS):
     # docerator: provenance
     # docerator: from simpeg.optimization.InexactCG: cg_rtol, cg_atol, cg_maxiter
 
-    # docerator: provenance
-    # docerator: from simpeg.optimization.InexactCG: cg_rtol, cg_atol, cg_maxiter
-
     def __init__(
         self,
         *,

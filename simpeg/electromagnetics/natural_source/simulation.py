@@ -65,9 +65,6 @@ class Simulation1DElectricField(BaseFDEMSimulation):
     # docerator: provenance
     # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
 
-    # docerator: provenance
-    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
-
     _solutionType = "eSolution"
     _formulation = "EB"  # electric-field component is on cell-centers
     fieldsPair = Fields1DElectricField
@@ -161,9 +158,6 @@ class Simulation1DMagneticField(BaseFDEMSimulation):
     mesh : discretize.base.BaseMesh
         Mesh on which the forward problem is discretized.
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
 
     # docerator: provenance
     # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
@@ -288,10 +282,6 @@ class Simulation1DPrimarySecondary(Simulation1DElectricField):
     # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
     # docerator: from simpeg.electromagnetics.frequency_domain.simulation.BaseFDEMSimulation: survey
 
-    # docerator: provenance
-    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
-    # docerator: from simpeg.electromagnetics.frequency_domain.simulation.BaseFDEMSimulation: survey
-
     fieldsPair = Fields1DPrimarySecondary
 
     def __init__(self, mesh, survey=None, sigmaPrimary=None, **kwargs):
@@ -353,9 +343,6 @@ class Simulation2DElectricField(BaseFDEMSimulation):
     mesh : discretize.base.BaseMesh
         Mesh on which the forward problem is discretized.
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
 
     # docerator: provenance
     # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
@@ -593,9 +580,6 @@ class Simulation2DMagneticField(BaseFDEMSimulation):
     mesh : discretize.base.BaseMesh
         Mesh on which the forward problem is discretized.
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
 
     # docerator: provenance
     # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
@@ -861,10 +845,6 @@ class Simulation3DPrimarySecondary(Simulation3DElectricField):
     survey : .frequency_domain.survey.Survey
         The frequency-domain EM survey.
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
-    # docerator: from simpeg.electromagnetics.frequency_domain.simulation.BaseFDEMSimulation: survey
 
     # docerator: provenance
     # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh

@@ -59,10 +59,6 @@ class BaseSparse(BaseRegularization):
     # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units, weights
     # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
 
-    # docerator: provenance
-    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units, weights
-    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
-
     def __init__(self, mesh, norm=2.0, irls_scaled=True, irls_threshold=1e-8, **kwargs):
         super().__init__(mesh=mesh, **kwargs)
         self.norm = norm
@@ -406,7 +402,6 @@ class SparseSmallness(BaseSparse, Smallness):
         self.set_weights(irls=self.get_lp_weights(f_m))
 
 
-# docerator: override=weights
 # docerator: override=norm
 class SparseSmoothness(BaseSparse, SmoothnessFirstOrder):
     r"""Sparse smoothness (blockiness) regularization.
@@ -584,12 +579,7 @@ class SparseSmoothness(BaseSparse, SmoothnessFirstOrder):
 
     # docerator: provenance
     # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units
-    # docerator: from simpeg.regularization.base.SmoothnessFirstOrder: orientation, reference_model_in_smooth
-    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
-    # docerator: from simpeg.regularization.sparse.BaseSparse: irls_scaled, irls_threshold
-
-    # docerator: provenance
-    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units
+    # docerator: from simpeg.regularization.base.SmoothnessFirstOrder: orientation, reference_model_in_smooth, weights
     # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
     # docerator: from simpeg.regularization.sparse.BaseSparse: irls_scaled, irls_threshold
 

@@ -523,9 +523,6 @@ class DaskSumMetaSimulation(DaskMetaSimulation, SumMetaSimulation):
     # docerator: provenance
     # docerator: from simpeg.meta.dask_sim.DaskMetaSimulation: simulations, mappings, client
 
-    # docerator: provenance
-    # docerator: from simpeg.meta.dask_sim.DaskMetaSimulation: simulations, mappings, client
-
     def __init__(self, simulations, mappings, client):
         super().__init__(simulations, mappings, client)
 
@@ -677,9 +674,6 @@ class DaskRepeatedSimulation(DaskMetaSimulation):
     client : dask.distributed.Client, optional
         The dask client to use for communication.
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.meta.dask_sim.DaskMetaSimulation: mappings, client
 
     # docerator: provenance
     # docerator: from simpeg.meta.dask_sim.DaskMetaSimulation: mappings, client

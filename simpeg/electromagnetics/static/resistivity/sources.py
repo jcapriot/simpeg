@@ -157,9 +157,6 @@ class Dipole(BaseSrc):
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.static.resistivity.sources.BaseSrc: receiver_list, current
 
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.static.resistivity.sources.BaseSrc: receiver_list, current
-
     def __init__(
         self,
         receiver_list,
@@ -246,9 +243,6 @@ class Pole(BaseSrc):
     location : (n_source, n_dim) numpy.ndarray
         Source locations
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.static.resistivity.sources.BaseSrc: receiver_list, location
 
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.static.resistivity.sources.BaseSrc: receiver_list, location

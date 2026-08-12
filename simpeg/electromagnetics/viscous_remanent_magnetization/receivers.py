@@ -168,9 +168,6 @@ class SquareLoop(Point):
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.receivers.Point: times, field_type, orientation
 
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.receivers.Point: times, field_type, orientation
-
     def __init__(
         self,
         locations=None,

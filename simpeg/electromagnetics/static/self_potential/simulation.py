@@ -49,10 +49,6 @@ class Simulation3DCellCentered(dc.Simulation3DCellCentered):
     # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
     # docerator: from simpeg.electromagnetics.static.resistivity.simulation.BaseDCSimulation: survey
 
-    # docerator: provenance
-    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
-    # docerator: from simpeg.electromagnetics.static.resistivity.simulation.BaseDCSimulation: survey
-
     q, qMap, qDeriv = props.Invertible("Charge density accumulation rate (C/(s m^3))")
 
     def __init__(
@@ -123,9 +119,6 @@ class CurrentDensityMap(maps.LinearMap):
     # docerator: provenance
     # docerator: from simpeg.maps._base.IdentityMap: mesh
 
-    # docerator: provenance
-    # docerator: from simpeg.maps._base.IdentityMap: mesh
-
     def __init__(self, mesh, active_cells=None):
         cv_to_f = mesh.average_cell_vector_to_face
         if active_cells is not None:
@@ -173,9 +166,6 @@ class HydraulicHeadMap(maps.LinearMap):
 
         q = \nabla \cdot L \nabla h
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.maps._base.IdentityMap: mesh
 
     # docerator: provenance
     # docerator: from simpeg.maps._base.IdentityMap: mesh

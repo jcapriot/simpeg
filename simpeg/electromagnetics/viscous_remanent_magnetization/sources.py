@@ -83,9 +83,6 @@ class MagDipole(BaseSrcVRM):
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.sources.BaseSrcVRM: receiver_list, location, waveform
 
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.sources.BaseSrcVRM: receiver_list, location, waveform
-
     def __init__(self, receiver_list, location, moment, waveform, **kwargs):
         if len(location) != 3:
             raise ValueError(
@@ -210,9 +207,6 @@ class CircLoop(BaseSrcVRM):
     waveform : simpeg.electromagnetics.viscous_remanent_magnetization.waveforms.BaseVRMWaveform
         A VRM waveform
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.sources.BaseSrcVRM: receiver_list, location, waveform
 
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.sources.BaseSrcVRM: receiver_list, location, waveform
@@ -404,9 +398,6 @@ class LineCurrent(BaseSrcVRM):
     waveform : simpeg.electromagnetics.viscous_remanent_magnetization.waveforms.BaseVRMWaveform
         A VRM waveform
     """
-
-    # docerator: provenance
-    # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.sources.BaseSrcVRM: receiver_list, waveform
 
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.viscous_remanent_magnetization.sources.BaseSrcVRM: receiver_list, waveform
