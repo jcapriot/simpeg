@@ -149,7 +149,15 @@ class _HField(_1DField):
 class Fields1DElectricField(_EField, FieldsFDEM):
     """
     Fields
+
+    Parameters
+    ----------
+    simulation : .BaseFDEMSimulation
+        The FDEM simulation object used to compute the discrete field solution.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.frequency_domain.fields.FieldsFDEM: simulation
 
     knownFields = {"eSolution": "N"}
     aliasFields = {
@@ -165,7 +173,15 @@ class Fields1DElectricField(_EField, FieldsFDEM):
 class Fields1DMagneticField(_HField, Fields1DElectricField):
     """
     Fields
+
+    Parameters
+    ----------
+    simulation : .BaseFDEMSimulation
+        The FDEM simulation object used to compute the discrete field solution.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.frequency_domain.fields.FieldsFDEM: simulation
 
     knownFields = {"hSolution": "N"}
     aliasFields = {
@@ -185,7 +201,15 @@ class Fields1DPrimarySecondary(FieldsFDEM):
     Fields storage for the 1D NSEM solution.
 
     Solving for e fields, using primary/secondary formulation
+
+    Parameters
+    ----------
+    simulation : .BaseFDEMSimulation
+        The FDEM simulation object used to compute the discrete field solution.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.frequency_domain.fields.FieldsFDEM: simulation
 
     knownFields = {"eSolution": "N"}
     aliasFields = {
@@ -343,7 +367,15 @@ class Fields1DPrimarySecondary(FieldsFDEM):
 class Fields2DElectricField(_EField, FieldsFDEM):
     """
     Fields
+
+    Parameters
+    ----------
+    simulation : .BaseFDEMSimulation
+        The FDEM simulation object used to compute the discrete field solution.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.frequency_domain.fields.FieldsFDEM: simulation
 
     knownFields = {"eSolution": "E"}
     aliasFields = {
@@ -358,7 +390,15 @@ class Fields2DElectricField(_EField, FieldsFDEM):
 class Fields2DMagneticField(_HField, FieldsFDEM):
     """
     Fields
+
+    Parameters
+    ----------
+    simulation : .BaseFDEMSimulation
+        The FDEM simulation object used to compute the discrete field solution.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.frequency_domain.fields.FieldsFDEM: simulation
 
     knownFields = {"hSolution": "E"}
     aliasFields = {
@@ -380,7 +420,37 @@ class Fields3DPrimarySecondary(Fields):
 
         :param SimPEG object mesh: The solution mesh
         :param SimPEG object survey: A survey object
+
+    Parameters
+    ----------
+    simulation : simpeg.simulation.BaseSimulation
+        The simulation object used to compute the discrete field solution.
+    knownFields : dict of {key: str}, optional
+        Dictionary defining the field solutions that are stored and where
+        on the mesh they are discretized. E.g. ``{'eSolution': 'E', 'bSolution': 'F'}``
+        would store the `eSolution` on edges and `bSolution` on faces.
+        The ``str`` must be one of {``'CC'``, ``'N'``, ``'E'``, ``'F'``}.
+    aliasFields : dict of {key: list}, optional
+        Set aliases to extract different field types from the field solutions that are
+        stored by the fields object. The ``key`` defines the name you would like to use
+        when extracting a given field type from the fields object. In order, the list
+        contains:
+
+        * the key for the known field solution that is used to compute the field type
+        * where the output field type lives {``'CC'``, ``'N'``, ``'E'``, ``'F'``}
+        * the name of the method used to compute the output field.
+
+        E.g. ``{'b': ['eSolution', 'F', '_b']}`` is an alias that
+        would allow you to extract a field type (``'b'``) that lives on mesh faces (``'F'``)
+        from the E-field solution (``'eSolution'``) by calling a method (``'_b'``).
+    dtype : dtype or dict of {str : dtype}, optional
+        Set the Python data type for each numerical field solution that is stored in
+        the fields object. E.g. ``float``, ``complex``,
+        ``{'eSolution': complex, 'bSolution': complex}``.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.fields.Fields: simulation, knownFields, aliasFields, dtype
 
     # Define the known the alias fields
     # Assume that the solution of e on the E.

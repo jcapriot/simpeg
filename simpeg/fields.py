@@ -379,11 +379,12 @@ class TimeFields(Fields):
         * the name of the method used to compute the output field.
 
         E.g. ``{'b': ['eSolution', 'F', '_b']}`` is an alias that
-        would allow you to extract a field type ('b') that lives on mesh faces ('F')
-        from the E-field solution ('eSolution') by calling a method ('_b').
+        would allow you to extract a field type (``'b'``) that lives on mesh faces (``'F'``)
+        from the E-field solution (``'eSolution'``) by calling a method (``'_b'``).
     dtype : dtype or dict of {str : dtype}, optional
         Set the Python data type for each numerical field solution that is stored in
-        the fields object. E.g. ``float``, ``complex``, ``{'eSolution': complex, 'bSolution': complex}``.
+        the fields object. E.g. ``float``, ``complex``,
+        ``{'eSolution': complex, 'bSolution': complex}``.
 
     Examples
     --------
@@ -407,6 +408,9 @@ class TimeFields(Fields):
         b = f[source_list, 'b', t_inds]
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.fields.Fields: knownFields, aliasFields, dtype
 
     @property
     def simulation(self):

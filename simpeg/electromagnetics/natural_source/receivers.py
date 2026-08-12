@@ -22,8 +22,6 @@ class BaseNaturalSourceRx(BaseRx):
     ----------
     locations1, locations2 : (n_loc, n_dim) array_like
         Locations where the two fields are measured.
-    **kwargs
-        Additional keyword arguments passed to `simpeg.BaseRx`.
     """
 
     _loc_names = ("First", "Second")
@@ -129,7 +127,16 @@ class BaseNaturalSourceRx(BaseRx):
 
 
 class _ElectricAndMagneticReceiver(BaseNaturalSourceRx):
-    """Intermediate class for MT receivers that measure an electric and magnetic field."""
+    """Intermediate class for MT receivers that measure an electric and magnetic field.
+
+    Parameters
+    ----------
+    locations1, locations2 : (n_loc, n_dim) array_like
+        Locations where the two fields are measured.
+    """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.natural_source.receivers.BaseNaturalSourceRx: locations1, locations2
 
     _loc_names = ("Electric field", "Magnetic field")
 
@@ -1350,11 +1357,37 @@ class ApparentConductivity(_ElectricAndMagneticReceiver):
 
 @deprecate_class(removal_version="0.24.0", error=True, replace_docstring=False)
 class PointNaturalSource(Impedance):
-    """
+    r"""
     .. warning::
         This class was removed in SimPEG v0.24.0.
         Please use :class:`.natural_source.receivers.Impedance`.
+
+    Parameters
+    ----------
+    locations_e : (n_loc, n_dim) array_like
+        Locations where the electric fields are measured.
+    locations_h : (n_loc, n_dim) array_like, optional
+        Locations where the magnetic fields are measured. Defaults to the same
+        locations as electric field measurements, `locations_e`.
+    orientation : {'xx', 'xy', 'yx', 'yy'}
+        Receiver orientation. Specifies whether the receiver's data correspond to
+        the :math:`Z_{xx}`, :math:`Z_{xy}`, :math:`Z_{yx}` or :math:`Z_{yy}` impedance.
+        The data type is specified by the `component` input argument.
+    component : {'real', 'imag', 'apparent_resistivity', 'phase', 'complex'}
+        Data type. For the impedance element :math:`Z_{ij}` specified by the `orientation`
+        input argument, the receiver can be set to compute the following:
+        - 'real': Real component of the impedance (V/A)
+        - 'imag': Imaginary component of the impedance (V/A)
+        - 'rho': Apparent resistivity (:math:`\Omega m`)
+        - 'phase': Phase angle (degrees)
+        - 'complex': The complex impedance is returned. Do not use for inversion!
+    storeProjections : bool, Default = ``False``
+        Store projections from the mesh to receiver
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.natural_source.receivers.Impedance: locations_e, locations_h, orientation, component
+    # docerator: from simpeg.survey.BaseRx: storeProjections
 
 
 @deprecate_class(removal_version="0.24.0", error=True, replace_docstring=False)
@@ -1363,4 +1396,27 @@ class Point3DTipper(Tipper):
     .. warning::
         This class was removed in SimPEG v0.24.0.
         Please use :class:`.natural_source.receivers.Tipper`.
+
+    Parameters
+    ----------
+    locations_h : (n_loc, n_dim) array_like
+        Locations where the roving magnetic fields are measured.
+    locations_base : (n_loc, n_dim) array_like, optional
+        Locations where the base station magnetic fields are measured. Defaults to
+        the same locations as the roving magnetic fields measurements,
+        `locations_r`.
+    orientation : {'xx', 'yx', 'zx', 'zy', 'yy', 'zy'}
+        Specifies the tipper element :math:`T_{ij}` corresponding to the data.
+    component : {'real', 'imag', 'complex'}
+        Tipper data type. For the tipper element :math:`T_{ij}` specified by the `orientation`
+        input argument, the receiver can be set to compute the following:
+        - 'real': Real component of the tipper (unitless)
+        - 'imag': Imaginary component of the tipper (unitless)
+        - 'complex': The complex tipper is returned. Do not use for inversion!
+    storeProjections : bool, Default = ``False``
+        Store projections from the mesh to receiver
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.natural_source.receivers.Tipper: locations_h, locations_base, orientation, component
+    # docerator: from simpeg.survey.BaseRx: storeProjections

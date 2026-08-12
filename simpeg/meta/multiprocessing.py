@@ -377,6 +377,10 @@ class MultiprocessingSumMetaSimulation(
         will be the minimum of this number and the number of simulations.
     """
 
+    # docerator: provenance
+    # docerator: from simpeg.meta.simulation.MetaSimulation: simulations, mappings
+    # docerator: from simpeg.meta.multiprocessing.MultiprocessingMetaSimulation: n_processes
+
     def dpred(self, m=None, f=None):
         if f is None:
             if m is None:

@@ -439,11 +439,18 @@ class Pole(BaseRx):
 
     Parameters
     ----------
-    locations : (n_loc, dim) numpy.ndarray
-        Receiver locations.
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
     data_type : {"volt", "apparent_resistivity", "apparent_chargeability"}
-        Data type.
+        Type of data observered
+    orientation : {None, "x", "y", "z"}
+    projField : {"phi", "e", "j"}
+        Fields solved on the mesh.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.electromagnetics.static.resistivity.receivers.BaseRx: data_type, orientation, projField
 
     # def __init__(self, locationsM, **kwargs):
 

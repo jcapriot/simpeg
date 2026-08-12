@@ -536,7 +536,7 @@ class Simulation3DElectricField(BaseFDEMSimulation):
     Parameters
     ----------
     mesh : discretize.base.BaseMesh
-        The mesh.
+        Mesh on which the forward problem is discretized.
     survey : .frequency_domain.survey.Survey
         The frequency-domain EM survey.
     forward_only : bool, optional
@@ -620,6 +620,10 @@ class Simulation3DElectricField(BaseFDEMSimulation):
     * :math:`\mathbf{q} = - i \omega \mathbf{s_e} - i \omega \mathbf{C^T M_{f\frac{1}{\mu}} s_m }`
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.frequency_domain.simulation.BaseFDEMSimulation: survey, forward_only, permittivity, storeJ
 
     _solutionType = "eSolution"
     _formulation = "EB"
@@ -926,7 +930,7 @@ class Simulation3DMagneticFluxDensity(BaseFDEMSimulation):
     Parameters
     ----------
     mesh : discretize.base.BaseMesh
-        The mesh.
+        Mesh on which the forward problem is discretized.
     survey : .frequency_domain.survey.Survey
         The frequency-domain EM survey.
     forward_only : bool, optional
@@ -1010,6 +1014,10 @@ class Simulation3DMagneticFluxDensity(BaseFDEMSimulation):
     * :math:`\mathbf{q} = \mathbf{C M_{e\sigma}^{-1} s_e} - i \omega \mathbf{s_m}`
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.frequency_domain.simulation.BaseFDEMSimulation: survey, forward_only, permittivity, storeJ
 
     _solutionType = "bSolution"
     _formulation = "EB"
@@ -1817,7 +1825,7 @@ class Simulation3DMagneticField(BaseFDEMSimulation):
     Parameters
     ----------
     mesh : discretize.base.BaseMesh
-        The mesh.
+        Mesh on which the forward problem is discretized.
     survey : .frequency_domain.survey.Survey
         The frequency-domain EM survey.
     forward_only : bool, optional
@@ -1901,6 +1909,10 @@ class Simulation3DMagneticField(BaseFDEMSimulation):
     * :math:`\mathbf{q} = \mathbf{C^T M_{f\rho} s_e} - i\omega \mathbf{s_m}`
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.frequency_domain.simulation.BaseFDEMSimulation: survey, forward_only, permittivity, storeJ
 
     _solutionType = "hSolution"
     _formulation = "HJ"

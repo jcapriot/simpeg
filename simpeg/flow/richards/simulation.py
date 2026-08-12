@@ -21,7 +21,16 @@ from .empirical import BaseWaterRetention
 
 
 class SimulationNDCellCentered(BaseTimeSimulation, BasePDESimulation):
-    """Richards Simulation"""
+    """Richards Simulation
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
+    """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
 
     def __init__(
         self,

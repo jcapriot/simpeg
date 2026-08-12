@@ -182,8 +182,14 @@ class Survey(dc.Survey):
 
     Parameters
     ----------
-    source_list : list of .sources.StreamingCurrents
+    source_list : list of simpeg.electromagnetic.static.resistivity.sources.BaseSrc
+        List of SimPEG DC/IP sources
+    survey_geometry : {"surface", "borehole", "general"}
+        Survey geometry.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.static.resistivity.survey.Survey: source_list, survey_geometry
 
     @property
     def source_list(self):

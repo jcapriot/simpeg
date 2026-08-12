@@ -394,13 +394,22 @@ class Pole(BaseRx):
 
     Parameters
     ----------
-    locations : (n_loc, dim) numpy.ndarray
-        Receiver locations.
-    orientation : {``None``, 'x', 'y', 'z'}
-        Receiver orientation.
-    data_type : {"volt", "apparent_resistivity", "apparent_chargeability"}
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
+    times : array_like
+        Time channels
+    data_type : {"volt", "apparent_chargeability"}
         Data type.
+    orientation : {``None``, 'x', 'y', 'z'}
+        Receiver orientation
+    projField : {"phi", "e", "j"}
+        Fields solved on the mesh.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.survey.BaseTimeRx: times
+    # docerator: from simpeg.electromagnetics.static.spectral_induced_polarization.receivers.BaseRx: data_type, orientation, projField
 
     # this should probably be updated to n_receivers...
     @property

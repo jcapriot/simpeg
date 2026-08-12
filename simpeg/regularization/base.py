@@ -1221,6 +1221,7 @@ class SmoothnessFirstOrder(BaseRegularization):
         return self._orientation
 
 
+# docerator: override=weights
 class SmoothnessSecondOrder(SmoothnessFirstOrder):
     r"""Second-order smoothness (flatness) least-squares regularization.
 
@@ -1235,25 +1236,25 @@ class SmoothnessSecondOrder(SmoothnessFirstOrder):
 
     Parameters
     ----------
-    mesh : discretize.base.BaseMesh mesh
-        The mesh on which the regularization is discretized.
+    mesh : simpeg.regularization.RegularizationMesh, discretize.base.BaseMesh
+        Mesh on which the regularization is discretized. This is not necessarily
+        the same as the mesh on which the simulation is defined.
     orientation : {'x', 'y', 'z'}
         The direction along which smoothness is enforced.
+    reference_model_in_smooth : bool, optional
+        Whether to include the reference model in the smoothness regularization.
     active_cells : None, (n_cells, ) numpy.ndarray of bool
         Boolean array defining the set of :py:class:`~.regularization.RegularizationMesh`
         cells that are active in the inversion. If ``None``, all cells are active.
-    mapping : None, simpeg.maps.BaseMap
-        The mapping from the model parameters to the active cells in the inversion.
-        If ``None``, the mapping is the identity map.
+    mapping : simpeg.mapping.BaseMap
+        A SimPEG mapping object that maps from the model space to the
+        quantity evaluated in the objective function.
     reference_model : None, (n_param, ) numpy.ndarray
         Reference model. If ``None``, the reference model in the inversion is set to
-        the starting model. To include the reference model in the regularization, the
-        `reference_model_in_smooth` property must be set to ``True``.
-    reference_model_in_smooth : bool, optional
-        Whether to include the reference model in the smoothness regularization.
+        the starting model.
     units : None, str
-        Units for the model parameters. Some regularization classes behave differently
-        depending on the units; e.g. 'radian'.
+        Units for the model parameters. Some regularization classes behave
+        differently depending on the units; e.g. 'radian'.
     weights : None, dict
         Weight multipliers to customize the least-squares function. Each key points to
         a (n_cells, ) numpy.ndarray that is defined on the
@@ -1378,6 +1379,11 @@ class SmoothnessSecondOrder(SmoothnessFirstOrder):
     >>> reg.set_weights(weights_1=array_1, weights_2=array_2})
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.regularization.base.BaseRegularization: mesh, active_cells, reference_model, units
+    # docerator: from simpeg.regularization.base.SmoothnessFirstOrder: orientation, reference_model_in_smooth
+    # docerator: from simpeg.objective_function.BaseObjectiveFunction: mapping
 
     def f_m(self, m):
         r"""Evaluate the regularization kernel function.

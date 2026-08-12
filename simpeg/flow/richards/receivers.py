@@ -5,7 +5,19 @@ from ...utils import Zero
 
 
 class Pressure(BaseTimeRx):
-    """Richards pressue receiver class"""
+    """Richards pressue receiver class
+
+    Parameters
+    ----------
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
+    times : array_like
+        Time channels
+    """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.survey.BaseTimeRx: times
 
     def __call__(self, U, simulation):
         projected_grid = "CC"
@@ -50,7 +62,19 @@ class Pressure(BaseTimeRx):
 
 
 class Saturation(BaseTimeRx):
-    """Richards saturation receiver class"""
+    """Richards saturation receiver class
+
+    Parameters
+    ----------
+    locations : (n_loc, n_dim) array_like
+        Locations assocated with a given receiver
+    times : array_like
+        Time channels
+    """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseRx: locations
+    # docerator: from simpeg.survey.BaseTimeRx: times
 
     def __call__(self, U, simulation):
         # The water retention curve model should have been updated in the prob

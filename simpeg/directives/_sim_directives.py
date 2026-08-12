@@ -50,11 +50,25 @@ class SimilarityMeasureInversionDirective(InversionDirective):
     Directive for two model similiraty measure joint inversions. Sets Printers and
     StoppingCriteria.
 
+    Parameters
+    ----------
+    inversion : simpeg.inversion.BaseInversion, None
+        An SimPEG inversion object; i.e. an instance of :class:`simpeg.inversion.BaseInversion`.
+    dmisfit : simpeg.data_misfit.BaseDataMisfit, None
+        A data data misfit; i.e. an instance of :class:`simpeg.data_misfit.BaseDataMisfit`.
+    reg : simpeg.regularization.BaseRegularization, None
+        The regularization, or model objective function; i.e. an instance of :class:`simpeg.regularization.BaseRegularization`.
+    verbose : bool
+        Whether or not to print debugging information.
+
     Notes
     -----
     Methods assume we are working with two models, and a single similarity measure.
     Also, the SimilarityMeasure objective function must be the last regularization.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.directives._directives.InversionDirective: inversion, dmisfit, reg, verbose
 
     printers = [
         IterationPrinters.iteration,
@@ -124,7 +138,15 @@ class SimilarityMeasureSaveOutputEveryIteration(SaveOutputEveryIteration):
     SaveOutputEveryIteration for Joint Inversions.
     Saves information on the tradeoff parameters, data misfits, regularizations,
     coupling term, number of CG iterations, and value of cost function.
+
+    Parameters
+    ----------
+    on_disk : bool, optional
+        Whether this directive will save a log file to disk.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.directives._directives.SaveEveryIteration: on_disk
 
     @property
     def _header(self):
@@ -191,6 +213,17 @@ class PairedBetaEstimate_ByEig(InversionDirective):
     The highest eigenvalues are estimated through power iterations and Rayleigh
     quotient.
 
+    Parameters
+    ----------
+    inversion : simpeg.inversion.BaseInversion, None
+        An SimPEG inversion object; i.e. an instance of :class:`simpeg.inversion.BaseInversion`.
+    dmisfit : simpeg.data_misfit.BaseDataMisfit, None
+        A data data misfit; i.e. an instance of :class:`simpeg.data_misfit.BaseDataMisfit`.
+    reg : simpeg.regularization.BaseRegularization, None
+        The regularization, or model objective function; i.e. an instance of :class:`simpeg.regularization.BaseRegularization`.
+    verbose : bool
+        Whether or not to print debugging information.
+
     Notes
     -----
     This class assumes the order of the data misfits for each model parameter match
@@ -201,6 +234,9 @@ class PairedBetaEstimate_ByEig(InversionDirective):
 
     In which case it will estimate regularization parameters for each respective pair.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.directives._directives.InversionDirective: inversion, dmisfit, reg, verbose
 
     beta0_ratio = 1.0  #: the estimated ratio is multiplied by this to obtain beta
     n_pw_iter = 4  #: number of power iterations for estimation.
@@ -281,7 +317,21 @@ class PairedBetaSchedule(InversionDirective):
     """
     Directive for beta cooling schedule to determine the tradeoff
     parameters when using paired data misfits and regularizations for a joint inversion.
+
+    Parameters
+    ----------
+    inversion : simpeg.inversion.BaseInversion, None
+        An SimPEG inversion object; i.e. an instance of :class:`simpeg.inversion.BaseInversion`.
+    dmisfit : simpeg.data_misfit.BaseDataMisfit, None
+        A data data misfit; i.e. an instance of :class:`simpeg.data_misfit.BaseDataMisfit`.
+    reg : simpeg.regularization.BaseRegularization, None
+        The regularization, or model objective function; i.e. an instance of :class:`simpeg.regularization.BaseRegularization`.
+    verbose : bool
+        Whether or not to print debugging information.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.directives._directives.InversionDirective: inversion, dmisfit, reg, verbose
 
     chifact_target = 1.0
     beta_tol = 1e-1
@@ -338,7 +388,21 @@ class MovingAndMultiTargetStopping(InversionDirective):
 
     ..math::
         \frac {\| \mathbf{m_i} - \mathbf{m_{i-1}} \|} {\| \mathbf{m_{i-1}} \|}
+
+    Parameters
+    ----------
+    inversion : simpeg.inversion.BaseInversion, None
+        An SimPEG inversion object; i.e. an instance of :class:`simpeg.inversion.BaseInversion`.
+    dmisfit : simpeg.data_misfit.BaseDataMisfit, None
+        A data data misfit; i.e. an instance of :class:`simpeg.data_misfit.BaseDataMisfit`.
+    reg : simpeg.regularization.BaseRegularization, None
+        The regularization, or model objective function; i.e. an instance of :class:`simpeg.regularization.BaseRegularization`.
+    verbose : bool
+        Whether or not to print debugging information.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.directives._directives.InversionDirective: inversion, dmisfit, reg, verbose
 
     tol = 1e-5
     beta_tol = 1e-1

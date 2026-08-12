@@ -3,7 +3,19 @@ from ...survey import BaseSurvey
 
 
 class StraightRaySurvey(BaseSurvey):
-    """Straight ray tomography survey"""
+    """Straight ray tomography survey
+
+    Parameters
+    ----------
+    source_list : list of simpeg.survey.BaseSrc objects
+        Sets the sources (and their receivers)
+    counter : simpeg.utils.Counter
+        A SimPEG counter object
+
+    """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseSurvey: source_list, counter
 
     @property
     def nD(self):

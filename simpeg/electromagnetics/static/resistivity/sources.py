@@ -108,7 +108,19 @@ class BaseSrc(survey.BaseSrc):
 class Multipole(BaseSrc):
     """
     Generic Multipole Source
+
+    Parameters
+    ----------
+    receiver_list : list of simpeg.electromagnetics.static.resistivity.receivers.BaseRx
+        A list of DC/IP receivers
+    location : (n_source, n_dim) numpy.ndarray
+        Source locations
+    current : float or numpy.ndarray, default: 1.0
+        Current amplitude [A]
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.electromagnetics.static.resistivity.sources.BaseSrc: receiver_list, location, current
 
     @property
     def location_a(self):

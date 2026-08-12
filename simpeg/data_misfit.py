@@ -260,7 +260,7 @@ class L2DataMisfit(BaseDataMisfit):
     Parameters
     ----------
     data : simpeg.data.Data
-        A SimPEG data object that has observed data and uncertainties.
+        A SimPEG data object.
     simulation : simpeg.simulation.BaseSimulation
         A SimPEG simulation object.
     debug : bool
@@ -268,6 +268,10 @@ class L2DataMisfit(BaseDataMisfit):
     counter : None or simpeg.utils.Counter
         Assign a SimPEG ``Counter`` object to store iterations and run-times.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.data_misfit.BaseDataMisfit: data, simulation
+    # docerator: from simpeg.objective_function.BaseObjectiveFunction: debug, counter
 
     @timeIt
     def __call__(self, m, f=None):

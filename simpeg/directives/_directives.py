@@ -2663,7 +2663,22 @@ class ProjectSphericalBounds(InversionDirective):
     Project :math:`\theta` and :math:`\phi` angles back to :math:`[-\pi,\pi]`
     using back and forth conversion.
     spherical->cartesian->spherical
+
+    Parameters
+    ----------
+    inversion : simpeg.inversion.BaseInversion, None
+        An SimPEG inversion object; i.e. an instance of :class:`simpeg.inversion.BaseInversion`.
+    dmisfit : simpeg.data_misfit.BaseDataMisfit, None
+        A data data misfit; i.e. an instance of :class:`simpeg.data_misfit.BaseDataMisfit`.
+    reg : simpeg.regularization.BaseRegularization, None
+        The regularization, or model objective function; i.e. an instance of :class:`simpeg.regularization.BaseRegularization`.
+    verbose : bool
+        Whether or not to print debugging information.
+
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.directives._directives.InversionDirective: inversion, dmisfit, reg, verbose
 
     def initialize(self):
         x = self.invProb.model

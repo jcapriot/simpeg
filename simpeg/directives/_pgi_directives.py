@@ -32,7 +32,21 @@ class PGI_UpdateParameters(InversionDirective):
         - the GMM as a MAP estimate between the prior and the current model
     For more details, please consult:
      - https://doi.org/10.1093/gji/ggz389
+
+    Parameters
+    ----------
+    inversion : simpeg.inversion.BaseInversion, None
+        An SimPEG inversion object; i.e. an instance of :class:`simpeg.inversion.BaseInversion`.
+    dmisfit : simpeg.data_misfit.BaseDataMisfit, None
+        A data data misfit; i.e. an instance of :class:`simpeg.data_misfit.BaseDataMisfit`.
+    reg : simpeg.regularization.BaseRegularization, None
+        The regularization, or model objective function; i.e. an instance of :class:`simpeg.regularization.BaseRegularization`.
+    verbose : bool
+        Whether or not to print debugging information.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.directives._directives.InversionDirective: inversion, dmisfit, reg, verbose
 
     verbose = False  # print info.  about the GMM at each iteration
     update_rate = 1  # updates at each `update_rate` iterations
@@ -136,7 +150,21 @@ class PGI_BetaAlphaSchedule(InversionDirective):
     It implements the strategy described in https://doi.org/10.1093/gji/ggz389
     for iteratively updating beta and alpha_s for fitting the
     geophysical and smallness targets.
+
+    Parameters
+    ----------
+    inversion : simpeg.inversion.BaseInversion, None
+        An SimPEG inversion object; i.e. an instance of :class:`simpeg.inversion.BaseInversion`.
+    dmisfit : simpeg.data_misfit.BaseDataMisfit, None
+        A data data misfit; i.e. an instance of :class:`simpeg.data_misfit.BaseDataMisfit`.
+    reg : simpeg.regularization.BaseRegularization, None
+        The regularization, or model objective function; i.e. an instance of :class:`simpeg.regularization.BaseRegularization`.
+    verbose : bool
+        Whether or not to print debugging information.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.directives._directives.InversionDirective: inversion, dmisfit, reg, verbose
 
     verbose = False  # print information (progress, updates made)
     tolerance = 0.0  # tolerance on the geophysical target misfit for cooling
@@ -327,7 +355,21 @@ class PGI_AddMrefInSmooth(InversionDirective):
     This directive is to be used with regularizations from regularization.pgi.
     It implements the strategy described in https://doi.org/10.1093/gji/ggz389
     for including the learned reference model, once stable, in the smoothness terms.
+
+    Parameters
+    ----------
+    inversion : simpeg.inversion.BaseInversion, None
+        An SimPEG inversion object; i.e. an instance of :class:`simpeg.inversion.BaseInversion`.
+    dmisfit : simpeg.data_misfit.BaseDataMisfit, None
+        A data data misfit; i.e. an instance of :class:`simpeg.data_misfit.BaseDataMisfit`.
+    reg : simpeg.regularization.BaseRegularization, None
+        The regularization, or model objective function; i.e. an instance of :class:`simpeg.regularization.BaseRegularization`.
+    verbose : bool
+        Whether or not to print debugging information.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.directives._directives.InversionDirective: inversion, dmisfit, reg, verbose
 
     # Chi factor for Data Misfit
     chifact = 1.0

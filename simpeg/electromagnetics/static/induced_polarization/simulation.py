@@ -152,25 +152,69 @@ class BaseIPSimulation(BasePDESimulation):
 class Simulation2DCellCentered(BaseIPSimulation, DC_2D_CC):
     """
     2.5D cell centered IP problem
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
+    survey : .resistivity.survey.Survey
+        The resistivity survey for the simulation.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.static.resistivity.simulation_2d.BaseDCSimulation2D: survey
 
 
 class Simulation2DNodal(BaseIPSimulation, DC_2D_N):
     """
     2.5D nodal IP problem
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
+    survey : .resistivity.survey.Survey
+        The resistivity survey for the simulation.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.static.resistivity.simulation_2d.BaseDCSimulation2D: survey
 
 
 class Simulation3DCellCentered(BaseIPSimulation, DC_3D_CC):
     """
     3D cell centered IP problem
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
+    survey : .resistivity.survey.Survey
+        The resistivity survey for the simulation.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.static.resistivity.simulation.BaseDCSimulation: survey
 
 
 class Simulation3DNodal(BaseIPSimulation, DC_3D_N):
     """
     3D nodal IP problem
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
+    survey : .resistivity.survey.Survey
+        The resistivity survey for the simulation.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.static.resistivity.simulation.BaseDCSimulation: survey
 
 
 Simulation2DCellCentred = Simulation2DCellCentered

@@ -1285,15 +1285,15 @@ class ParametricLayer(BaseParametric):
     ----------
     mesh : discretize.BaseMesh
         A discretize mesh
+    slope : float, optional
+        Directly set the scaling parameter *slope* which sets the sharpness of boundaries
+        between units.
+    slopeFact : float, optional
+        Set sharpness of boundaries between units based on minimum cell size. If set,
+        the scalaing parameter *slope = slopeFact / dh*.
     active_cells : numpy.ndarray, optional
         Active cells array. Can be a boolean ``numpy.ndarray`` of length *mesh.nC*
         or a ``numpy.ndarray`` of ``int`` containing the indices of the active cells.
-    slope : float
-        Directly define the constant *a* in the mapping function which defines the
-        sharpness of the boundaries.
-    slopeFact : float
-        Scaling factor for the sharpness of the boundaries based on cell size.
-        Using this option, we set *a = slopeFact / dh*.
 
     Examples
     --------
@@ -1324,6 +1324,9 @@ class ParametricLayer(BaseParametric):
     >>> mesh.plot_image(act_map * layer_map * model, ax=ax)
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.maps._parametric.BaseParametric: mesh, slope, slopeFact, active_cells
 
     @property
     def nP(self):

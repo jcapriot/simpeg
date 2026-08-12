@@ -652,7 +652,18 @@ class BaseSurvey:
 
 
 class BaseTimeSurvey(BaseSurvey):
-    """Base SimPEG survey class for time-dependent simulations."""
+    """Base SimPEG survey class for time-dependent simulations.
+
+    Parameters
+    ----------
+    source_list : list of simpeg.survey.BaseSrc objects
+        Sets the sources (and their receivers)
+    counter : simpeg.utils.Counter
+        A SimPEG counter object
+    """
+
+    # docerator: provenance
+    # docerator: from simpeg.survey.BaseSurvey: source_list, counter
 
     @property
     def unique_times(self):

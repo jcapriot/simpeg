@@ -77,13 +77,29 @@ class BaseSIPSimulation2D(BaseSIPSimulation):
 class Simulation2DCellCentered(BaseSIPSimulation2D, BaseSimulation2DCellCentered):
     """
     2.5D cell centered Spectral IP problem
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
 
 
 class Simulation2DNodal(BaseSIPSimulation2D, BaseSimulation2DNodal):
     """
     2.5D nodal Spectral IP problem
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
 
 
 Simulation2DCellCentred = Simulation2DCellCentered

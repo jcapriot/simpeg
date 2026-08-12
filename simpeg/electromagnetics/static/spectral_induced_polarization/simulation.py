@@ -627,13 +627,39 @@ class BaseSIPSimulation(BaseIPSimulation):
 class Simulation3DCellCentered(BaseSIPSimulation, BaseSimulation3DCellCentered):
     """
     3D cell centered Spectral IP problem
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
+    survey : .resistivity.survey.Survey
+        The resistivity survey for the simulation.
+    storeJ : bool, optional
+        Whether to store the sensitivity matrix.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.static.resistivity.simulation.BaseDCSimulation: survey, storeJ
 
 
 class Simulation3DNodal(BaseSIPSimulation, BaseSimulation3DNodal):
     """
     3D nodal Spectral IP problem
+
+    Parameters
+    ----------
+    mesh : discretize.base.BaseMesh
+        Mesh on which the forward problem is discretized.
+    survey : .resistivity.survey.Survey
+        The resistivity survey for the simulation.
+    storeJ : bool, optional
+        Whether to store the sensitivity matrix.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.static.resistivity.simulation.BaseDCSimulation: survey, storeJ
 
 
 Simulation3DCellCentred = Simulation3DCellCentered

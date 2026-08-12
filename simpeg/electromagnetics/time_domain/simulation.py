@@ -666,7 +666,7 @@ class Simulation3DMagneticFluxDensity(BaseTDEMSimulation):
     Parameters
     ----------
     mesh : discretize.base.BaseMesh
-        The mesh.
+        Mesh on which the forward problem is discretized.
     survey : .time_domain.survey.Survey
         The time-domain EM survey.
     dt_threshold : float
@@ -776,6 +776,10 @@ class Simulation3DMagneticFluxDensity(BaseTDEMSimulation):
     carries non-zero current at the initial time.
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.time_domain.simulation.BaseTDEMSimulation: survey, dt_threshold
 
     _fieldType = "b"
     _formulation = "EB"
@@ -1103,7 +1107,7 @@ class Simulation3DElectricField(BaseTDEMSimulation):
     Parameters
     ----------
     mesh : discretize.base.BaseMesh
-        The mesh.
+        Mesh on which the forward problem is discretized.
     survey : .time_domain.survey.Survey
         The time-domain EM survey.
     dt_threshold : float
@@ -1213,6 +1217,10 @@ class Simulation3DElectricField(BaseTDEMSimulation):
     source is galvanic and carries non-zero current at the initial time.
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.time_domain.simulation.BaseTDEMSimulation: survey, dt_threshold
 
     _fieldType = "e"
     _formulation = "EB"
@@ -1757,7 +1765,7 @@ class Simulation3DMagneticField(BaseTDEMSimulation):
     Parameters
     ----------
     mesh : discretize.base.BaseMesh
-        The mesh.
+        Mesh on which the forward problem is discretized.
     survey : .time_domain.survey.Survey
         The time-domain EM survey.
     dt_threshold : float
@@ -1865,6 +1873,10 @@ class Simulation3DMagneticField(BaseTDEMSimulation):
     carries non-zero current at the initial time.
 
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.time_domain.simulation.BaseTDEMSimulation: survey, dt_threshold
 
     _fieldType = "h"
     _formulation = "HJ"
@@ -2228,7 +2240,7 @@ class Simulation3DCurrentDensity(BaseTDEMSimulation):
     Parameters
     ----------
     mesh : discretize.base.BaseMesh
-        The mesh.
+        Mesh on which the forward problem is discretized.
     survey : .time_domain.survey.Survey
         The time-domain EM survey.
     dt_threshold : float
@@ -2337,6 +2349,10 @@ class Simulation3DCurrentDensity(BaseTDEMSimulation):
     are computed analytically or numerically depending on whether the source
     carries non-zero current at the initial time.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.base.pde_simulation.BasePDESimulation: mesh
+    # docerator: from simpeg.electromagnetics.time_domain.simulation.BaseTDEMSimulation: survey, dt_threshold
 
     _fieldType = "j"
     _formulation = "HJ"

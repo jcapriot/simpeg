@@ -35,7 +35,38 @@ class Fields2D(TimeFields):
     The array returned will be size (``nE`` or ``nF``, ``nSrcs`` :math:`\times`
     ``nFrequencies``)
 
+    Parameters
+    ----------
+    simulation : simpeg.simulation.BaseTimeSimulation
+        The simulation object used to compute the discrete field solution.
+    knownFields : dict of {key: str}, optional
+        Dictionary defining the field solutions that are stored and where
+        on the mesh they are discretized. E.g. ``{'eSolution': 'E', 'bSolution': 'F'}``
+        would store the `eSolution` on edges and `bSolution` on faces.
+        The ``str`` must be one of {``'CC'``, ``'N'``, ``'E'``, ``'F'``}.
+    aliasFields : dict of {key: list}, optional
+        Set aliases to extract different field types from the field solutions that are
+        stored by the fields object. The ``key`` defines the name you would like to use
+        when extracting a given field type from the fields object. In order, the list
+        contains:
+
+        * the key for the known field solution that is used to compute the field type
+        * where the output field type lives {``'CC'``, ``'N'``, ``'E'``, ``'F'``}
+        * the name of the method used to compute the output field.
+
+        E.g. ``{'b': ['eSolution', 'F', '_b']}`` is an alias that
+        would allow you to extract a field type (``'b'``) that lives on mesh faces (``'F'``)
+        from the E-field solution (``'eSolution'``) by calling a method (``'_b'``).
+    dtype : dtype or dict of {str : dtype}, optional
+        Set the Python data type for each numerical field solution that is stored in
+        the fields object. E.g. ``float``, ``complex``,
+        ``{'eSolution': complex, 'bSolution': complex}``.
+
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.fields.TimeFields: simulation
+    # docerator: from simpeg.fields.Fields: knownFields, aliasFields, dtype
 
     knownFields = {}
     dtype = float
@@ -139,7 +170,38 @@ class Fields2D(TimeFields):
 class Fields2DCellCentered(Fields2D):
     """
     Fancy Field Storage for a 2.5D cell centered code.
+
+    Parameters
+    ----------
+    simulation : simpeg.simulation.BaseTimeSimulation
+        The simulation object used to compute the discrete field solution.
+    knownFields : dict of {key: str}, optional
+        Dictionary defining the field solutions that are stored and where
+        on the mesh they are discretized. E.g. ``{'eSolution': 'E', 'bSolution': 'F'}``
+        would store the `eSolution` on edges and `bSolution` on faces.
+        The ``str`` must be one of {``'CC'``, ``'N'``, ``'E'``, ``'F'``}.
+    aliasFields : dict of {key: list}, optional
+        Set aliases to extract different field types from the field solutions that are
+        stored by the fields object. The ``key`` defines the name you would like to use
+        when extracting a given field type from the fields object. In order, the list
+        contains:
+
+        * the key for the known field solution that is used to compute the field type
+        * where the output field type lives {``'CC'``, ``'N'``, ``'E'``, ``'F'``}
+        * the name of the method used to compute the output field.
+
+        E.g. ``{'b': ['eSolution', 'F', '_b']}`` is an alias that
+        would allow you to extract a field type (``'b'``) that lives on mesh faces (``'F'``)
+        from the E-field solution (``'eSolution'``) by calling a method (``'_b'``).
+    dtype : dtype or dict of {str : dtype}, optional
+        Set the Python data type for each numerical field solution that is stored in
+        the fields object. E.g. ``float``, ``complex``,
+        ``{'eSolution': complex, 'bSolution': complex}``.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.fields.TimeFields: simulation
+    # docerator: from simpeg.fields.Fields: knownFields, aliasFields, dtype
 
     knownFields = {"phiSolution": "CC"}
     aliasFields = {
@@ -219,7 +281,38 @@ class Fields2DCellCentered(Fields2D):
 class Fields2DNodal(Fields2D):
     """
     Fancy Field Storage for a 2.5D nodal code.
+
+    Parameters
+    ----------
+    simulation : simpeg.simulation.BaseTimeSimulation
+        The simulation object used to compute the discrete field solution.
+    knownFields : dict of {key: str}, optional
+        Dictionary defining the field solutions that are stored and where
+        on the mesh they are discretized. E.g. ``{'eSolution': 'E', 'bSolution': 'F'}``
+        would store the `eSolution` on edges and `bSolution` on faces.
+        The ``str`` must be one of {``'CC'``, ``'N'``, ``'E'``, ``'F'``}.
+    aliasFields : dict of {key: list}, optional
+        Set aliases to extract different field types from the field solutions that are
+        stored by the fields object. The ``key`` defines the name you would like to use
+        when extracting a given field type from the fields object. In order, the list
+        contains:
+
+        * the key for the known field solution that is used to compute the field type
+        * where the output field type lives {``'CC'``, ``'N'``, ``'E'``, ``'F'``}
+        * the name of the method used to compute the output field.
+
+        E.g. ``{'b': ['eSolution', 'F', '_b']}`` is an alias that
+        would allow you to extract a field type (``'b'``) that lives on mesh faces (``'F'``)
+        from the E-field solution (``'eSolution'``) by calling a method (``'_b'``).
+    dtype : dtype or dict of {str : dtype}, optional
+        Set the Python data type for each numerical field solution that is stored in
+        the fields object. E.g. ``float``, ``complex``,
+        ``{'eSolution': complex, 'bSolution': complex}``.
     """
+
+    # docerator: provenance
+    # docerator: from simpeg.fields.TimeFields: simulation
+    # docerator: from simpeg.fields.Fields: knownFields, aliasFields, dtype
 
     knownFields = {"phiSolution": "N"}
     aliasFields = {

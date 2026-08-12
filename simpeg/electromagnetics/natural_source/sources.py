@@ -28,10 +28,13 @@ class Planewave(BaseFDEMSrc):
         A list of NSEM receivers
     frequency : float
         Source frequency
+    location : (n_dim) array_like
+        Location of the source
     """
 
     # docerator: provenance
     # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: frequency
+    # docerator: from simpeg.survey.BaseSrc: location
 
 
 # Need to implement such that it works for all dims.
@@ -44,7 +47,7 @@ class PlanewaveXYPrimary(Planewave):
     Parameters
     ----------
     receiver_list : list of simpeg.electromagnetics.frequency_domain.receivers.BaseRx
-        A list of FDEM receivers
+        A list of NSEM receivers
     frequency : float
         Source frequency
     sigma_primary : float, default: ``None``
@@ -52,7 +55,8 @@ class PlanewaveXYPrimary(Planewave):
     """
 
     # docerator: provenance
-    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: receiver_list, frequency
+    # docerator: from simpeg.electromagnetics.natural_source.sources.Planewave: receiver_list
+    # docerator: from simpeg.electromagnetics.frequency_domain.sources.BaseFDEMSrc: frequency
 
     _fields_per_source = 2
 
