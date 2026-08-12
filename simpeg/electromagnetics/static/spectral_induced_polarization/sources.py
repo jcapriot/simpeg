@@ -94,8 +94,7 @@ class BaseSrc(survey.BaseSrc):
         return np.array([rx.nD * len(rx.times) for rx in self.receiver_list])
 
 
-# docerator: override=receiver_list
-# docerator: override=location
+# docerator: override=receiver_list, location
 class Dipole(BaseSrc):
     """Spectral IP dipole source
 

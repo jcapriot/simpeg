@@ -176,8 +176,7 @@ def _validate_type_or_future_of_type(
         return objects
 
 
-# docerator: override=simulations
-# docerator: override=mappings
+# docerator: override=simulations, mappings
 class DaskMetaSimulation(MetaSimulation):
     """Dask Distributed version of simulation of simulations.
 

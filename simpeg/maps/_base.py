@@ -869,8 +869,7 @@ class SumMap(ComboMap):
         return sumDeriv
 
 
-# docerator: override=mesh
-# docerator: override=nP
+# docerator: override=mesh, nP
 class SphericalSystem(IdentityMap):
     r"""Mapping vectors from spherical to Cartesian coordinates.
 

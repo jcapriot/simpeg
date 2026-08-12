@@ -11,8 +11,7 @@ from .waveforms import BaseVRMWaveform
 #########################################
 
 
-# docerator: override=receiver_list
-# docerator: override=location
+# docerator: override=receiver_list, location
 class BaseSrcVRM(BaseSrc):
     """Base VRM source class
 

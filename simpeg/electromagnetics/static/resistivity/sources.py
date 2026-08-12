@@ -3,8 +3,7 @@ from .... import survey
 from ....utils import Zero, validate_ndarray_with_shape
 
 
-# docerator: override=receiver_list
-# docerator: override=location
+# docerator: override=receiver_list, location
 class BaseSrc(survey.BaseSrc):
     """Base DC/IP source
 
