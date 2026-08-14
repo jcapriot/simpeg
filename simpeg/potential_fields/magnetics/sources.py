@@ -5,8 +5,8 @@ from ...utils.code_utils import validate_float, validate_list_of_types
 from .receivers import Point
 
 
-# docerator: override=receiver_list
 class UniformBackgroundField(BaseSrc):
+    # docerator: override=receiver_list
     """A constant uniform background magnetic field.
 
     This inducing field has a uniform magnetic background field defined by an amplitude,

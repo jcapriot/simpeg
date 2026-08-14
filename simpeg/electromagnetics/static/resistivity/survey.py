@@ -10,8 +10,8 @@ from . import sources as Src
 from ..utils import static_utils
 
 
-# docerator: override=source_list
 class Survey(BaseSurvey):
+    # docerator: override=source_list
     """DC/IP survey class.
 
     Parameters

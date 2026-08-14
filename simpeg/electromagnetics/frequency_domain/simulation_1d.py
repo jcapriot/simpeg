@@ -12,8 +12,8 @@ from geoana.kernels.tranverse_electric_reflections import rTE_forward, rTE_gradi
 #######################################################################
 
 
-# docerator: override=survey
 class Simulation1DLayered(BaseEM1DSimulation):
+    # docerator: override=survey
     """
     Simulation class for simulating the FEM response over a 1D layered Earth
     for a single sounding.

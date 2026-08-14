@@ -5,8 +5,8 @@ from ....utils import Zero, mkvc, validate_list_of_types, validate_float
 from .receivers import BaseRx
 
 
-# docerator: override=receiver_list
 class BaseSrc(survey.BaseSrc):
+    # docerator: override=receiver_list
     """Base spectral IP source
 
     Parameters
@@ -94,8 +94,8 @@ class BaseSrc(survey.BaseSrc):
         return np.array([rx.nD * len(rx.times) for rx in self.receiver_list])
 
 
-# docerator: override=receiver_list, location
 class Dipole(BaseSrc):
+    # docerator: override=receiver_list, location
     """Spectral IP dipole source
 
     Parameters
@@ -241,8 +241,8 @@ class Dipole(BaseSrc):
         return q
 
 
-# docerator: override=receiver_list
 class Pole(BaseSrc):
+    # docerator: override=receiver_list
     """Spectral IP pole source
 
     Parameters

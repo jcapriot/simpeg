@@ -8,8 +8,8 @@ from ...utils.code_utils import validate_list_of_types
 ####################################################
 
 
-# docerator: override=source_list
 class Survey(BaseSurvey):
+    # docerator: override=source_list
     """Time domain electromagnetic survey
 
     Parameters

@@ -5,8 +5,8 @@ from .. import resistivity as dc
 from ....utils import validate_string
 
 
-# docerator: override=source_list
 class Survey(BaseTimeSurvey):
+    # docerator: override=source_list
     """Spectral IP survey class
 
     Parameters

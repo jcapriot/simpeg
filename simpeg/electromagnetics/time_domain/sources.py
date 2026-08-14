@@ -407,8 +407,8 @@ class RawWaveform(BaseWaveform):
         return self.waveform_function(time)
 
 
-# docerator: override=off_time
 class VTEMWaveform(BaseWaveform):
+    # docerator: override=off_time
     """
     A VTEM style waveform
 
@@ -512,8 +512,8 @@ class VTEMWaveform(BaseWaveform):
         return np.r_[0, self.peak_time, self.off_time]
 
 
-# docerator: override=off_time
 class TrapezoidWaveform(BaseWaveform):
+    # docerator: override=off_time
     """
     A waveform that has a linear ramp-on and a linear ramp-off.
 
@@ -1070,8 +1070,8 @@ class ExponentialWaveform(BaseWaveform):
 ###############################################################################
 
 
-# docerator: override=receiver_list
 class BaseTDEMSrc(BaseEMSrc):
+    # docerator: override=receiver_list
     """Base TDEM source class
 
     Parameters
@@ -1300,8 +1300,8 @@ class BaseTDEMSrc(BaseEMSrc):
         return Zero()
 
 
-# docerator: override=location
 class MagDipole(BaseTDEMSrc):
+    # docerator: override=location
     r"""
     Point magnetic dipole source calculated by taking the curl of a magnetic
     vector potential. By taking the discrete curl, we ensure that the magnetic
@@ -1790,8 +1790,8 @@ class CircularLoop(MagDipole):
         return self.n_turns * out
 
 
-# docerator: override=location
 class LineCurrent(BaseTDEMSrc):
+    # docerator: override=location
     """Line current source.
 
     Given the wire path provided by the (n_loc, 3) locations array,

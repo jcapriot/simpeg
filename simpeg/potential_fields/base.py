@@ -408,8 +408,8 @@ class BasePFSimulation(LinearSimulation):
             yield receiver_object.components, receiver_object.locations
 
 
-# docerator: override=mesh
 class BaseEquivalentSourceLayerSimulation(BasePFSimulation):
+    # docerator: override=mesh
     """Base equivalent source layer simulation class.
 
     Parameters

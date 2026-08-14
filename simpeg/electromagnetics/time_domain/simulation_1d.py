@@ -28,8 +28,8 @@ for filter_name in libdlf.fourier.__all__:
         COS_FILTERS[filter_name] = fourier_filter
 
 
-# docerator: override=survey
 class Simulation1DLayered(BaseEM1DSimulation):
+    # docerator: override=survey
     """
     Simulation class for simulating the TEM response over a 1D layered Earth
     for a single sounding.

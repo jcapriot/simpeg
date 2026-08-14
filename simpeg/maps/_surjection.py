@@ -17,8 +17,8 @@ from ..utils import (
 from ._base import IdentityMap
 
 
-# docerator: override=mesh
 class SurjectFull(IdentityMap):
+    # docerator: override=mesh
     r"""Mapping a single property value to all mesh cells.
 
     Let :math:`m` be a model defined by a single physical property value
@@ -93,8 +93,8 @@ class SurjectFull(IdentityMap):
         return deriv
 
 
-# docerator: override=mesh
 class SurjectVertical1D(IdentityMap):
+    # docerator: override=mesh
     r"""Map 1D layered Earth model to 2D or 3D tensor mesh.
 
     Let :math:`m` be a 1D model that defines the property values along
@@ -226,8 +226,8 @@ class SurjectVertical1D(IdentityMap):
         return deriv
 
 
-# docerator: override=mesh
 class Surject2Dto3D(IdentityMap):
+    # docerator: override=mesh
     r"""Map 2D tensor model to 3D tensor mesh.
 
     Let :math:`m` define the parameters for a 2D tensor model.

@@ -1672,8 +1672,8 @@ class SimulationEquivalentSourceLayer(
         return diagonal
 
 
-# docerator: override=survey
 class Simulation3DDifferential(BaseMagneticPDESimulation):
+    # docerator: override=survey
     r"""A secondary field simulation for magnetic data.
 
     Parameters

@@ -766,8 +766,8 @@ class Smallness(BaseRegularization):
         return self.mapping.deriv(m)
 
 
-# docerator: override=weights
 class SmoothnessFirstOrder(BaseRegularization):
+    # docerator: override=weights
     r"""First-order smoothness least-squares regularization.
 
     ``SmoothnessFirstOrder`` regularization is used to ensure that values in the recovered
@@ -1221,8 +1221,8 @@ class SmoothnessFirstOrder(BaseRegularization):
         return self._orientation
 
 
-# docerator: override=weights
 class SmoothnessSecondOrder(SmoothnessFirstOrder):
+    # docerator: override=weights
     r"""Second-order smoothness (flatness) least-squares regularization.
 
     ``SmoothnessSecondOrder`` regularization is used to ensure that values in the recovered

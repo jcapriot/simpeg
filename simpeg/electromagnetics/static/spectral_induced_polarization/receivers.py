@@ -204,8 +204,8 @@ class BaseRx(BaseTimeRx):
             return P.T * v
 
 
-# docerator: override=locations
 class Dipole(BaseRx):
+    # docerator: override=locations
     """
     Spectral IP dipole receiver class
 

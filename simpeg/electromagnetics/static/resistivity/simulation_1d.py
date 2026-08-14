@@ -102,8 +102,8 @@ def _dphi_tilde(rho, thicknesses, lambdas):
     return J_rho.T, J_h.T
 
 
-# docerator: override=survey
 class Simulation1DLayers(BaseSimulation):
+    # docerator: override=survey
     """
     1D DC Simulation
 

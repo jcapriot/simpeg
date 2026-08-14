@@ -1,8 +1,8 @@
 from ...survey import BaseSrc
 
 
-# docerator: override=receiver_list
 class SourceField(BaseSrc):
+    # docerator: override=receiver_list
     """Source field for gravity integral formulation
 
     Parameters

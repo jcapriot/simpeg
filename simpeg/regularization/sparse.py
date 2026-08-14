@@ -211,8 +211,8 @@ class BaseSparse(BaseRegularization):
         )
 
 
-# docerator: override=norm
 class SparseSmallness(BaseSparse, Smallness):
+    # docerator: override=norm
     r"""Sparse smallness (compactness) regularization.
 
     ``SparseSmallness`` is used to recover models comprised of compact structures.
@@ -407,8 +407,8 @@ class SparseSmallness(BaseSparse, Smallness):
         self.set_weights(irls=self.get_lp_weights(f_m))
 
 
-# docerator: override=norm
 class SparseSmoothness(BaseSparse, SmoothnessFirstOrder):
+    # docerator: override=norm
     r"""Sparse smoothness (blockiness) regularization.
 
     ``SparseSmoothness`` is used to recover models comprised of blocky structures.

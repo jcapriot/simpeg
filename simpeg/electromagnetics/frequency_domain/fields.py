@@ -5,8 +5,8 @@ from ...utils import Identity, Zero, mkvc
 from ..utils import omega
 
 
-# docerator: override=simulation
 class FieldsFDEM(Fields):
+    # docerator: override=simulation
     r"""Base class for storing FDEM fields.
 
     FDEM fields classes are used to store the discrete solution of the fields for a
@@ -320,8 +320,8 @@ class FieldsFDEM(Fields):
         )
 
 
-# docerator: override=simulation
 class Fields3DElectricField(FieldsFDEM):
+    # docerator: override=simulation
     r"""Fields class for storing 3D total electric field solutions.
 
     This class stores the total electric field solution computed using a
@@ -687,8 +687,8 @@ class Fields3DElectricField(FieldsFDEM):
         ) / self.mesh.cell_volumes[:, None]
 
 
-# docerator: override=simulation
 class Fields3DMagneticFluxDensity(FieldsFDEM):
+    # docerator: override=simulation
     r"""Fields class for storing 3D total magnetic flux density solutions.
 
     This class stores the total magnetic flux density solution computed using a
@@ -1057,8 +1057,8 @@ class Fields3DMagneticFluxDensity(FieldsFDEM):
         ) / self.mesh.cell_volumes[:, None]
 
 
-# docerator: override=simulation
 class Fields3DCurrentDensity(FieldsFDEM):
+    # docerator: override=simulation
     r"""Fields class for storing 3D current density solutions.
 
     This class stores the total current density solution computed using a
@@ -1487,8 +1487,8 @@ class Fields3DCurrentDensity(FieldsFDEM):
         return epsilon_0 * (self._faceDiv * self._e(jSolution, source_list))
 
 
-# docerator: override=simulation
 class Fields3DMagneticField(FieldsFDEM):
+    # docerator: override=simulation
     r"""Fields class for storing 3D magnetic field solutions.
 
     This class stores the total magnetic field solution computed using a

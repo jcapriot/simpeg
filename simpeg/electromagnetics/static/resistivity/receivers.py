@@ -247,8 +247,8 @@ class BaseRx(BaseSimPEGRx):
             return P.T @ v
 
 
-# docerator: override=locations
 class Dipole(BaseRx):
+    # docerator: override=locations
     """
     Dipole receiver class
 

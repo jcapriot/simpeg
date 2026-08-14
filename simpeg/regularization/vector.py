@@ -61,8 +61,8 @@ class BaseVectorRegularization(BaseRegularization):
         return [(mesh.nC,), (self.n_comp * mesh.nC,), (mesh.nC, self.n_comp)]
 
 
-# docerator: override=weights
 class CrossReferenceRegularization(Smallness, BaseVectorRegularization):
+    # docerator: override=weights
     r"""Cross reference regularization for models representing vector quantities.
 
     ``CrossReferenceRegularization`` encourages the vectors in the recovered model to

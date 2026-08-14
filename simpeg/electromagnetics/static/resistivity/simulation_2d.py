@@ -25,8 +25,8 @@ from discretize.utils import make_boundary_bool
 import discretize.base
 
 
-# docerator: override=survey
 class BaseDCSimulation2D(BaseElectricalPDESimulation):
+    # docerator: override=survey
     """
     Base 2.5D DC problem
 

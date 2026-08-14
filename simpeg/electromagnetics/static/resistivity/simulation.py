@@ -17,8 +17,8 @@ from .utils import _mini_pole_pole
 from discretize.utils import make_boundary_bool
 
 
-# docerator: override=survey
 class BaseDCSimulation(BaseElectricalPDESimulation):
+    # docerator: override=survey
     """
     Base DC Problem
 
@@ -359,8 +359,8 @@ class BaseDCSimulation(BaseElectricalPDESimulation):
         return out
 
 
-# docerator: expand_kwargs
 class Simulation3DCellCentered(BaseDCSimulation):
+    # docerator: expand_kwargs
     """
     3D cell centered DC problem
 
@@ -560,8 +560,8 @@ class Simulation3DCellCentered(BaseDCSimulation):
         self.Grad = self.Grad - B
 
 
-# docerator: expand_kwargs
 class Simulation3DNodal(BaseDCSimulation):
+    # docerator: expand_kwargs
     """
     3D nodal DC problem
 

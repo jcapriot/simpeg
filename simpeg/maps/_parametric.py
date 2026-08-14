@@ -22,8 +22,8 @@ from ._base import IdentityMap
 from ..utils.code_utils import deprecate_property
 
 
-# docerator: override=mesh
 class ParametricCircleMap(IdentityMap):
+    # docerator: override=mesh
     r"""Mapping for a parameterized circle.
 
     Define the mapping from a parameterized model for a circle in a wholespace
@@ -254,8 +254,8 @@ class ParametricCircleMap(IdentityMap):
         return False
 
 
-# docerator: override=mesh
 class ParametricPolyMap(IdentityMap):
+    # docerator: override=mesh
     r"""Mapping for 2 layer model whose interface is defined by a polynomial.
 
     This mapping is used when the cells lying below the Earth's surface can
@@ -694,8 +694,8 @@ class ParametricPolyMap(IdentityMap):
         return False
 
 
-# docerator: override=mesh
 class ParametricSplineMap(IdentityMap):
+    # docerator: override=mesh
     r"""Mapping to parameterize the boundary between two geological units using
     spline interpolation.
 
@@ -1078,8 +1078,8 @@ class ParametricSplineMap(IdentityMap):
         return False
 
 
-# docerator: override=mesh
 class BaseParametric(IdentityMap):
+    # docerator: override=mesh
     """Base class for parametric mappings from simple geological structures to meshes.
 
     Parameters

@@ -12,8 +12,8 @@ from ...utils import (
 #########################################
 
 
-# docerator: override=locations
 class Point(BaseRx):
+    # docerator: override=locations
     """Point receiver for viscous remanent magnetization simulations
 
     Parameters
@@ -137,8 +137,8 @@ class Point(BaseRx):
             return self.locations.shape[0] * len(self.times)
 
 
-# docerator: override=locations
 class SquareLoop(Point):
+    # docerator: override=locations
     """Square loop receiver
 
     Measurements with this type of receiver are the field, integrated over the

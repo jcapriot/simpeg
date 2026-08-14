@@ -347,8 +347,8 @@ class Fields:
         return self._fields.__contains__(other)
 
 
-# docerator: override=simulation
 class TimeFields(Fields):
+    # docerator: override=simulation
     r"""Base class for storing TDEM fields.
 
     ``TimeFields`` is a base class for storing discrete field solutions for simulations

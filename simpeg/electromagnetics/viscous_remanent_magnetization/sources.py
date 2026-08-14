@@ -11,8 +11,8 @@ from .waveforms import BaseVRMWaveform
 #########################################
 
 
-# docerator: override=receiver_list, location
 class BaseSrcVRM(BaseSrc):
+    # docerator: override=receiver_list, location
     """Base VRM source class
 
     Parameters
@@ -381,8 +381,8 @@ class CircLoop(BaseSrcVRM):
 #########################################
 
 
-# docerator: override=location
 class LineCurrent(BaseSrcVRM):
+    # docerator: override=location
     """Line current source.
 
     Parameters

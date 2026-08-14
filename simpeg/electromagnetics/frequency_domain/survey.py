@@ -3,8 +3,8 @@ from .sources import BaseFDEMSrc
 from ...utils import validate_list_of_types
 
 
-# docerator: override=source_list
 class Survey(BaseSurvey):
+    # docerator: override=source_list
     """Frequency domain electromagnetic survey
 
     Parameters

@@ -5,8 +5,8 @@ from ...fields import TimeFields
 from ...utils import mkvc, sdiag, Zero
 
 
-# docerator: override=simulation
 class FieldsTDEM(TimeFields):
+    # docerator: override=simulation
     r"""Base class for storing TDEM fields.
 
     TDEM fields classes are used to store the discrete solution of the fields for a
@@ -153,8 +153,8 @@ class FieldsDerivativesHJ(FieldsTDEM):
         }
 
 
-# docerator: override=simulation
 class Fields3DMagneticFluxDensity(FieldsTDEM):
+    # docerator: override=simulation
     r"""Fields class for storing 3D total magnetic flux density solutions.
 
     This class stores the total magnetic flux density solution computed using a
@@ -353,8 +353,8 @@ class Fields3DMagneticFluxDensity(FieldsTDEM):
         return self.simulation.MfI * (self._MfMui * self._dbdtDeriv_m(tInd, src, v))
 
 
-# docerator: override=simulation
 class Fields3DElectricField(FieldsTDEM):
+    # docerator: override=simulation
     r"""Fields class for storing 3D total electric field solutions.
 
     This class stores the total electric field solution computed using a
@@ -515,8 +515,8 @@ class Fields3DElectricField(FieldsTDEM):
         return self.simulation.MfI * (self._MfMui * self._dbdtDeriv_m(tInd, src, v))
 
 
-# docerator: override=simulation
 class Fields3DMagneticField(FieldsTDEM):
+    # docerator: override=simulation
     r"""Fields class for storing 3D total magnetic field solutions.
 
     This class stores the total magnetic field solution computed using a
@@ -726,8 +726,8 @@ class Fields3DMagneticField(FieldsTDEM):
         )
 
 
-# docerator: override=simulation
 class Fields3DCurrentDensity(FieldsTDEM):
+    # docerator: override=simulation
     r"""Fields class for storing 3D current density solutions.
 
     This class stores the total current density solution computed using a

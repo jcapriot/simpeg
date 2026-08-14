@@ -18,8 +18,8 @@ from .fields import (
 import warnings
 
 
-# docerator: override=survey
 class BaseFDEMSimulation(BaseEMSimulation):
+    # docerator: override=survey
     r"""Base finite volume FDEM simulation class.
 
     This class is used to define properties and methods necessary for solving

@@ -127,8 +127,8 @@ class Mesh2Mesh(IdentityMap):
         return self.P
 
 
-# docerator: override=mesh
 class InjectActiveCells(IdentityMap):
+    # docerator: override=mesh
     r"""Map active cells model to all cell of a mesh.
 
     The ``InjectActiveCells`` class is used to define the mapping when

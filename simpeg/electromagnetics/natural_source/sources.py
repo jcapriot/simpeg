@@ -17,8 +17,8 @@ from discretize.utils import volume_average
 
 
 # Rename to BasePlanewave
-# docerator: override=receiver_list
 class Planewave(BaseFDEMSrc):
+    # docerator: override=receiver_list
     """
     Source class for the 1D and pseudo-3D problems.
 

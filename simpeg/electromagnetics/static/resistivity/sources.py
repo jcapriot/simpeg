@@ -3,8 +3,8 @@ from .... import survey
 from ....utils import Zero, validate_ndarray_with_shape
 
 
-# docerator: override=receiver_list, location
 class BaseSrc(survey.BaseSrc):
+    # docerator: override=receiver_list, location
     """Base DC/IP source
 
     Parameters
@@ -145,8 +145,8 @@ class Multipole(BaseSrc):
         return np.full_like(self.location, np.nan)
 
 
-# docerator: override=location
 class Dipole(BaseSrc):
+    # docerator: override=location
     """Dipole source
 
     Parameters

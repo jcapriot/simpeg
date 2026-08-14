@@ -13,8 +13,8 @@ from .utils.plot_utils import DataNSEMPlotMethods
 #########
 
 
-# docerator: override=survey
 class Data(BaseData, DataNSEMPlotMethods):
+    # docerator: override=survey
     r"""Data class for NSEMdata.
 
     Stores the data vector indexed by the survey.

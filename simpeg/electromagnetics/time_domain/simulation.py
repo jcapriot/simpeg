@@ -15,8 +15,8 @@ from .fields import (
 )
 
 
-# docerator: override=survey
 class BaseTDEMSimulation(BaseTimeSimulation, BaseEMSimulation):
+    # docerator: override=survey
     r"""Base class for quasi-static TDEM simulation with finite volume.
 
     This class is used to define properties and methods necessary for solving

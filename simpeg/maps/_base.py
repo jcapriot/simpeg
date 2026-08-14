@@ -625,8 +625,8 @@ class LinearMap(IdentityMap):
         return self.A @ v
 
 
-# docerator: override=nP
 class Projection(IdentityMap):
+    # docerator: override=nP
     r"""Projection mapping.
 
     ``Projection`` mapping can be used to project and/or rearange model
@@ -745,8 +745,8 @@ class Projection(IdentityMap):
         return self.P
 
 
-# docerator: override=maps
 class SumMap(ComboMap):
+    # docerator: override=maps
     """Combination map constructed by summing multiple mappings
     to the same vector space.
 
@@ -869,8 +869,8 @@ class SumMap(ComboMap):
         return sumDeriv
 
 
-# docerator: override=mesh, nP
 class SphericalSystem(IdentityMap):
+    # docerator: override=mesh, nP
     r"""Mapping vectors from spherical to Cartesian coordinates.
 
     Let :math:`\mathbf{m}` be a model containing the amplitudes

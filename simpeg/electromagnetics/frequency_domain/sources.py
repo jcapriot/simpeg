@@ -20,8 +20,8 @@ from ..utils import segmented_line_current_source_term, line_through_faces
 from ..base import BaseEMSrc
 
 
-# docerator: override=receiver_list
 class BaseFDEMSrc(BaseEMSrc):
+    # docerator: override=receiver_list
     """Base FDEM source class
 
     Parameters
@@ -393,8 +393,8 @@ class RawVec(RawVec_e, RawVec_m):
         )
 
 
-# docerator: override=location
 class MagDipole(BaseFDEMSrc):
+    # docerator: override=location
     r"""
     Point magnetic dipole source calculated by taking the curl of a magnetic
     vector potential. By taking the discrete curl, we ensure that the magnetic
