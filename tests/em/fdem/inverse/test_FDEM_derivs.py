@@ -11,6 +11,8 @@ from simpeg.electromagnetics.utils.testing_utils import (
 )
 import pytest
 
+from tests.utils.shared_solves import SharedSolves
+
 TOL = 1e-5
 FLR = 1e-20  # "zero", so if residual below this --> pass regardless of order
 CONDUCTIVITY = 1e1
@@ -28,32 +30,6 @@ RECEIVER_TYPES = [
 RECEIVER_DIRS = ["x", "y", "z"]
 RECEIVER_COMPS = ["r", "i"]
 ALL_RECEIVERS = list(itertools.product(RECEIVER_TYPES, RECEIVER_DIRS, RECEIVER_COMPS))
-
-
-class SharedSolves:
-    """Memoize ``dpred`` and ``Jvec`` of one simulation.
-
-    ``check_derivative`` draws its step direction from the seed and the size of
-    ``x0`` alone, so every receiver's test asks for the same models. Caching the
-    full data vector means each model is solved once for all of the receivers.
-    """
-
-    def __init__(self, sim):
-        self.sim = sim
-        self._dpred = {}
-        self._jvec = {}
-
-    def dpred(self, m):
-        key = m.tobytes()
-        if key not in self._dpred:
-            self._dpred[key] = self.sim.dpred(m)
-        return self._dpred[key]
-
-    def jvec(self, m, v):
-        key = (m.tobytes(), v.tobytes())
-        if key not in self._jvec:
-            self._jvec[key] = self.sim.Jvec(m, v)
-        return self._jvec[key]
 
 
 @pytest.fixture(scope="module", params=SIM_TYPES)
