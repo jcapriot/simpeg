@@ -3,9 +3,11 @@
 import pytest
 import numpy as np
 import discretize
-from simpeg import maps, data_misfit, tests
+from simpeg import maps, tests
 from simpeg.utils import get_default_solver
 from simpeg.electromagnetics import time_domain as tdem
+
+from tests.utils.shared_solves import SharedSolves
 
 plotIt = False
 
@@ -13,7 +15,7 @@ ADJ_ATOL = 1e-11
 ADJ_RTOL = 2e-5
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def mesh():
     """Return test mesh."""
     cs = 10.0
@@ -33,13 +35,13 @@ def mesh():
     )
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def locations():
     """Return receiver locations."""
     return np.array([[15, 0.0, -1e-2]])
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def times():
     """Return receiver times."""
     return np.logspace(-4, -3, 20)
@@ -47,17 +49,25 @@ def times():
 
 def get_survey(receiver_type, orientation, locations, times):
     """Return test survey."""
-    rx1 = getattr(tdem.receivers, "Point" + receiver_type)(
-        locations=locations, times=times, orientation=orientation
-    )
-    rx2 = getattr(tdem.receivers, "Point" + receiver_type)(
-        locations=locations, times=times, orientation=orientation
-    )
+    return get_multi_receiver_survey([(receiver_type, orientation)], locations, times)
 
-    src1 = tdem.sources.MagDipole([rx1], location=np.array([0.0, 0.0, 0.0]))
-    src2 = tdem.sources.MagDipole([rx2], location=np.array([0.0, 0.0, 8.0]))
 
-    return tdem.Survey([src1, src2])
+def get_multi_receiver_survey(receivers, locations, times):
+    """Return test survey with every (receiver type, orientation) at both sources.
+
+    Each source gets its own receiver objects.
+    """
+    source_list = []
+    for source_location in [np.array([0.0, 0.0, 0.0]), np.array([0.0, 0.0, 8.0])]:
+        rx_list = [
+            getattr(tdem.receivers, "Point" + receiver_type)(
+                locations=locations, times=times, orientation=orientation
+            )
+            for receiver_type, orientation in receivers
+        ]
+        source_list.append(tdem.sources.MagDipole(rx_list, location=source_location))
+
+    return tdem.Survey(source_list)
 
 
 def get_simulation(simulation_class, mesh, survey):
@@ -171,71 +181,109 @@ CASES_LIST = [
 ]
 
 
-@pytest.mark.parametrize("simulation_class, receiver_type, orientation", CASES_LIST)
-class TestDerivatives:
-    """Derivative and adjoint test for primary-secondary formulation."""
+CASES_BY_CLASS = {}
+for _class, _rx_type, _orientation in CASES_LIST:
+    CASES_BY_CLASS.setdefault(_class, []).append((_rx_type, _orientation))
 
-    def get_setup_objects(
-        self,
-        simulation_class,
-        receiver_type,
-        orientation,
-        mesh,
-        locations,
-        times,
-    ):
-        """Get setup for tests."""
-        survey = get_survey(
-            receiver_type,
-            orientation,
-            locations,
-            times,
-        )
 
-        sim = get_simulation(simulation_class, mesh, survey)
+class SharedSimulation:
+    """A simulation of one class that has every receiver of that class's cases.
 
+    The cases of a simulation class only differ by their receivers, so the
+    simulation is built once and each case works with its slice of the data.
+    """
+
+    def __init__(self, simulation_class, mesh, locations, times):
+        self.cases = CASES_BY_CLASS[simulation_class]
+        self.survey = get_multi_receiver_survey(self.cases, locations, times)
+        self.sim = get_simulation(simulation_class, mesh, self.survey)
+
+        rng = np.random.default_rng(1234)
         if "Hierarchical" in simulation_class:
             n_sigma = np.sum(mesh.cell_centers[:, -1] < 0.0)
             n_tau = np.sum(mesh.faces[:, -1] < 0.0)
             n_kappa = np.sum(mesh.edges[:, -1] < 0.0)
-            m0 = np.r_[
-                np.log(1e-1) * np.ones(n_sigma) + 1e-3 * np.random.randn(n_sigma),
-                np.log(10 * 1e-1) * np.ones(n_tau) + 1e-3 * np.random.randn(n_tau),
-                np.log(100 * 1e-1) * np.ones(n_kappa) + 1e-3 * np.random.randn(n_kappa),
+            self.m0 = np.r_[
+                np.log(1e-1) * np.ones(n_sigma) + 1e-3 * rng.normal(size=n_sigma),
+                np.log(10 * 1e-1) * np.ones(n_tau) + 1e-3 * rng.normal(size=n_tau),
+                np.log(100 * 1e-1) * np.ones(n_kappa) + 1e-3 * rng.normal(size=n_kappa),
             ]
         else:
-            n_param = sim.sigmaMap.nP
-            m0 = np.log(1e-1) * np.ones(n_param) + (1e-3 * np.random.randn(n_param))
+            n_param = self.sim.sigmaMap.nP
+            self.m0 = np.log(1e-1) * np.ones(n_param) + 1e-3 * rng.normal(size=n_param)
 
-        # Define data and misfit
-        data = sim.make_synthetic_data(m0, add_noise=True, seed=4412)
-        dmis = data_misfit.L2DataMisfit(simulation=sim, data=data)
+        self.solves = SharedSolves(self.sim)
+        self._jvec_with_fields = {}
 
-        return m0, dmis
+    def jvec_with_fields(self, v, f):
+        """Cached ``Jvec`` (tests that ask for the same vector share it)."""
+        key = v.tobytes()
+        if key not in self._jvec_with_fields:
+            self._jvec_with_fields[key] = self.sim.Jvec(self.m0, v, f=f)
+        return self._jvec_with_fields[key]
 
-    def test_misfit(
-        self,
-        simulation_class,
-        receiver_type,
-        orientation,
-        mesh,
-        locations,
-        times,
-    ):
-        """Test derivative."""
-        m0, dmis = self.get_setup_objects(
-            simulation_class,
-            receiver_type,
-            orientation,
-            mesh,
-            locations,
-            times,
+    def data_inds(self, receiver_type, orientation):
+        """Indices of a case's data in the full data vector."""
+        case_index = self.cases.index((receiver_type, orientation))
+        inds = []
+        for src in self.survey.source_list:
+            slc = self.survey.get_slice(src, src.receiver_list[case_index])
+            inds.append(np.arange(slc.start, slc.stop))
+        return np.concatenate(inds)
+
+
+class SimulationCache(dict):
+    """Build the simulation of a class the first time a test asks for it."""
+
+    def __init__(self, factory):
+        super().__init__()
+        self.factory = factory
+
+    def __missing__(self, simulation_class):
+        self[simulation_class] = self.factory(simulation_class)
+        return self[simulation_class]
+
+
+@pytest.fixture(scope="module")
+def shared_sims(mesh, locations, times):
+    """Simulations for the derivative tests."""
+    return SimulationCache(
+        lambda simulation_class: SharedSimulation(
+            simulation_class, mesh, locations, times
         )
-        sim = dmis.simulation
+    )
+
+
+@pytest.fixture(scope="module")
+def adjoint_sims(mesh, locations, times):
+    """Simulations, and their fields at `m0`, for the adjoint tests.
+
+    These are kept apart from the simulations of the derivative tests, so that
+    nothing else solves with them and replaces what the stored fields need.
+    """
+
+    def build(simulation_class):
+        shared = SharedSimulation(simulation_class, mesh, locations, times)
+        return shared, shared.sim.fields(shared.m0)
+
+    return SimulationCache(build)
+
+
+@pytest.mark.parametrize("simulation_class, receiver_type, orientation", CASES_LIST)
+class TestDerivatives:
+    """Derivative and adjoint test for primary-secondary formulation."""
+
+    def test_misfit(self, simulation_class, receiver_type, orientation, shared_sims):
+        """Test derivative."""
+        shared = shared_sims[simulation_class]
+        inds = shared.data_inds(receiver_type, orientation)
 
         passed = tests.check_derivative(
-            lambda m: (sim.dpred(m), lambda mx: sim.Jvec(m0, mx)),
-            m0,
+            lambda m: (
+                shared.solves.dpred(m)[inds],
+                lambda mx: shared.solves.jvec(shared.m0, mx)[inds],
+            ),
+            shared.m0,
             plotIt=False,
             random_seed=42,
             num=3,
@@ -243,34 +291,23 @@ class TestDerivatives:
 
         assert passed
 
-    def test_adjoint(
-        self,
-        simulation_class,
-        receiver_type,
-        orientation,
-        mesh,
-        locations,
-        times,
-    ):
+    def test_adjoint(self, simulation_class, receiver_type, orientation, adjoint_sims):
         """Test adjoint."""
-        m0, dmis = self.get_setup_objects(
-            simulation_class,
-            receiver_type,
-            orientation,
-            mesh,
-            locations,
-            times,
-        )
-        sim = dmis.simulation
-        n_data = sim.survey.nD
+        shared, f = adjoint_sims[simulation_class]
+        sim, m0 = shared.sim, shared.m0
+        inds = shared.data_inds(receiver_type, orientation)
 
-        f = sim.fields(m0)
+        def jtvec(v):
+            # J^T applied to a vector that is zero outside of this case's data
+            full = np.zeros(shared.survey.nD, dtype=v.dtype)
+            full[inds] = v
+            return sim.Jtvec(m0, full, f=f)
 
         tests.assert_isadjoint(
-            lambda u: sim.Jvec(m0, u, f=f),
-            lambda v: sim.Jtvec(m0, v, f=f),
+            lambda u: shared.jvec_with_fields(u, f)[inds],
+            jtvec,
             m0.shape,
-            (n_data,),
+            (len(inds),),
             rtol=ADJ_RTOL,
             atol=ADJ_ATOL,
             random_seed=44,
