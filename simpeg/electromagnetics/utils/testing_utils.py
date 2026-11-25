@@ -12,6 +12,23 @@ MU = mu_0
 freq = 5e-1
 
 
+def _receiver_list(comp, locations):
+    """Build point receivers for the FDEM test problems.
+
+    ``comp`` is either a single ``(receiver type, orientation, "r" or "i")``
+    tuple, or a list of them. A new set of receivers is made on every call, so
+    each source gets its own receiver objects.
+    """
+    comps = [comp] if isinstance(comp[0], str) else comp
+    receivers = []
+    for rx_type, orientation, part in comps:
+        rx_class = getattr(fdem.Rx, "Point" + rx_type)
+        receivers.append(
+            rx_class(locations, orientation, {"r": "real", "i": "imag"}[part])
+        )
+    return receivers
+
+
 def getFDEMProblem(fdemType, comp, SrcList, freq, useMu=False, verbose=False):
     cs = 10.0
     ncx, ncy, ncz = 0, 0, 0
@@ -33,36 +50,38 @@ def getFDEMProblem(fdemType, comp, SrcList, freq, useMu=False, verbose=False):
         + cs / 4.0
     )  # don't sample right by the source, slightly off alignment from either staggered grid
     XYZ = utils.ndgrid(x, x, np.linspace(-2.0 * cs, 2.0 * cs, 5))
-    Rx0 = getattr(fdem.Rx, "Point" + comp[0])
-    if comp[-1] == "r":
-        real_or_imag = "real"
-    elif comp[-1] == "i":
-        real_or_imag = "imag"
-    rx0 = Rx0(XYZ, comp[1], real_or_imag)
 
     Src = []
 
     for SrcType in SrcList:
         if SrcType == "MagDipole":
             Src.append(
-                fdem.Src.MagDipole([rx0], frequency=freq, location=np.r_[0.0, 0.0, 0.0])
+                fdem.Src.MagDipole(
+                    _receiver_list(comp, XYZ),
+                    frequency=freq,
+                    location=np.r_[0.0, 0.0, 0.0],
+                )
             )
         elif SrcType == "MagDipole_Bfield":
             Src.append(
                 fdem.Src.MagDipole_Bfield(
-                    [rx0], frequency=freq, location=np.r_[0.0, 0.0, 0.0]
+                    _receiver_list(comp, XYZ),
+                    frequency=freq,
+                    location=np.r_[0.0, 0.0, 0.0],
                 )
             )
         elif SrcType == "CircularLoop":
             Src.append(
                 fdem.Src.CircularLoop(
-                    [rx0], frequency=freq, location=np.r_[0.0, 0.0, 0.0]
+                    _receiver_list(comp, XYZ),
+                    frequency=freq,
+                    location=np.r_[0.0, 0.0, 0.0],
                 )
             )
         elif SrcType == "LineCurrent":
             Src.append(
                 fdem.Src.LineCurrent(
-                    [rx0],
+                    _receiver_list(comp, XYZ),
                     frequency=freq,
                     location=np.array([[0.0, 0.0, 0.0], [20.0, 0.0, 0.0]]),
                 )
@@ -81,7 +100,10 @@ def getFDEMProblem(fdemType, comp, SrcList, freq, useMu=False, verbose=False):
                 ] = 1e-3
                 Src.append(
                     fdem.Src.RawVec(
-                        [rx0], freq, S_m, mesh.get_edge_inner_product() * S_e
+                        _receiver_list(comp, XYZ),
+                        freq,
+                        S_m,
+                        mesh.get_edge_inner_product() * S_e,
                     )
                 )
 
@@ -98,7 +120,10 @@ def getFDEMProblem(fdemType, comp, SrcList, freq, useMu=False, verbose=False):
                 ] = 1e-3
                 Src.append(
                     fdem.Src.RawVec(
-                        [rx0], freq, mesh.get_edge_inner_product() * S_m, S_e
+                        _receiver_list(comp, XYZ),
+                        freq,
+                        mesh.get_edge_inner_product() * S_m,
+                        S_e,
                     )
                 )
 
@@ -167,36 +192,38 @@ def get_FDEM_hierarchical_problem(
         + cs / 4.0
     )  # don't sample right by the source, slightly off alignment from either staggered grid
     XYZ = utils.ndgrid(x, x, np.linspace(-2.0 * cs, 2.0 * cs, 5))
-    Rx0 = getattr(fdem.Rx, "Point" + comp[0])
-    if comp[-1] == "r":
-        real_or_imag = "real"
-    elif comp[-1] == "i":
-        real_or_imag = "imag"
-    rx0 = Rx0(XYZ, comp[1], real_or_imag)
 
     Src = []
 
     for SrcType in SrcList:
         if SrcType == "MagDipole":
             Src.append(
-                fdem.Src.MagDipole([rx0], frequency=freq, location=np.r_[0.0, 0.0, 0.0])
+                fdem.Src.MagDipole(
+                    _receiver_list(comp, XYZ),
+                    frequency=freq,
+                    location=np.r_[0.0, 0.0, 0.0],
+                )
             )
         elif SrcType == "MagDipole_Bfield":
             Src.append(
                 fdem.Src.MagDipole_Bfield(
-                    [rx0], frequency=freq, location=np.r_[0.0, 0.0, 0.0]
+                    _receiver_list(comp, XYZ),
+                    frequency=freq,
+                    location=np.r_[0.0, 0.0, 0.0],
                 )
             )
         elif SrcType == "CircularLoop":
             Src.append(
                 fdem.Src.CircularLoop(
-                    [rx0], frequency=freq, location=np.r_[0.0, 0.0, 0.0]
+                    _receiver_list(comp, XYZ),
+                    frequency=freq,
+                    location=np.r_[0.0, 0.0, 0.0],
                 )
             )
         elif SrcType == "LineCurrent":
             Src.append(
                 fdem.Src.LineCurrent(
-                    [rx0],
+                    _receiver_list(comp, XYZ),
                     frequency=freq,
                     location=np.array([[0.0, 0.0, 0.0], [20.0, 0.0, 0.0]]),
                 )
@@ -211,7 +238,12 @@ def get_FDEM_hierarchical_problem(
                 mesh.closest_points_index([0.0, 0.0, 0.0], "Ez") + np.sum(mesh.vnE[:1])
             ] = 1e-3
             Src.append(
-                fdem.Src.RawVec([rx0], freq, S_m, mesh.get_edge_inner_product() * S_e)
+                fdem.Src.RawVec(
+                    _receiver_list(comp, XYZ),
+                    freq,
+                    S_m,
+                    mesh.get_edge_inner_product() * S_e,
+                )
             )
 
     if verbose:

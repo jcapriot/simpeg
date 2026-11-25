@@ -1,191 +1,65 @@
-import unittest
+"""Derivative tests for FDEM problems with a non-uniform conductivity."""
+
+import itertools
+
 import numpy as np
+import pytest
 from simpeg import tests
-from scipy.constants import mu_0
 from simpeg.electromagnetics.utils.testing_utils import getFDEMProblem
 
-testE = False
-testB = True
-testH = False
-testJ = False
+from tests.utils.shared_solves import SharedSolves
 
-verbose = False
-
-TOL = 1e-5
 FLR = 1e-20  # "zero", so if residual below this --> pass regardless of order
 CONDUCTIVITY = 1e1
-MU = mu_0
 freq = 3.16
-addrandoms = True
 
-SrcType = [
-    "MagDipole",
-    "CircularLoop",
-    "MagDipole_Bfield",
-    "RawVec",
-    "LineCurrent",
-]  # or 'MAgDipole_Bfield', 'CircularLoop', 'RawVec'
+SIM_TYPES = ["e", "b", "j", "h"]
+SRC_TYPES = ["MagDipole", "CircularLoop", "MagDipole_Bfield", "RawVec", "LineCurrent"]
+RECEIVER_TYPES = [
+    "ElectricField",
+    "MagneticFluxDensity",
+    "CurrentDensity",
+    "MagneticField",
+]
+RECEIVER_DIRS = ["x", "y", "z"]
+RECEIVER_COMPS = ["r", "i"]
+ALL_RECEIVERS = list(itertools.product(RECEIVER_TYPES, RECEIVER_DIRS, RECEIVER_COMPS))
 
 
-def derivTest(fdemType, comp, src):
-    prb = getFDEMProblem(fdemType, comp, SrcType, freq)
+@pytest.fixture(scope="module", params=SIM_TYPES)
+def shared_sim(request):
+    """One simulation per formulation, with every source and receiver in it."""
+    sim = getFDEMProblem(request.param, ALL_RECEIVERS, SRC_TYPES, freq)
 
-    print(f"{fdemType} formulation {src} - {comp}")
-    x0 = np.log(np.ones(prb.sigmaMap.nP) * CONDUCTIVITY)
+    rng = np.random.default_rng(seed=42)
+    x0 = np.log(np.ones(sim.sigmaMap.nP) * CONDUCTIVITY)
+    x0 = x0 + rng.normal(size=sim.sigmaMap.nP) * np.log(CONDUCTIVITY) * 1e-1
+    return SharedSolves(sim), x0
 
-    if addrandoms is True:
-        rng = np.random.default_rng(seed=42)
-        x0 = x0 + rng.normal(size=prb.sigmaMap.nP) * np.log(CONDUCTIVITY) * 1e-1
 
-    def fun(x):
-        return prb.dpred(x), lambda x: prb.Jvec(x0, x)
-
-    return tests.check_derivative(
-        fun, x0, num=2, plotIt=False, eps=FLR, random_seed=6521
+@pytest.mark.parametrize("receiver_comp", RECEIVER_COMPS)
+@pytest.mark.parametrize("receiver_dir", RECEIVER_DIRS)
+@pytest.mark.parametrize("receiver_type", RECEIVER_TYPES)
+def test_deriv(shared_sim, receiver_type, receiver_dir, receiver_comp):
+    """Derivative test of one receiver, over the data from every source."""
+    shared, x0 = shared_sim
+    survey = shared.sim.survey
+    rx_index = ALL_RECEIVERS.index((receiver_type, receiver_dir, receiver_comp))
+    data_inds = np.concatenate(
+        [
+            np.arange(
+                *survey.get_slice(src, src.receiver_list[rx_index]).indices(survey.nD)
+            )
+            for src in survey.source_list
+        ]
     )
 
+    def fun(x):
+        return (
+            shared.dpred(x)[data_inds],
+            lambda dx: shared.jvec(x0, dx)[data_inds],
+        )
 
-class FDEM_DerivTests(unittest.TestCase):
-    if testE:
-
-        def test_Jvec_e_Eform(self):
-            for src in SrcType:
-                for orientation in ["x", "y", "z"]:
-                    for comp in ["r", "i"]:
-                        self.assertTrue(
-                            derivTest("e", ["ElectricField", orientation, comp], src)
-                        )
-
-        def test_Jvec_b_Eform(self):
-            for src in SrcType:
-                for orientation in ["x", "y", "z"]:
-                    for comp in ["r", "i"]:
-                        self.assertTrue(
-                            derivTest(
-                                "e", ["MagneticFluxDensity", orientation, comp], src
-                            )
-                        )
-
-        def test_Jvec_j_Eform(self):
-            for src in SrcType:
-                for orientation in ["x", "y", "z"]:
-                    for comp in ["r", "i"]:
-                        self.assertTrue(
-                            derivTest("e", ["CurrentDensity", orientation, comp], src)
-                        )
-
-        def test_Jvec_h_Eform(self):
-            for src in SrcType:
-                for orientation in ["x", "y", "z"]:
-                    for comp in ["r", "i"]:
-                        self.assertTrue(
-                            derivTest("e", ["MagneticField", orientation, comp], src)
-                        )
-
-    if testB:
-
-        def test_Jvec_e_Bform(self):
-            for src in SrcType:
-                for orientation in ["x", "y", "z"]:
-                    for comp in ["r", "i"]:
-                        self.assertTrue(
-                            derivTest("b", ["ElectricField", orientation, comp], src)
-                        )
-
-        def test_Jvec_b_Bform(self):
-            for src in SrcType:
-                for orientation in ["x", "y", "z"]:
-                    for comp in ["r", "i"]:
-                        self.assertTrue(
-                            derivTest(
-                                "b", ["MagneticFluxDensity", orientation, comp], src
-                            )
-                        )
-
-        def test_Jvec_j_Bform(self):
-            for src in SrcType:
-                for orientation in ["x", "y", "z"]:
-                    for comp in ["r", "i"]:
-                        self.assertTrue(
-                            derivTest("b", ["CurrentDensity", orientation, comp], src)
-                        )
-
-        def test_Jvec_h_Bform(self):
-            for src in SrcType:
-                for orientation in ["x", "y", "z"]:
-                    for comp in ["r", "i"]:
-                        self.assertTrue(
-                            derivTest("b", ["MagneticField", orientation, comp], src)
-                        )
-
-    if testJ:
-
-        def test_Jvec_e_Jform(self):
-            for src in SrcType:
-                for orientation in ["x", "y", "z"]:
-                    for comp in ["r", "i"]:
-                        self.assertTrue(
-                            derivTest("j", ["ElectricField", orientation, comp], src)
-                        )
-
-        def test_Jvec_b_Jform(self):
-            for src in SrcType:
-                for orientation in ["x", "y", "z"]:
-                    for comp in ["r", "i"]:
-                        self.assertTrue(
-                            derivTest(
-                                "j", ["MagneticFluxDensity", orientation, comp], src
-                            )
-                        )
-
-        def test_Jvec_j_Jform(self):
-            for src in SrcType:
-                for orientation in ["x", "y", "z"]:
-                    for comp in ["r", "i"]:
-                        self.assertTrue(
-                            derivTest("j", ["CurrentDensity", orientation, comp], src)
-                        )
-
-        def test_Jvec_h_Jform(self):
-            for src in SrcType:
-                for orientation in ["x", "y", "z"]:
-                    for comp in ["r", "i"]:
-                        self.assertTrue(
-                            derivTest("j", ["MagneticField", orientation, comp], src)
-                        )
-
-    if testH:
-
-        def test_Jvec_e_Hform(self):
-            for src in SrcType:
-                for orientation in ["x", "y", "z"]:
-                    for comp in ["r", "i"]:
-                        self.assertTrue(
-                            derivTest("h", ["ElectricField", orientation, comp], src)
-                        )
-
-        def test_Jvec_b_Hform(self):
-            for src in SrcType:
-                for orientation in ["x", "y", "z"]:
-                    for comp in ["r", "i"]:
-                        self.assertTrue(
-                            derivTest(
-                                "h", ["MagneticFluxDensity", orientation, comp], src
-                            )
-                        )
-
-        def test_Jvec_j_Hform(self):
-            for src in SrcType:
-                for orientation in ["x", "y", "z"]:
-                    for comp in ["r", "i"]:
-                        self.assertTrue(
-                            derivTest("h", ["CurrentDensity", orientation, comp], src)
-                        )
-
-        def test_Jvec_h_Hform(self):
-            for src in SrcType:
-                for orientation in ["x", "y", "z"]:
-                    for comp in ["r", "i"]:
-                        self.assertTrue(
-                            derivTest("h", ["MagneticField", orientation, comp], src)
-                        )
+    assert tests.check_derivative(
+        fun, x0, num=2, plotIt=False, eps=FLR, random_seed=6521
+    )
